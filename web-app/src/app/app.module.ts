@@ -1,32 +1,32 @@
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
 
-import { AppRoutingModule } from './app.routing';
-import { NavbarModule } from './shared/navbar/navbar.module';
-import { FooterModule } from './shared/footer/footer.module';
-import { SidebarModule } from './sidebar/sidebar.module';
-
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { AlertModule, BsDropdownModule } from 'ngx-bootstrap';
+
+import { MatSidenavModule } from '@angular/material/sidenav'; 
+
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import { SideNavComponent } from './side-nav/side-nav.component';
 
 @NgModule({
-  imports: [
-    BrowserAnimationsModule,
-    FormsModule,
-    RouterModule,
-    HttpClientModule,
-    NavbarModule,
-    FooterModule,
-    SidebarModule,
-    AppRoutingModule
-  ],
   declarations: [
     AppComponent,
-    AdminLayoutComponent
+    ToolbarComponent,
+    SideNavComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+
+    MatSidenavModule,
+
+    AlertModule.forRoot(),
+    BsDropdownModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
