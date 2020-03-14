@@ -2,8 +2,6 @@
 
 import { Component, OnInit } from '@angular/core';
 
-import * as ace from 'src/assets/ace-builds'; 
-
 @Component({
   selector: 'app-code-editor',
   templateUrl: './code-editor.component.html',
@@ -11,16 +9,13 @@ import * as ace from 'src/assets/ace-builds';
 })
 export class CodeEditorComponent implements OnInit {
 
+  editorOptions = {theme: 'vs-dark', language: 'javascript'};
+  code: string= 'function x() {\nconsole.log("Hello world!");\n}';
+
   constructor() { }
 
   public ngOnInit() {
-    ace.config.set('basePath', 'assets/ace-builds/src')
-    
 
-    var editor = ace.edit("editor")
-    editor.setTheme("github")
-
-    console.log(editor.getOptions())
   }
 
 }
