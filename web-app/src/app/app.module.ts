@@ -11,12 +11,14 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
+import { CodeEditorComponent } from './code-editor/code-editor.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
-    SideNavComponent
+    SideNavComponent,
+    CodeEditorComponent
   ],
   imports: [
     BrowserModule,

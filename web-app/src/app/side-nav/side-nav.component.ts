@@ -1,3 +1,5 @@
+// This component handles the logic and styling of the side navigation bar.
+
 import { Component, OnInit } from '@angular/core';
 
 @Component({

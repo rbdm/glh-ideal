@@ -1,3 +1,6 @@
+// This component controls the placement of the sidenav, toolbar and main content
+// components. It is immutable and should not handle any logic. 
+
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,5 +9,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'web-app';
+  title = 'IDEal';
 }

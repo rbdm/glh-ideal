@@ -1,3 +1,5 @@
+// This component handles any logic and styling related to the toolbar.
+
 import { Component, OnInit } from '@angular/core';
 
 @Component({
