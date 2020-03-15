@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataModelService } from 'src/app/data-model/data-model.service';
 
 @Component({
   selector: 'app-visual-editor',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VisualEditorComponent implements OnInit {
 
-  constructor() { }
+  dataModel: DataModelService
+  codeModel: string
 
-  ngOnInit(): void {
+  constructor(dataModel: DataModelService) {
+    this.dataModel = dataModel
   }
 
+  ngOnInit(): void {
+  
+  }
+
+  updateCodeEvent() {
+    this.dataModel.storeTemporarySharedCode(this.codeModel)
+  }
 }
