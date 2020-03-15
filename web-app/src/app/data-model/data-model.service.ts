@@ -6,8 +6,6 @@ import { Injectable } from '@angular/core';
 export class DataModelService {
 
   temporarySharedCodeModel: string = ""
-  sideNavContent: any
-
 
   storeTemporarySharedCode(code: string) {
     this.temporarySharedCodeModel = code
@@ -17,13 +15,5 @@ export class DataModelService {
 
   getTemporarySharedCode(): string {
     return this.temporarySharedCodeModel;
-  }
-
-  storeSideNavContent(sideNavContent: any) {
-    this.sideNavContent = sideNavContent
-  }
-
-  getSideNavContent(): any {
-    return this.sideNavContent;
   }
 }
