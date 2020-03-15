@@ -9,6 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ToolbarComponent implements OnInit {
 
+  codeEditorLink: string = "/code"
+  visualEditorLink: string = "/visual"
+
   constructor() { }
 
   ngOnInit(): void {

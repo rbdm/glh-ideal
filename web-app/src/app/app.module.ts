@@ -15,13 +15,15 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { FormsModule } from '@angular/forms';
+import { VisualEditorComponent } from './visual-editor/visual-editor.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
     SideNavComponent,
-    CodeEditorComponent
+    CodeEditorComponent,
+    VisualEditorComponent
   ],
   imports: [
     BrowserModule,

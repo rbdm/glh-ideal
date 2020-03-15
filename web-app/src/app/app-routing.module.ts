@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
-import { AppComponent } from './app.component';
+import { VisualEditorComponent } from './visual-editor/visual-editor.component';
 
 const routes: Routes = [
-  { path: 'editor', component: CodeEditorComponent }
+  { path: 'code', component: CodeEditorComponent },
+  { path: 'visual', component: VisualEditorComponent }
 ];
 
 @NgModule({
