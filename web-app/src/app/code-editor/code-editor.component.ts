@@ -1,6 +1,5 @@
-// ELementRef prompts a security risk: https://angular.io/api/core/ElementRef.
-
 import { Component, OnInit } from '@angular/core';
+import { DataModelService } from 'src/app/data-model/data-model.service';
 
 @Component({
   selector: 'app-code-editor',
@@ -10,12 +9,17 @@ import { Component, OnInit } from '@angular/core';
 export class CodeEditorComponent implements OnInit {
 
   editorOptions = {theme: 'vs', language: 'typescript'};
-  code: string= 'function x() {\nconsole.log("Hello world!");\n}';
+  editorCode: string = 'function x() {\nconsole.log("Hello world!");\n}';
 
-  constructor() {}
+  dataModel: DataModelService;
 
-  public ngOnInit() {
-
+  constructor(dataModel: DataModelService) {
+    this.dataModel = dataModel
   }
 
+  public ngOnInit() { }
+
+  public emitCodeUpdateEvent() {
+    this.dataModel.storeTemporarySharedCode(this.editorCode)
+  }
 }

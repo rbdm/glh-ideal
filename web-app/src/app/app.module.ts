@@ -23,7 +23,7 @@ import { VisualEditorComponent } from './visual-editor/visual-editor.component';
     ToolbarComponent,
     SideNavComponent,
     CodeEditorComponent,
-    VisualEditorComponent
+    VisualEditorComponent,
   ],
   imports: [
     BrowserModule,
