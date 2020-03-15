@@ -9,10 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CodeEditorComponent implements OnInit {
 
-  editorOptions = {theme: 'vs-dark', language: 'javascript'};
+  editorOptions = {theme: 'vs', language: 'typescript'};
   code: string= 'function x() {\nconsole.log("Hello world!");\n}';
 
-  constructor() { }
+  constructor() {}
 
   public ngOnInit() {
 

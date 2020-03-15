@@ -9,13 +9,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { AlertModule, BsDropdownModule } from 'ngx-bootstrap';
 
-import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { MonacoEditorModule, NgxMonacoEditorConfig } from 'ngx-monaco-editor';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { FormsModule } from '@angular/forms';
-
 
 @NgModule({
   declarations: [
