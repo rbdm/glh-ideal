@@ -9,6 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VisualSideNavComponent implements OnInit {
 
+  dropInObjects = ['A', 'B', 'C']
+
   constructor() { }
 
   ngOnInit(): void { }

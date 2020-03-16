@@ -6,13 +6,15 @@ import { DataModelService } from 'src/app/data-model/data-model.service';
   templateUrl: './visual-editor.component.html',
   styleUrls: ['./visual-editor.component.css']
 })
-export class VisualEditorComponent implements OnInit {
+export class VisualEditorComponent implements OnInit {  
+  componentsOnBoard: Component[];
 
   dataModel: DataModelService
   codeModel: string
 
   constructor(dataModel: DataModelService) {
     this.dataModel = dataModel
+    this.componentsOnBoard = []
   }
 
   ngOnInit(): void {
@@ -21,5 +23,9 @@ export class VisualEditorComponent implements OnInit {
 
   updateCodeEvent() {
     this.dataModel.storeTemporarySharedCode(this.codeModel)
+  }
+
+  newComponentOnBoard(component: Component) {
+    this.componentsOnBoard.push(component)
   }
 }
