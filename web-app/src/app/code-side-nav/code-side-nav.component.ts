@@ -3,11 +3,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-side-nav',
-  templateUrl: './side-nav.component.html',
-  styleUrls: ['./side-nav.component.css']
+  selector: 'app-code-side-nav',
+  templateUrl: './code-side-nav.component.html',
+  styleUrls: ['./code-side-nav.component.css']
 })
-export class SideNavComponent implements OnInit {
+export class CodeSideNavComponent implements OnInit {
 
   constructor() { }
 

@@ -1,0 +1,12 @@
+mat-sidenav {
+    min-height: 100%; 
+    min-width: fit-content; 
+    background-color: whitesmoke;
+    padding: 20px;
+}
+
+mat-sidenav-content {
+    padding: 20px;
+    min-width: 100%;
+    min-height: 100%;
+}

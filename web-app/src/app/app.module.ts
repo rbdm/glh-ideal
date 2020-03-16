@@ -6,23 +6,25 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatSidenavModule } from '@angular/material/sidenav'; 
+import { FormsModule } from '@angular/forms';
 
 import { AlertModule, BsDropdownModule } from 'ngx-bootstrap';
 
-import { MonacoEditorModule, NgxMonacoEditorConfig } from 'ngx-monaco-editor';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
-import { SideNavComponent } from './side-nav/side-nav.component';
-import { CodeEditorComponent } from './code-editor/code-editor.component';
-import { FormsModule } from '@angular/forms';
-import { VisualEditorComponent } from './visual-editor/visual-editor.component';
+import { CodeSideNavComponent } from './code-side-nav/code-side-nav.component';
+import { CodeEditorComponent } from './code-side-nav/code-editor/code-editor.component';
+import { VisualEditorComponent} from './visual-side-nav/visual-editor/visual-editor.component';
+import { VisualSideNavComponent } from './visual-side-nav/visual-side-nav.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
-    SideNavComponent,
+    CodeSideNavComponent,
     CodeEditorComponent,
+    VisualSideNavComponent,
     VisualEditorComponent,
   ],
   imports: [
