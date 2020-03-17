@@ -1,13 +1,11 @@
 <mat-sidenav-container style="height: 94.75%;">
 
     <mat-sidenav mode="side" opened>
-        <div class="example-box" cdkDrag>
-            Drag me around
-          </div>
+        <button class="btn btn-primary" (click)="addDirectedRelationship(4, 2)">New</button>
     </mat-sidenav>
 
     <mat-sidenav-content>
-        <app-visual-editor></app-visual-editor>
+        <app-visual-editor #editor></app-visual-editor>
     </mat-sidenav-content>
 
 </mat-sidenav-container>
