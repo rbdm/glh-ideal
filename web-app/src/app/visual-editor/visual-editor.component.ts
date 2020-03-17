@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AdjacencyMatrix } from './adjacency-matrix/adjacency-matrix';
 
 @Component({
@@ -7,7 +7,9 @@ import { AdjacencyMatrix } from './adjacency-matrix/adjacency-matrix';
   styleUrls: ['./visual-editor.component.css']
 })
 export class VisualEditorComponent implements OnInit {  
+  
   graph: AdjacencyMatrix
+  @Output() listener: EventEmitter<any> = new EventEmitter()
 
   constructor() {
     this.graph = new AdjacencyMatrix()
@@ -19,5 +21,10 @@ export class VisualEditorComponent implements OnInit {
 
   addDirectedRelationship(source: any, destination: any) {
     this.graph.addDirectedEdge(source, destination, 3)
+  }
+
+  notifyListener(event: any) {
+    console.log('Visual editor notifying listeners: ' + event)
+    this.listener.emit(event)
   }
 }

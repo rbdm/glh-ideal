@@ -13,11 +13,18 @@ export class VisualSideNavComponent implements OnInit {
 
   @ViewChild('editor') visualEditor: VisualEditorComponent
 
+  selectedNode: any
+
   constructor() { }
 
   ngOnInit(): void { }
 
   addDirectedRelationship(source: any, destination: any) {
     this.visualEditor.addDirectedRelationship(source, destination)
+  }
+
+  selectNode(event: any) {
+    console.log('Sidenav was notified of a selection: ' + event)
+    this.selectedNode = event
   }
 }

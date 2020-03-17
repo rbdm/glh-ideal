@@ -2,10 +2,11 @@
 
     <mat-sidenav mode="side" opened>
         <button class="btn btn-primary" (click)="addDirectedRelationship(4, 2)">New</button>
+        {{selectedNode}}
     </mat-sidenav>
 
     <mat-sidenav-content>
-        <app-visual-editor #editor></app-visual-editor>
+        <app-visual-editor (listener)="selectNode($event)" #editor></app-visual-editor>
     </mat-sidenav-content>
 
 </mat-sidenav-container>

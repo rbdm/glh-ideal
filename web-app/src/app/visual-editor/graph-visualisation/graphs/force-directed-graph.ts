@@ -8,7 +8,7 @@ class GraphNode implements d3.SimulationNodeDatum {
     vx?: number; 
     vy?: number;
   
-    id: string
+    id: number
   }
   
 class GraphLink implements d3.SimulationLinkDatum<GraphNode> {
@@ -79,17 +79,20 @@ export class ForceDirectedGraph {
 
     options: ForceDirectedGraphOptions;
 
+    listener: any
+
     constructor(data: ForceDirectedGraphData, options: ForceDirectedGraphOptions) {
-        this.setOptions(options)
-        this.inputData(data)
-    }
-
-    setOptions(options: ForceDirectedGraphOptions) {
         this.options = options
+        this.data = data
     }
 
-    inputData(data: ForceDirectedGraphData) {
-        this.data = data
+    setListener(listener: any) {
+        this.listener = listener
+    }
+
+    notifyListener(event: number) {
+        console.log('Graph notifying listeners: ' + event)
+        this.listener.notifyListener(event)
     }
 
     tickBehaviour(node: any, link: any) {
@@ -115,7 +118,7 @@ export class ForceDirectedGraph {
         const color = this.options.color
 
         const simulation: d3.Simulation<GraphNode, GraphLink> = d3.forceSimulation(nodes)
-            .force("link", d3.forceLink(links))
+            .force("link", d3.forceLink(links).id((d: any) => d.id) )
             .force("charge", d3.forceManyBody() )
             .force("center", d3.forceCenter(width / 2, height / 2));
   
@@ -144,6 +147,11 @@ export class ForceDirectedGraph {
             );
 
         node.append("title").text(d => d.id);
+
+        node.on('click', (d: any) => {
+            console.log(d.id + ' was clicked!')
+            this.notifyListener(d.id)
+        })
 
         const ticked = this.tickBehaviour(node, link)
 

@@ -1,6 +1,4 @@
-import * as d3 from 'd3';
-
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { ForceDirectedGraphData, ForceDirectedGraphOptions, ForceDirectedGraph } from './graphs/force-directed-graph';
 
 @Component({
@@ -11,10 +9,9 @@ import { ForceDirectedGraphData, ForceDirectedGraphOptions, ForceDirectedGraph }
 export class GraphVisualisationComponent implements AfterViewInit {
 
   @ViewChild("graph") divView: ElementRef
+  @Output() listener: EventEmitter<any> = new EventEmitter()
 
-  constructor() {
-
-  }
+  constructor() { }
 
   ngAfterViewInit(): void { }
 
@@ -22,18 +19,24 @@ export class GraphVisualisationComponent implements AfterViewInit {
     var data = new ForceDirectedGraphData(TEST_DATA.nodes, TEST_DATA.links)
     var options = new ForceDirectedGraphOptions(1000, 1000)
     var graph = new ForceDirectedGraph(data, options)
+    graph.setListener(this)
     graph.buildGraphIntoElement(this.divView)
+  }
+
+  notifyListener(event: any) {
+    console.log('Graph visualiser notifying listeners: ' + event)
+    this.listener.emit(event)
   }
 }
 
 
 const TEST_DATA = {
   nodes: [
-    { id: "Toussaint", group: 5 },
-    { id: "Child1", group: 10 },
-    { id: "Child2", group: 10 },
-    { id: "Brujon", group: 4 },
-    { id: "Mme.Hucheloup", group:  8}
+    { id: 0 },
+    { id: 1 },
+    { id: 2 },
+    { id: 3 },
+    { id: 4 }
   ],
   links: [
     { source: 0, target:  4, weight: 1},
