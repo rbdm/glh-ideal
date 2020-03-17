@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AdjacencyMatrix } from './graph/graph-node';
+import { AdjacencyMatrix } from './adjacency-matrix/adjacency-matrix';
 
 @Component({
   selector: 'app-visual-editor',
