@@ -1,5 +1,7 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { ForceDirectedGraphData, ForceDirectedGraphOptions, ForceDirectedGraph } from './graphs/force-directed-graph';
+import { GraphObserver, GraphListenerEvent } from '../graph-listener-event/graph-listener-event'
+
 
 @Component({
   selector: 'app-graph-visualisation',
@@ -19,11 +21,11 @@ export class GraphVisualisationComponent implements AfterViewInit {
     var data = new ForceDirectedGraphData(TEST_DATA.nodes, TEST_DATA.links)
     var options = new ForceDirectedGraphOptions(1000, 1000)
     var graph = new ForceDirectedGraph(data, options)
-    graph.setListener(this)
+    graph.setListener(this.notifyListener)
     graph.buildGraphIntoElement(this.divView)
   }
 
-  notifyListener(event: any) {
+  notifyListener = (event: GraphListenerEvent): void => {
     console.log('Graph visualiser notifying listeners: ' + event)
     this.listener.emit(event)
   }

@@ -2,7 +2,9 @@
 
     <mat-sidenav mode="side" opened>
         <button class="btn btn-primary" (click)="addDirectedRelationship(4, 2)">New</button>
-        {{selectedNode}}
+        <div *ngIf="selectedNode">
+            {{selectedNode.eventSelector}}
+        </div> 
     </mat-sidenav>
 
     <mat-sidenav-content>

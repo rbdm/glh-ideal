@@ -1,5 +1,8 @@
 import * as d3 from 'd3';
+
 import { ElementRef } from '@angular/core';
+import { GraphListenerEvent, GraphObserver, GraphListenerEventKind } from '../../graph-listener-event/graph-listener-event';
+
 
 class GraphNode implements d3.SimulationNodeDatum {
     index?: number; 
@@ -79,20 +82,24 @@ export class ForceDirectedGraph {
 
     options: ForceDirectedGraphOptions;
 
-    listener: any
+    listener: GraphObserver
 
     constructor(data: ForceDirectedGraphData, options: ForceDirectedGraphOptions) {
         this.options = options
         this.data = data
     }
 
-    setListener(listener: any) {
+    setListener(listener: GraphObserver) {
         this.listener = listener
     }
 
-    notifyListener(event: number) {
+    notifyListener(event: number, eventKind: GraphListenerEventKind) {
+        var listenerEvent: GraphListenerEvent = {
+            eventSelector: event,
+            eventKind: eventKind
+        }
+        this.listener(listenerEvent)
         console.log('Graph notifying listeners: ' + event)
-        this.listener.notifyListener(event)
     }
 
     tickBehaviour(node: any, link: any) {
@@ -150,7 +157,7 @@ export class ForceDirectedGraph {
 
         node.on('click', (d: any) => {
             console.log(d.id + ' was clicked!')
-            this.notifyListener(d.id)
+            this.notifyListener(d.id, GraphListenerEventKind.OnNodeClick)
         })
 
         const ticked = this.tickBehaviour(node, link)
