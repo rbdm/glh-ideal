@@ -1,6 +1,5 @@
 import * as d3 from 'd3';
 
-import { ElementRef } from '@angular/core';
 import { GraphListenerEvent, GraphObserver, GraphListenerEventKind } from '../../graph-listener-event/graph-listener-event';
 
 
@@ -12,7 +11,8 @@ class GraphNode implements d3.SimulationNodeDatum {
     vy?: number;
   
     id: number
-  }
+    group: number
+}
   
 class GraphLink implements d3.SimulationLinkDatum<GraphNode> {
     source: number
@@ -84,9 +84,42 @@ export class ForceDirectedGraph {
 
     listener: GraphObserver
 
+    nodes: any
+    links: any
+    svg: any
+    simulation: any
+
     constructor(data: ForceDirectedGraphData, options: ForceDirectedGraphOptions) {
         this.options = options
         this.data = data
+    }
+
+    updateData(newData: ForceDirectedGraphData) {
+        console.log('Updating force directed graph')
+
+        const old = new Map(this.nodes.data().map(d => [d.id, d]));
+
+        const nodes = newData.nodes.map(d => Object.assign(old.get(d.id) || {}, d)); // https://observablehq.com/@d3/modifying-a-force-directed-graph
+        const links = newData.links.map(d => Object.assign({}, d));
+
+        this.nodes = this.nodes
+            .data(nodes)
+            .join("circle")
+            .attr("r", 5)
+            .attr("fill", this.options.color)
+            .call(this.options.nodeDragBehaviour(this.simulation))
+            .on('click', (d: any) => {
+                console.log(d.id + ' was clicked!')
+                this.notifyListener(d.id, GraphListenerEventKind.OnNodeClick)
+            })
+        
+        this.links = this.links
+            .data(links, d => [d.source, d.target])
+            .join("line");
+
+        this.simulation.nodes(nodes);
+        this.simulation.force("link").links(links);
+        this.simulation.alpha(1).restart()
     }
 
     setListener(listener: GraphObserver) {
@@ -102,20 +135,21 @@ export class ForceDirectedGraph {
         console.log('Graph notifying listeners: ' + event)
     }
 
-    tickBehaviour(node: any, link: any) {
+    tickBehaviour() {
         return () => {
-            link.attr("x1", (d: any) => d.source.x)
+            this.links.attr("x1", (d: any) => d.source.x)
             .attr("y1", (d: any) => d.source.y)
             .attr("x2", (d: any) => d.target.x)
             .attr("y2", (d: any) => d.target.y);
     
-            node.attr("cx", (d: any) => d.x)
+            this.nodes
+                .attr("cx", (d: any) => d.x)
                 .attr("cy", (d: any) => d.y);
         }
     }
 
-    buildGraphIntoElement(viewChild: ElementRef) {
-        const selectedElement = viewChild.nativeElement as HTMLElement
+    buildGraphIntoElement(selectedElement: HTMLElement) {
+        this.graphElement = selectedElement
 
         const nodes = this.data.nodes
         const links = this.data.links
@@ -124,44 +158,53 @@ export class ForceDirectedGraph {
         const height = this.options.height
         const color = this.options.color
 
-        const simulation: d3.Simulation<GraphNode, GraphLink> = d3.forceSimulation(nodes)
+        this.simulation = d3
+            .forceSimulation(nodes)
             .force("link", d3.forceLink(links).id((d: any) => d.id) )
             .force("charge", d3.forceManyBody() )
-            .force("center", d3.forceCenter(width / 2, height / 2));
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .on("tick", this.tickBehaviour());
   
-        const svg = d3.select(selectedElement)
+        var svg = d3.select(selectedElement)
             .append("svg")
             .attr("width", width)
-            .attr("height", height);
+            .attr("height", height)
+            .call(
+                d3.zoom()
+                    .on("zoom", function () {
+                        svg.attr("transform", d3.event.transform)
+                    })
+                    .scaleExtent([0.5, 2.0])
+            )
+            .append("g")
+            .attr("transform", "translate(" +  + "," + 1 + ")");
 
-        const link = svg.append("g")
+        this.svg = svg
+
+        this.links = this.svg
+            .append("g")
             .style("stroke", "#ccc")
             .selectAll("line")
             .data(links)
             .join("line")
             .attr("stroke-width", d => Math.sqrt(d.weight));
 
-        const node = svg.append("g")
-            .attr("stroke", "#fff")
-            .attr("stroke-width", 1.5)
+        this.nodes = this.svg
+            .append("g")
             .selectAll("circle")
             .data(nodes)
             .join("circle")
             .attr("r", 5)
             .attr("fill", color)
             .call(
-                this.options.nodeDragBehaviour(simulation)
+                this.options.nodeDragBehaviour(this.simulation)
             );
 
-        node.append("title").text(d => d.id);
+        this.nodes.append("title").text(d => d.id);
 
-        node.on('click', (d: any) => {
+        this.nodes.on('click', (d: any) => {
             console.log(d.id + ' was clicked!')
             this.notifyListener(d.id, GraphListenerEventKind.OnNodeClick)
         })
-
-        const ticked = this.tickBehaviour(node, link)
-
-        simulation.on('tick', ticked)
     }
 }

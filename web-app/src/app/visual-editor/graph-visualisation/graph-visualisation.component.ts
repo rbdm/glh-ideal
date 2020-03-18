@@ -1,6 +1,7 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
-import { ForceDirectedGraphData, ForceDirectedGraphOptions, ForceDirectedGraph } from './graphs/force-directed-graph';
-import { GraphObserver, GraphListenerEvent } from '../graph-listener-event/graph-listener-event'
+import { Component, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter, Input } from '@angular/core';
+import { ForceDirectedGraph } from './graphs/force-directed-graph';
+import { GraphListenerEvent } from '../graph-listener-event/graph-listener-event'
+import { GraphTypes } from './graphs/graph-types';
 
 
 @Component({
@@ -13,35 +14,40 @@ export class GraphVisualisationComponent implements AfterViewInit {
   @ViewChild("graph") divView: ElementRef
   @Output() listener: EventEmitter<any> = new EventEmitter()
 
+  @Input() graphType: GraphTypes
+
+  @Input() graphData: any
+  @Input() graphOptions: any
+
+  graph: ForceDirectedGraph
+
   constructor() { }
 
-  ngAfterViewInit(): void { }
+  ngAfterViewInit(): void {
+    this.drawGraph()
+  }
 
   drawGraph() {
-    var data = new ForceDirectedGraphData(TEST_DATA.nodes, TEST_DATA.links)
-    var options = new ForceDirectedGraphOptions(1000, 1000)
-    var graph = new ForceDirectedGraph(data, options)
-    graph.setListener(this.notifyListener)
-    graph.buildGraphIntoElement(this.divView)
+    switch(this.graphType) {
+      case GraphTypes.ForceDirectedGraph:
+        this.drawForceDirectedGraph()
+    }
+  }
+
+  drawForceDirectedGraph() {
+    this.graph = new ForceDirectedGraph(this.graphData, this.graphOptions)
+    this.graph.setListener(this.notifyListener)
+    this.graph.buildGraphIntoElement(this.divView.nativeElement as HTMLElement)
+  }
+
+  updateGraphData(newData: any) {
+    console.log('Updating graph visualisation component.')
+    this.graphData = newData
+    this.graph.updateData(newData)
   }
 
   notifyListener = (event: GraphListenerEvent): void => {
     console.log('Graph visualiser notifying listeners: ' + event)
     this.listener.emit(event)
   }
-}
-
-
-const TEST_DATA = {
-  nodes: [
-    { id: 0 },
-    { id: 1 },
-    { id: 2 },
-    { id: 3 },
-    { id: 4 }
-  ],
-  links: [
-    { source: 0, target:  4, weight: 1},
-    { source: 4, target:  2, weight: 5}
-  ]
 }

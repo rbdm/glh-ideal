@@ -1,3 +1,8 @@
 <div style="width: 100%; height: 100%; background-color: white;">
-    <app-graph-visualisation (listener)="notifyListener($event)"></app-graph-visualisation>
+    <app-graph-visualisation #graphVisualisation
+        (listener)="notifyGraphListener($event)"
+        [graphData]="TEST_DATA"
+        [graphOptions]="graphOptions"
+        [graphType]="graphType"
+        ></app-graph-visualisation>
 </div>

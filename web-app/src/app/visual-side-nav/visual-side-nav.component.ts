@@ -3,6 +3,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {CdkDragDrop, copyArrayItem, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { VisualEditorComponent } from '../visual-editor/visual-editor.component';
+import { GraphListenerEvent, GraphListenerEventKind } from '../visual-editor/graph-listener-event/graph-listener-event';
 
 @Component({
   selector: 'app-visual-side-nav',
@@ -20,11 +21,14 @@ export class VisualSideNavComponent implements OnInit {
   ngOnInit(): void { }
 
   addDirectedRelationship(source: any, destination: any) {
+    console.log('Adding relationship: ' + source + ' => ' + destination)
     this.visualEditor.addDirectedRelationship(source, destination)
   }
 
-  selectNode(event: any) {
-    console.log('Sidenav was notified of a selection: ' + event)
-    this.selectedNode = event
+  graphListenerEvent(event: GraphListenerEvent) {
+    if (event.eventKind == GraphListenerEventKind.OnNodeClick) {
+      console.log('Sidenav was notified of a selection: ' + event)
+      this.selectedNode = event
+    }
   }
 }

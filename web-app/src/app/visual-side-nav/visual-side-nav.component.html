@@ -1,14 +1,11 @@
 <mat-sidenav-container style="height: 94.75%;">
 
     <mat-sidenav mode="side" opened>
-        <button class="btn btn-primary" (click)="addDirectedRelationship(4, 2)">New</button>
-        <div *ngIf="selectedNode">
-            {{selectedNode.eventSelector}}
-        </div> 
+        <button class="btn btn-primary" (click)="addDirectedRelationship(4, 3)">Add Relationship</button>
     </mat-sidenav>
 
     <mat-sidenav-content>
-        <app-visual-editor (listener)="selectNode($event)" #editor></app-visual-editor>
+        <app-visual-editor (listener)="graphListenerEvent($event)" #editor></app-visual-editor>
     </mat-sidenav-content>
 
 </mat-sidenav-container>
