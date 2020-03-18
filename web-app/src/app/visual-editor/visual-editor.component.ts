@@ -27,7 +27,6 @@ export class VisualEditorComponent implements OnInit {
 
   ngOnInit(): void {  }
 
-
   addDirectedRelationship(source: any, destination: any) {
     this.adjacencyMatrix.addDirectedEdge(source, destination, 1)
     var data = this.parseAdjacencyMatrix()
@@ -35,26 +34,8 @@ export class VisualEditorComponent implements OnInit {
   }
 
   parseAdjacencyMatrix() {
-    const size: number = this.adjacencyMatrix.length
-
-    var nodes: GraphNode[] = []
-    for (var i = 0; i < size; i++) {
-      nodes.push({
-        id: i,
-        group: 0
-      })
-    }
-
-    var links: GraphLink[] = []
-    this.adjacencyMatrix.forEach((value: number, index: number[], _matrix: any) => {
-      if (value != 0) {
-        links.push({
-          source: index[0], target: index[1], weight: value
-        })
-      }
-    })
-
-    return new ForceDirectedGraphData(nodes, links)
+    var parsed = this.adjacencyMatrix.intoGraphData()
+    return new ForceDirectedGraphData(parsed.nodes, parsed.links)
   }
 
   notifyGraphListener(event: any) {

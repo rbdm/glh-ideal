@@ -53,4 +53,27 @@ export class AdjacencyMatrix {
         var index = mathjs.index([sourceNode], [destinationNode]) 
         this.innerMatrix.subset(index, weight) // set the element at this index to the given weight
     }    
+
+    intoGraphData() {
+        const size: number = this.length
+
+        var nodes = []
+        for (var i = 0; i < size; i++) {
+          nodes.push({
+            id: i,
+            group: 0
+          })
+        }
+    
+        var links = []
+        this.forEach((value: number, index: number[], _matrix: any) => {
+          if (value != 0) {
+            links.push({
+              source: index[0], target: index[1], weight: value
+            })
+          }
+        })
+        
+        return { nodes: nodes, links: links }
+    }
 }
