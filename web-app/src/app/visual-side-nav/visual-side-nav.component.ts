@@ -21,13 +21,15 @@ export class VisualSideNavComponent implements OnInit {
   ngOnInit(): void { }
 
   addDirectedRelationship(source: any, destination: any) {
-    console.log('Adding relationship: ' + source + ' => ' + destination)
     this.visualEditor.addDirectedRelationship(source, destination)
+  }
+
+  addDisconnectedNode() {
+    this.visualEditor.addDisconnectedNode()
   }
 
   graphListenerEvent(event: GraphListenerEvent) {
     if (event.eventKind == GraphListenerEventKind.OnNodeClick) {
-      console.log('Sidenav was notified of a selection: ' + event)
       this.selectedNode = event
     }
   }

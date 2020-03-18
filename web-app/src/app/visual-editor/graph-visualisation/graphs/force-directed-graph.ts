@@ -78,8 +78,6 @@ export class ForceDirectedGraph {
     }
 
     updateData(newData: ForceDirectedGraphData) {
-        console.log('Updating force directed graph')
-
         const old = new Map(this.nodes.data().map(d => [d.id, d]));
 
         const nodes = newData.nodes.map(d => Object.assign(old.get(d.id) || {}, d)); // https://observablehq.com/@d3/modifying-a-force-directed-graph
@@ -91,15 +89,11 @@ export class ForceDirectedGraph {
             .attr("r", 5)
             .attr("fill", this.options.color)
             .call(this.options.nodeDragBehaviour(this.simulation))
-            .on('click', (d: any) => {
-                console.log(d.id + ' was clicked!')
-                this.notifyListener(d.id, GraphListenerEventKind.OnNodeClick)
-            })
+            .on('click', (d: any) => this.notifyListener(d.id, GraphListenerEventKind.OnNodeClick))
         
         this.links = this.links
             .data(links, d => [d.source, d.target])
             .join("line");
-
 
         this.simulation.nodes(nodes);
         this.simulation.force("link").links(links);
@@ -116,15 +110,15 @@ export class ForceDirectedGraph {
             eventKind: eventKind
         }
         this.listener(listenerEvent)
-        console.log('Graph notifying listeners: ' + event)
     }
 
     tickBehaviour() {
         return () => {
-            this.links.attr("x1", (d: any) => d.source.x)
-            .attr("y1", (d: any) => d.source.y)
-            .attr("x2", (d: any) => d.target.x)
-            .attr("y2", (d: any) => d.target.y);
+            this.links
+                .attr("x1", (d: any) => d.source.x)
+                .attr("y1", (d: any) => d.source.y)
+                .attr("x2", (d: any) => d.target.x)
+                .attr("y2", (d: any) => d.target.y);
     
             this.nodes
                 .attr("cx", (d: any) => d.x)
@@ -144,7 +138,7 @@ export class ForceDirectedGraph {
 
         this.simulation = d3
             .forceSimulation(nodes)
-            .force("link", d3.forceLink(links).id((d: any) => d.id) )
+            .force("link", d3.forceLink(links).id((d: any) => d.id))
             .force("charge", d3.forceManyBody() )
             .force("center", d3.forceCenter(width / 2, height / 2))
             .on("tick", this.tickBehaviour());

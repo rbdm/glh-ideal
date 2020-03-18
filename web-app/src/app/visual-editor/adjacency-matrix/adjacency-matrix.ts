@@ -37,7 +37,12 @@ export class AdjacencyMatrix {
     }
 
     get(i: number, j: number) {
-        return this.innerMatrix.subset(mathjs.index([i], [j]))
+      return this.innerMatrix.subset(mathjs.index([i], [j]))
+    }
+
+    addDisconnectedVertex() {
+      this.length++
+      this.innerMatrix.resize([this.length, this.length])
     }
 
     addDirectedEdge(sourceNode: number, destinationNode: number, weight: number) {

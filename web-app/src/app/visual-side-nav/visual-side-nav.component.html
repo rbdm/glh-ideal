@@ -1,7 +1,11 @@
 <mat-sidenav-container style="height: 94.75%;">
 
     <mat-sidenav mode="side" opened>
-        <button class="btn btn-primary" (click)="addDirectedRelationship(1, 2)">Add Relationship</button>
+        <h1>
+            Quick Access Tools
+        </h1>
+        <button class="btn btn-primary" style="margin: 5px;" (click)="addDisconnectedNode()">New Node</button>
+        <button class="btn btn-primary" style="margin: 5px;" (click)="addDirectedRelationship(1, 2)">Add Relationship</button>
     </mat-sidenav>
 
     <mat-sidenav-content>
