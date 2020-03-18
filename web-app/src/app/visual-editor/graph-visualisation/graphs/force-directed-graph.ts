@@ -1,25 +1,8 @@
 import * as d3 from 'd3';
 
+import { GraphLink, GraphNode } from './graph-types';
+
 import { GraphListenerEvent, GraphObserver, GraphListenerEventKind } from '../../graph-listener-event/graph-listener-event';
-
-
-class GraphNode implements d3.SimulationNodeDatum {
-    index?: number; 
-    x?: number; 
-    y?: number; 
-    vx?: number; 
-    vy?: number;
-  
-    id: number
-    group: number
-}
-  
-class GraphLink implements d3.SimulationLinkDatum<GraphNode> {
-    source: number
-    target: number
-
-    weight: number
-}
 
 export class ForceDirectedGraphData {
     links: GraphLink[] 
@@ -117,6 +100,7 @@ export class ForceDirectedGraph {
             .data(links, d => [d.source, d.target])
             .join("line");
 
+
         this.simulation.nodes(nodes);
         this.simulation.force("link").links(links);
         this.simulation.alpha(1).restart()
@@ -177,7 +161,7 @@ export class ForceDirectedGraph {
                     .scaleExtent([0.5, 2.0])
             )
             .append("g")
-            .attr("transform", "translate(" +  + "," + 1 + ")");
+            .attr("transform", "translate(" + 1 + "," + 1 + ")");
 
         this.svg = svg
 

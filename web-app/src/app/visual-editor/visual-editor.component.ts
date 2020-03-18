@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { AdjacencyMatrix } from './adjacency-matrix/adjacency-matrix';
 import { ForceDirectedGraphOptions, ForceDirectedGraphData } from './graph-visualisation/graphs/force-directed-graph';
-import { GraphTypes } from './graph-visualisation/graphs/graph-types';
+import { GraphTypes, GraphNode, GraphLink } from './graph-visualisation/graphs/graph-types';
 import { GraphVisualisationComponent } from './graph-visualisation/graph-visualisation.component';
 
 @Component({
@@ -11,60 +11,50 @@ import { GraphVisualisationComponent } from './graph-visualisation/graph-visuali
 })
 export class VisualEditorComponent implements OnInit {  
   
-  adjacencyMatrix: AdjacencyMatrix
+  adjacencyMatrix: AdjacencyMatrix = new AdjacencyMatrix()
 
   graphType: GraphTypes = GraphTypes.ForceDirectedGraph
   graphOptions = new ForceDirectedGraphOptions(1000, 1000)
+  graphData: ForceDirectedGraphData
 
   @ViewChild('graphVisualisation') graphVisualisation: GraphVisualisationComponent
-
-  TEST_DATA = {
-    nodes: [
-      { id: 0, group: 3 },
-      { id: 1, group: 3 },
-      { id: 2, group: 3 },
-      { id: 3, group: 3 },
-      { id: 4, group: 3 }
-    ],
-    links: [
-      { source: 0, target:  4, weight: 1},
-      { source: 4, target:  2, weight: 5}
-    ]
-  }
   
   @Output() graphListener: EventEmitter<any> = new EventEmitter()
 
   constructor() {
-    this.adjacencyMatrix = new AdjacencyMatrix()
+    this.graphData = this.parseAdjacencyMatrix()
   }
 
-  ngOnInit(): void {
-  
-  }
+  ngOnInit(): void {  }
+
 
   addDirectedRelationship(source: any, destination: any) {
-    console.log('Updating visual editor with relationship: ' + source + ' => ' + destination)
-    // this.adjacencyMatrix.addDirectedEdge(source, destination, 3)
-    var newTestData = {
-      nodes: [
-        { id: 0, group: 3 },
-        { id: 1, group: 3 },
-        { id: 2, group: 3 },
-        { id: 3, group: 3 },
-        { id: 4, group: 3 },
-        { id: 5, group: 3 }
-      ],
-      links: [
-        { source: 0, target: 4, weight: 1},
-        { source: 4, target: 2, weight: 2},
-        { source: 4, target: 3, weight: 5},
-        { source: 5, target: 1, weight: 4}
-      ],
+    this.adjacencyMatrix.addDirectedEdge(source, destination, 1)
+    var data = this.parseAdjacencyMatrix()
+    this.graphVisualisation.updateGraphData(data)
+  }
+
+  parseAdjacencyMatrix() {
+    const size: number = this.adjacencyMatrix.length
+
+    var nodes: GraphNode[] = []
+    for (var i = 0; i < size; i++) {
+      nodes.push({
+        id: i,
+        group: 0
+      })
     }
 
-    var newData = new ForceDirectedGraphData(newTestData.nodes, newTestData.links)
+    var links: GraphLink[] = []
+    this.adjacencyMatrix.forEach((value: number, index: number[], _matrix: any) => {
+      if (value != 0) {
+        links.push({
+          source: index[0], target: index[1], weight: value
+        })
+      }
+    })
 
-    this.graphVisualisation.updateGraphData(newData)
+    return new ForceDirectedGraphData(nodes, links)
   }
 
   notifyGraphListener(event: any) {

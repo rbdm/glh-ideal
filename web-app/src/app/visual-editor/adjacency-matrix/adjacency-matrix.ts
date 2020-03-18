@@ -25,8 +25,19 @@ import * as mathjs from 'mathjs';
 export class AdjacencyMatrix {
     innerMatrix: mathjs.Matrix
 
+    length: number
+
     constructor() {
         this.innerMatrix = mathjs.matrix()
+        this.length = 0
+    }
+
+    forEach(callback: any) {
+        this.innerMatrix.forEach(callback)
+    }
+
+    get(i: number, j: number) {
+        return this.innerMatrix.subset(mathjs.index([i], [j]))
     }
 
     addDirectedEdge(sourceNode: number, destinationNode: number, weight: number) {
@@ -37,8 +48,9 @@ export class AdjacencyMatrix {
             nodes += 1
             this.innerMatrix.resize([nodes,  nodes]) // increase row and column by one
         }
+        this.length = nodes // update size for nodes
 
         var index = mathjs.index([sourceNode], [destinationNode]) 
         this.innerMatrix.subset(index, weight) // set the element at this index to the given weight
-    }
+    }    
 }
