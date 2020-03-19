@@ -20,7 +20,6 @@ import { VisualEditorComponent} from './visual-editor/visual-editor.component';
 import { VisualSideNavComponent } from './visual-side-nav/visual-side-nav.component';
 import { GraphVisualisationComponent } from './visual-editor/graph-visualisation/graph-visualisation.component';
 import { ObjectBuilderComponent } from './object-builder/object-builder.component';
-import { SelectedNodeComponent } from './visual-side-nav/selected-node/selected-node.component';
 import { ObjectEditorComponent } from './object-editor/object-editor.component';
 
 @NgModule({
@@ -33,7 +32,6 @@ import { ObjectEditorComponent } from './object-editor/object-editor.component';
     VisualEditorComponent,
     GraphVisualisationComponent,
     ObjectBuilderComponent,
-    SelectedNodeComponent,
     ObjectEditorComponent,
   ],
   imports: [
