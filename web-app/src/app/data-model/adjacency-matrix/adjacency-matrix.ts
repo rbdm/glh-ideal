@@ -46,17 +46,12 @@ export class AdjacencyMatrix {
     }
 
     addDirectedEdge(sourceNode: number, destinationNode: number, weight: number) {
-        var dimensions: number[] = this.innerMatrix.size() 
-        var nodes: number = dimensions[0] // first argument in dimensions is number of nodes in the graph
-        
-        while ((sourceNode >= nodes) || (destinationNode >= nodes)) {
-          nodes += 1
-          this.innerMatrix.resize([nodes,  nodes]) // increase row and column by one
-        }
-        this.length = nodes // update size for nodes
-
+      if ((sourceNode < this.length) && (destinationNode < this.length)) {
         var index = mathjs.index([sourceNode], [destinationNode]) 
         this.innerMatrix.subset(index, weight) // set the element at this index to the given weight
+      } else {
+        throw Error("SourceNode or DestinationNode index is out of matrix")
+      }
     }    
 
     intoNodesAndLinks() {

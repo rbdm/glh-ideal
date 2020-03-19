@@ -10,13 +10,17 @@ export class DataModelService {
 
   adjacencyMatrix: AdjacencyMatrix = new AdjacencyMatrix()
 
+  nodeStorage: any[] = []
+
   storeTemporarySharedCode(code: string) {
     this.temporarySharedCodeModel = code
-
-    console.log("Save: \n" + this.temporarySharedCodeModel)
   }
 
   getTemporarySharedCode(): string {
     return this.temporarySharedCodeModel;
+  }
+
+  lookUpNode(nodeID: number): any {
+    return this.nodeStorage[nodeID]
   }
 }

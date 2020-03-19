@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { VisualEditorComponent } from '../visual-editor/visual-editor.component';
 import { GraphListenerEvent, GraphListenerEventKind } from '../data-model/graphs/graph-listener-event';
 import { DataModelService } from '../data-model/data-model.service';
+import { GraphNode } from '../data-model/graphs/graph-types';
 
 @Component({
   selector: 'app-visual-side-nav',
@@ -15,7 +16,8 @@ export class VisualSideNavComponent implements OnInit {
 
   dataModel: DataModelService
 
-  selectedNode: any
+  displayNode: any
+  selectedNodes: any[] = []
 
   constructor(dataModel: DataModelService) {
     this.dataModel = dataModel
@@ -23,20 +25,37 @@ export class VisualSideNavComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  addDirectedRelationship(source: any, destination: any, weight: any) {
-    this.dataModel.adjacencyMatrix.addDirectedEdge(source, destination, weight)
+  addDirectedRelationship() {
+    for (var i = 0; i < this.selectedNodes.length; i++) {
+      const source = this.selectedNodes[i]
+      for (var j = 0; j < (this.selectedNodes.length) && (i != j); j++) {
+        const destination = this.selectedNodes[j]
+        this.dataModel.adjacencyMatrix.addDirectedEdge(source, destination, 1)
+      }
+    }
+    this.selectedNodes = []
     this.visualEditor.refreshGraph()
   }
 
   addDisconnectedNode() {
     this.dataModel.adjacencyMatrix.addDisconnectedVertex()
+    this.dataModel.nodeStorage.push()
+
     this.visualEditor.refreshGraph()    
   }
 
   graphListenerEvent(event: GraphListenerEvent) {
     if (event.eventKind == GraphListenerEventKind.OnNodeClick) {
-      this.selectedNode = event.eventSelector
-      console.log('A click!')
+      const nodeIndex = this.selectedNodes.indexOf(event.eventSelector)
+
+      if (nodeIndex < 0) { // the element is not in the selectedNodes list.
+        this.selectedNodes.push(event.eventSelector)
+      } else {
+        this.selectedNodes.splice(nodeIndex, 1)
+      }
+
+      this.displayNode = this.dataModel.lookUpNode(event.eventSelector)
+      console.log(this.displayNode)
     }
   }
 }
