@@ -45,17 +45,21 @@ export class VisualSideNavComponent implements OnInit {
   }
 
   graphListenerEvent(event: GraphListenerEvent) {
-    if (event.eventKind == GraphListenerEventKind.OnNodeClick) {
-      const nodeIndex = this.selectedNodes.indexOf(event.eventSelector)
-
-      if (nodeIndex < 0) { // the element is not in the selectedNodes list.
-        this.selectedNodes.push(event.eventSelector)
-      } else {
-        this.selectedNodes.splice(nodeIndex, 1)
-      }
-
-      this.displayNode = this.dataModel.lookUpNode(event.eventSelector)
-      console.log(this.displayNode)
+    switch (event.eventKind) {
+      case GraphListenerEventKind.OnNodeClick:
+        this.handleNodeClickEvent(event.eventSelector)
     }
+  }
+
+  handleNodeClickEvent(nodeID: number) {
+    const nodeIndex = this.selectedNodes.indexOf(nodeID)
+
+    if (nodeIndex < 0) { // the element is not in the selectedNodes list.
+      this.selectedNodes.push(nodeID)
+    } else {
+      this.selectedNodes.splice(nodeIndex, 1)
+    }
+
+    this.displayNode = this.dataModel.lookUpNode(nodeID)
   }
 }
