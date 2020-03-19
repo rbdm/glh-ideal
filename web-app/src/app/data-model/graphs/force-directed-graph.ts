@@ -160,7 +160,7 @@ export class ForceDirectedGraph {
             .attr("height", this.options.height)
             .call(
                 d3.zoom()
-                    .on("zoom", function () {
+                    .on("zoom", () => {
                         svg.attr("transform", d3.event.transform)
                     }).scaleExtent([0.5, 2.0])
             )
@@ -190,7 +190,13 @@ export class ForceDirectedGraph {
             .attr("r", 5)
             .attr("fill", this.options.color)
             .call(this.options.nodeDragBehaviour(this.simulation))
-            .on('click', (d: any) => this.notifyListener(d.id, GraphListenerEventKind.OnNodeClick))
+            .on('click', (d: any) => {
+                const currentTarget = d3.event.currentTarget 
+                const color = d3.select(currentTarget).attr("fill") == "orange" ? this.options.color : "orange"
+
+                d3.select(d3.event.currentTarget).attr("fill", color)
+                this.notifyListener(d.id, GraphListenerEventKind.OnNodeClick)
+            })
 
         this.nodes
             .append("title")

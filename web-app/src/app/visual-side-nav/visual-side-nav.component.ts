@@ -36,6 +36,7 @@ export class VisualSideNavComponent implements OnInit {
   graphListenerEvent(event: GraphListenerEvent) {
     if (event.eventKind == GraphListenerEventKind.OnNodeClick) {
       this.selectedNode = event.eventSelector
+      console.log('A click!')
     }
   }
 }
