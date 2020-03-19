@@ -8,5 +8,6 @@ export class GraphListenerEvent {
 }
 
 export enum GraphListenerEventKind {
-    OnNodeClick
+    OnNodeClick,
+    OnMouseClick
 }

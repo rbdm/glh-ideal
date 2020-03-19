@@ -36,9 +36,7 @@ export class GraphVisualisationComponent implements AfterViewInit {
 
   drawForceDirectedGraph() {
     this.graph = new ForceDirectedGraph(this.graphData, this.graphOptions)
-
     const notifyListener = (event: GraphListenerEvent): void => {
-      console.log('Graph visualiser notifying listeners: ' + event)
       this.listener.emit(event)
     }
     this.graph.setListener(notifyListener)

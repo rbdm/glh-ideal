@@ -77,29 +77,6 @@ export class ForceDirectedGraph {
         this.data = data
     }
 
-    updateData(newData: ForceDirectedGraphData) {
-        const old = new Map(this.nodes.data().map(d => [d.id, d]));
-
-        const nodes = newData.nodes.map(d => Object.assign(old.get(d.id) || {}, d)); // https://observablehq.com/@d3/modifying-a-force-directed-graph
-        const links = newData.links.map(d => Object.assign({}, d));
-
-        this.nodes = this.nodes
-            .data(nodes)
-            .join("circle")
-            .attr("r", 5)
-            .attr("fill", this.options.color)
-            .call(this.options.nodeDragBehaviour(this.simulation))
-            .on('click', (d: any) => this.notifyListener(d.id, GraphListenerEventKind.OnNodeClick))
-        
-        this.links = this.links
-            .data(links, d => [d.source, d.target])
-            .join("line");
-
-        this.simulation.nodes(nodes);
-        this.simulation.force("link").links(links);
-        this.simulation.alpha(1).restart()
-    }
-
     setListener(listener: GraphObserver) {
         this.listener = listener
     }
@@ -110,6 +87,28 @@ export class ForceDirectedGraph {
             eventKind: eventKind
         }
         this.listener(listenerEvent)
+    }
+
+    buildGraphIntoElement(selectedElement: HTMLElement) {
+        this.graphElement = selectedElement
+
+        const nodes = this.data.nodes
+        const links = this.data.links
+
+        const width = this.options.width
+        const height = this.options.height
+
+        this.simulation = d3
+            .forceSimulation(nodes)
+            .force("link", d3.forceLink(links).id((d: any) => d.id))
+            .force("charge", d3.forceManyBody() )
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .on("tick", this.tickBehaviour());
+  
+        this.initSVG()
+        this.initLinks(links)
+        this.initNodes(nodes)
+
     }
 
     tickBehaviour() {
@@ -126,39 +125,25 @@ export class ForceDirectedGraph {
         }
     }
 
-    buildGraphIntoElement(selectedElement: HTMLElement) {
-        this.graphElement = selectedElement
-
-        const nodes = this.data.nodes
-        const links = this.data.links
-
-        const width = this.options.width
-        const height = this.options.height
-        const color = this.options.color
-
-        this.simulation = d3
-            .forceSimulation(nodes)
-            .force("link", d3.forceLink(links).id((d: any) => d.id))
-            .force("charge", d3.forceManyBody() )
-            .force("center", d3.forceCenter(width / 2, height / 2))
-            .on("tick", this.tickBehaviour());
-  
-        var svg = d3.select(selectedElement)
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height)
-            .call(
-                d3.zoom()
-                    .on("zoom", function () {
-                        svg.attr("transform", d3.event.transform)
-                    })
-                    .scaleExtent([0.5, 2.0])
-            )
+    initNodes(nodes: any) {
+        this.nodes = this.svg
             .append("g")
-            .attr("transform", "translate(" + 1 + "," + 1 + ")");
+            .selectAll("circle")
+            .data(nodes)
+            .join("circle")
+            .attr("r", 5)
+            .attr("fill", this.options.color)
+            .call(
+                this.options.nodeDragBehaviour(this.simulation)
+            )
+            .on('click', (d: any) => this.notifyListener(d.id, GraphListenerEventKind.OnNodeClick));
+        
+        this.nodes
+            .append("title")
+            .text((d: any) => d.id);
+    }
 
-        this.svg = svg
-
+    initLinks(links: any) {
         this.links = this.svg
             .append("g")
             .style("stroke", "#ccc")
@@ -166,23 +151,55 @@ export class ForceDirectedGraph {
             .data(links)
             .join("line")
             .attr("stroke-width", d => Math.sqrt(d.weight));
+    }
 
-        this.nodes = this.svg
+    initSVG() {
+        var svg = d3.select(this.graphElement)
+            .append("svg")
+            .attr("width", this.options.width)
+            .attr("height", this.options.height)
+            .call(
+                d3.zoom()
+                    .on("zoom", function () {
+                        svg.attr("transform", d3.event.transform)
+                    }).scaleExtent([0.5, 2.0])
+            )
             .append("g")
-            .selectAll("circle")
+            .attr("transform", "translate(" + 1 + "," + 1 + ")");
+        this.svg = svg
+    }
+
+    updateData(newData: ForceDirectedGraphData) {
+        const old = new Map(this.nodes.data().map(d => [d.id, d]));
+
+        const nodes = newData.nodes.map(d => Object.assign(old.get(d.id) || {}, d)); // https://observablehq.com/@d3/modifying-a-force-directed-graph
+        const links = newData.links.map(d => Object.assign({}, d));
+
+        this.refreshLinks(links)
+        this.refreshNodes(nodes)
+
+        this.simulation.nodes(nodes);
+        this.simulation.force("link").links(links);
+        this.simulation.alpha(1).restart()
+    }
+
+    refreshNodes(nodes: any) {
+        this.nodes = this.nodes
             .data(nodes)
             .join("circle")
             .attr("r", 5)
-            .attr("fill", color)
-            .call(
-                this.options.nodeDragBehaviour(this.simulation)
-            );
+            .attr("fill", this.options.color)
+            .call(this.options.nodeDragBehaviour(this.simulation))
+            .on('click', (d: any) => this.notifyListener(d.id, GraphListenerEventKind.OnNodeClick))
 
-        this.nodes.append("title").text(d => d.id);
+        this.nodes
+            .append("title")
+            .text((d: any) => d.id);
+    }
 
-        this.nodes.on('click', (d: any) => {
-            console.log(d.id + ' was clicked!')
-            this.notifyListener(d.id, GraphListenerEventKind.OnNodeClick)
-        })
+    refreshLinks(links: any) {
+        this.links = this.links
+            .data(links, (d: GraphLink) => [d.source, d.target])
+            .join("line");
     }
 }

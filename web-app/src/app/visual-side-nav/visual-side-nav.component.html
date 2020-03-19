@@ -5,11 +5,13 @@
             Quick Access Tools
         </h1>
         <button class="btn btn-primary" style="margin: 5px;" (click)="addDisconnectedNode()">New Node</button>
-        <button class="btn btn-primary" style="margin: 5px;" (click)="addDirectedRelationship(1, 2)">Add Relationship</button>
+        <button class="btn btn-primary" style="margin: 5px;" (click)="addDirectedRelationship(1, 2, 1)">Add Relationship</button>
+        <p>Node: {{selectedNode}}</p>
+    
     </mat-sidenav>
 
     <mat-sidenav-content>
-        <app-visual-editor (listener)="graphListenerEvent($event)" #editor></app-visual-editor>
+        <app-visual-editor (graphListener)="graphListenerEvent($event)" #editor></app-visual-editor>
     </mat-sidenav-content>
 
 </mat-sidenav-container>
