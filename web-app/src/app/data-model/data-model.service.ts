@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AdjacencyMatrix } from './adjacency-matrix/adjacency-matrix';
 
 @Injectable({
   providedIn: 'root'
@@ -6,6 +7,8 @@ import { Injectable } from '@angular/core';
 export class DataModelService {
 
   temporarySharedCodeModel: string = ""
+
+  adjacencyMatrix: AdjacencyMatrix = new AdjacencyMatrix()
 
   storeTemporarySharedCode(code: string) {
     this.temporarySharedCodeModel = code

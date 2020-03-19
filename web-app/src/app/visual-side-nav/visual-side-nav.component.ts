@@ -3,7 +3,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {CdkDragDrop, copyArrayItem, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { VisualEditorComponent } from '../visual-editor/visual-editor.component';
-import { GraphListenerEvent, GraphListenerEventKind } from '../visual-editor/graph-listener-event/graph-listener-event';
+import { GraphListenerEvent, GraphListenerEventKind } from '../data-model/graphs/graph-listener-event';
 
 @Component({
   selector: 'app-visual-side-nav',
@@ -16,7 +16,7 @@ export class VisualSideNavComponent implements OnInit {
 
   selectedNode: any
 
-  constructor() { }
+  constructor( ) { }
 
   ngOnInit(): void { }
 

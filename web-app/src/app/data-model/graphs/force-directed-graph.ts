@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 
 import { GraphLink, GraphNode } from './graph-types';
 
-import { GraphListenerEvent, GraphObserver, GraphListenerEventKind } from '../../graph-listener-event/graph-listener-event';
+import { GraphListenerEvent, GraphObserver, GraphListenerEventKind } from './graph-listener-event';
 
 export class ForceDirectedGraphData {
     links: GraphLink[] 
