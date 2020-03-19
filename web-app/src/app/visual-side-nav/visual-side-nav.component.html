@@ -1,14 +1,18 @@
 <mat-sidenav-container style="height: 94.75%;">
 
     <mat-sidenav mode="side" opened>
-        <h1>
-            Quick Access Tools
-        </h1>
-        <button class="btn btn-primary" style="margin: 5px;" (click)="addDisconnectedNode()">New Node</button>
-        <button class="btn btn-primary" style="margin: 5px;" (click)="addDirectedRelationship()">Add Relationship</button>
-        <div *ngFor='let node of selectedNodes'>
-            <h3>NodeID: {{node}}</h3> 
-            <p>{{displayNode}}</p>
+        <div>
+            <h1>
+                Builders
+            </h1>
+            <app-object-builder></app-object-builder>
+        </div>        
+
+        <div>
+            <h1>
+                Editors
+            </h1>
+            <app-object-editor></app-object-editor>
         </div>
     </mat-sidenav>
 

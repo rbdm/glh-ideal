@@ -7,10 +7,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatSidenavModule } from '@angular/material/sidenav'; 
 import { FormsModule } from '@angular/forms';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
-
-import { AlertModule, AccordionModule, BsDropdownModule, TabsModule } from 'ngx-bootstrap';
+import { BsDropdownModule, ModalModule, } from 'ngx-bootstrap';
 
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 
@@ -20,6 +19,9 @@ import { CodeEditorComponent } from './code-side-nav/code-editor/code-editor.com
 import { VisualEditorComponent} from './visual-editor/visual-editor.component';
 import { VisualSideNavComponent } from './visual-side-nav/visual-side-nav.component';
 import { GraphVisualisationComponent } from './visual-editor/graph-visualisation/graph-visualisation.component';
+import { ObjectBuilderComponent } from './object-builder/object-builder.component';
+import { SelectedNodeComponent } from './visual-side-nav/selected-node/selected-node.component';
+import { ObjectEditorComponent } from './object-editor/object-editor.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,9 @@ import { GraphVisualisationComponent } from './visual-editor/graph-visualisation
     VisualSideNavComponent,
     VisualEditorComponent,
     GraphVisualisationComponent,
+    ObjectBuilderComponent,
+    SelectedNodeComponent,
+    ObjectEditorComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,10 +45,7 @@ import { GraphVisualisationComponent } from './visual-editor/graph-visualisation
     MatSidenavModule,
     DragDropModule,
 
-    AlertModule.forRoot(),
     BsDropdownModule.forRoot(),
-    AccordionModule.forRoot(),
-    TabsModule.forRoot(),
     
     MonacoEditorModule.forRoot()
   ],

@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { VisualEditorComponent } from '../visual-editor/visual-editor.component';
 import { GraphListenerEvent, GraphListenerEventKind } from '../data-model/graphs/graph-listener-event';
 import { DataModelService } from '../data-model/data-model.service';
-import { GraphNode } from '../data-model/graphs/graph-types';
+import { GraphLink } from '../data-model/graphs/graph-types';
 
 @Component({
   selector: 'app-visual-side-nav',
@@ -16,8 +16,7 @@ export class VisualSideNavComponent implements OnInit {
 
   dataModel: DataModelService
 
-  displayNode: any
-  selectedNodes: any[] = []
+  selectedNodeID: any[] = []
 
   constructor(dataModel: DataModelService) {
     this.dataModel = dataModel
@@ -26,40 +25,53 @@ export class VisualSideNavComponent implements OnInit {
   ngOnInit(): void { }
 
   addDirectedRelationship() {
-    for (var i = 0; i < this.selectedNodes.length; i++) {
-      const source = this.selectedNodes[i]
-      for (var j = 0; j < (this.selectedNodes.length) && (i != j); j++) {
-        const destination = this.selectedNodes[j]
+    // for node in selected nodes, push edge onto adjacency matrix
+    for (var i = 0; i < this.selectedNodeID.length; i++) {
+      const source = this.selectedNodeID[i]
+      for (var j = 0; j < (this.selectedNodeID.length) && (i != j); j++) {
+        const destination = this.selectedNodeID[j]
         this.dataModel.adjacencyMatrix.addDirectedEdge(source, destination, 1)
       }
     }
-    this.selectedNodes = []
+    this.selectedNodeID = []
     this.visualEditor.refreshGraph()
   }
 
   addDisconnectedNode() {
     this.dataModel.adjacencyMatrix.addDisconnectedVertex()
-    this.dataModel.nodeStorage.push()
+    this.dataModel.nodeStorage.push({
+      humanReadableID: "MyDummyID", 
+      innerData: null,
+      machineID: this.dataModel.nodeStorage.length
+    })
 
     this.visualEditor.refreshGraph()    
+
+    this.selectedNodeID = []
   }
 
   graphListenerEvent(event: GraphListenerEvent) {
     switch (event.eventKind) {
       case GraphListenerEventKind.OnNodeClick:
         this.handleNodeClickEvent(event.eventSelector)
+      case GraphListenerEventKind.OnLinkClick:
+        this.handleLinkClickEvent(event.eventSelector)
     }
   }
 
   handleNodeClickEvent(nodeID: number) {
-    const nodeIndex = this.selectedNodes.indexOf(nodeID)
+    const nodeIndex = this.selectedNodeID.indexOf(nodeID)
 
     if (nodeIndex < 0) { // the element is not in the selectedNodes list.
-      this.selectedNodes.push(nodeID)
+      this.selectedNodeID.push(nodeID)
     } else {
-      this.selectedNodes.splice(nodeIndex, 1)
+      this.selectedNodeID.splice(nodeIndex, 1)
     }
+  }
 
-    this.displayNode = this.dataModel.lookUpNode(nodeID)
+  handleLinkClickEvent(link: any) {
+    if (link.source && link.target && link.weight) {
+      console.log('Link from ', link.source.id, ' to ', link.target.id)
+    }
   }
 }

@@ -81,7 +81,7 @@ export class ForceDirectedGraph {
         this.listener = listener
     }
 
-    notifyListener(event: number, eventKind: GraphListenerEventKind) {
+    notifyListener(event: any, eventKind: GraphListenerEventKind) {
         var listenerEvent: GraphListenerEvent = {
             eventSelector: event,
             eventKind: eventKind
@@ -150,7 +150,8 @@ export class ForceDirectedGraph {
             .selectAll("line")
             .data(links)
             .join("line")
-            .attr("stroke-width", d => Math.sqrt(d.weight));
+            .attr("stroke-width", d => d.weight)
+            .on("click", (d: any) => this.notifyListener(d, GraphListenerEventKind.OnLinkClick))
     }
 
     initSVG() {
@@ -213,6 +214,13 @@ export class ForceDirectedGraph {
     refreshLinks(links: any) {
         this.links = this.links
             .data(links, (d: GraphLink) => [d.source, d.target])
-            .join("line");
+            .join("line")
+            .on('mouseenter', (d: any) => {
+                d3.select(d3.event.currentTarget).attr("stroke-width", (d: any) => d.weight * 2)
+            })
+            .on('mouseleave', (d: any) => {
+                d3.select(d3.event.currentTarget).attr("stroke-width", (d: any) => d.weight)
+            })
+            .on("click", (d: any) => this.notifyListener(d, GraphListenerEventKind.OnLinkClick));
     }
 }

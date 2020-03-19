@@ -22,17 +22,19 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              { "glob": "**/*", "input": "node_modules/ngx-monaco-editor/assets/monaco", "output": "./assets/monaco/" }
+              {
+                "glob": "**/*",
+                "input": "node_modules/ngx-monaco-editor/assets/monaco",
+                "output": "./assets/monaco/"
+              }
             ],
             "styles": [
-              "src/custom-theme.scss",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+              "src/custom-theme.scss",
               "src/styles.css"
             ],
-            "scripts": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -125,6 +127,10 @@
               "devServerTarget": "web-app:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
     }
