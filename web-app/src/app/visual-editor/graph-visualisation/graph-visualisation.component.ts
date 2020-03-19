@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter, Input } from '@angular/core';
-import { ForceDirectedGraph } from '../../data-model/graphs/force-directed-graph';
+import { ForceDirectedGraph, ForceDirectedGraphData, ForceDirectedGraphOptions } from '../../data-model/graphs/force-directed-graph';
 import { GraphListenerEvent } from '../../data-model/graphs/graph-listener-event'
 import { GraphTypes } from '../../data-model/graphs/graph-types';
 
@@ -16,8 +16,8 @@ export class GraphVisualisationComponent implements AfterViewInit {
 
   @Input() graphType: GraphTypes
 
-  @Input() graphData: any
-  @Input() graphOptions: any
+  @Input() graphData: ForceDirectedGraphData
+  @Input() graphOptions: ForceDirectedGraphOptions
 
   graph: ForceDirectedGraph
 
@@ -36,18 +36,18 @@ export class GraphVisualisationComponent implements AfterViewInit {
 
   drawForceDirectedGraph() {
     this.graph = new ForceDirectedGraph(this.graphData, this.graphOptions)
-    this.graph.setListener(this.notifyListener)
+
+    const notifyListener = (event: GraphListenerEvent): void => {
+      console.log('Graph visualiser notifying listeners: ' + event)
+      this.listener.emit(event)
+    }
+    this.graph.setListener(notifyListener)
     this.graph.buildGraphIntoElement(this.divView.nativeElement as HTMLElement)
   }
 
   updateGraphData(newData: any) {
-    console.log('Updating graph visualisation component.')
     this.graphData = newData
     this.graph.updateData(newData)
   }
 
-  notifyListener = (event: GraphListenerEvent): void => {
-    console.log('Graph visualiser notifying listeners: ' + event)
-    this.listener.emit(event)
-  }
 }

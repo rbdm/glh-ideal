@@ -34,6 +34,11 @@ export class VisualEditorComponent implements OnInit {
     this.graphVisualisation.updateGraphData(data)
   }
 
+  parseAdjacencyMatrix() {
+    var parsed = this.dataModel.adjacencyMatrix.intoNodesAndLinks()
+    return new ForceDirectedGraphData(parsed.nodes, parsed.links)
+  }
+
   addDirectedRelationship(source: any, destination: any) {
     this.dataModel
       .adjacencyMatrix
@@ -46,11 +51,6 @@ export class VisualEditorComponent implements OnInit {
       .adjacencyMatrix
       .addDisconnectedVertex()
     this.refreshGraph()
-  }
-
-  parseAdjacencyMatrix() {
-    var parsed = this.dataModel.adjacencyMatrix.intoGraphData()
-    return new ForceDirectedGraphData(parsed.nodes, parsed.links)
   }
 
   notifyGraphListener(event: any) {

@@ -23,17 +23,17 @@ import * as mathjs from 'mathjs';
 // https://mathworld.wolfram.com/AdjacencyMatrix.html
 
 export class AdjacencyMatrix {
-    innerMatrix: mathjs.Matrix
+    private innerMatrix: mathjs.Matrix
 
     length: number
 
     constructor() {
-        this.innerMatrix = mathjs.matrix()
-        this.length = 0
+      this.innerMatrix = mathjs.matrix()
+      this.length = 0
     }
 
     forEach(callback: any) {
-        this.innerMatrix.forEach(callback)
+      this.innerMatrix.forEach(callback)
     }
 
     get(i: number, j: number) {
@@ -50,8 +50,8 @@ export class AdjacencyMatrix {
         var nodes: number = dimensions[0] // first argument in dimensions is number of nodes in the graph
         
         while ((sourceNode >= nodes) || (destinationNode >= nodes)) {
-            nodes += 1
-            this.innerMatrix.resize([nodes,  nodes]) // increase row and column by one
+          nodes += 1
+          this.innerMatrix.resize([nodes,  nodes]) // increase row and column by one
         }
         this.length = nodes // update size for nodes
 
@@ -59,26 +59,26 @@ export class AdjacencyMatrix {
         this.innerMatrix.subset(index, weight) // set the element at this index to the given weight
     }    
 
-    intoGraphData() {
-        const size: number = this.length
+    intoNodesAndLinks() {
+      const size: number = this.length
 
-        var nodes = []
-        for (var i = 0; i < size; i++) {
-          nodes.push({
-            id: i,
-            group: 0
+      var nodes = []
+      for (var i = 0; i < size; i++) {
+        nodes.push({
+          id: i,
+          group: 0
+        })
+      }
+  
+      var links = []
+      this.forEach((value: number, index: number[], _matrix: any) => {
+        if (value != 0) {
+          links.push({
+            source: index[0], target: index[1], weight: value
           })
         }
-    
-        var links = []
-        this.forEach((value: number, index: number[], _matrix: any) => {
-          if (value != 0) {
-            links.push({
-              source: index[0], target: index[1], weight: value
-            })
-          }
-        })
-        
-        return { nodes: nodes, links: links }
+      })
+      
+      return { nodes: nodes, links: links }
     }
 }
