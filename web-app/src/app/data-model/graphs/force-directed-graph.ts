@@ -184,18 +184,25 @@ export class ForceDirectedGraph {
     }
 
     refreshNodes(nodes: any) {
+        var nodeRadius: number = 5
+
         this.nodes = this.nodes
             .data(nodes)
             .join("circle")
-            .attr("r", 5)
+            .attr("r", nodeRadius)
             .attr("fill", this.options.color)
             .call(this.options.nodeDragBehaviour(this.simulation))
             .on('click', (d: any) => {
                 const currentTarget = d3.event.currentTarget 
                 const color = d3.select(currentTarget).attr("fill") == "orange" ? this.options.color : "orange"
-
                 d3.select(d3.event.currentTarget).attr("fill", color)
                 this.notifyListener(d.id, GraphListenerEventKind.OnNodeClick)
+            })
+            .on('mouseenter', () => {
+                d3.select(d3.event.currentTarget).attr("r", nodeRadius + 2)
+            })
+            .on('mouseleave', () => {
+                d3.select(d3.event.currentTarget).attr("r", nodeRadius)
             })
 
         this.nodes
