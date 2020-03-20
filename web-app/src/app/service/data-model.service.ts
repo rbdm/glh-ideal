@@ -38,21 +38,16 @@ export class DataModelService {
     this.adjacencyMatrix.addDisconnectedVertex()
     this.nodeStorage.push(object)
 
-    this.notifySubscribers(machineID, DataModelEventKind.AdjacencyMatrixUpdate)
+    this.notifySubscribers(
+      machineID, 
+      [DataModelEventKind.AdjacencyMatrixUpdate, DataModelEventKind.NodeStorageUpdate]
+    )
   }
 
-  private notifySubscribers(machineID: number, eventKind?: DataModelEventKind, eventKinds?: DataModelEventKind[]) {
-    if (eventKind) {
-      const eventNotification = new DataModelEvent(machineID, eventKind)
+  private notifySubscribers(machineID: number, eventKinds: DataModelEventKind[]) {
+    for (let kind of eventKinds) {
+      const eventNotification = new DataModelEvent(machineID, kind)
       this.dataModelUpdateSubject.next(eventNotification)
     }
-
-    if (eventKinds) {
-      for (let kind of eventKinds) {
-        const eventNotification = new DataModelEvent(machineID, kind)
-        this.dataModelUpdateSubject.next(eventNotification)
-      }
-    }
-    
   }
 }

@@ -1,4 +1,5 @@
 import * as mathjs from 'mathjs';
+import { GraphNode, GraphLink } from './graph-types';
 
 
 // A graph can be represented by an adjacency matrix.
@@ -54,26 +55,26 @@ export class AdjacencyMatrix {
       }
     }    
 
-    intoNodesAndLinks() {
-      const size: number = this.length
-
+    getNodes(): GraphNode[] {
       var nodes = []
-      for (var i = 0; i < size; i++) {
+      for (var i = 0; i < this.length; i++) {
         nodes.push({
           id: i,
           group: 0
         })
       }
-  
-      var links = []
+      return nodes
+    }
+
+    getLinks(): GraphLink[] {
+      var weights = []
       this.forEach((value: number, index: number[], _matrix: any) => {
         if (value != 0) {
-          links.push({
+          weights.push({
             source: index[0], target: index[1], weight: value
           })
         }
       })
-      
-      return { nodes: nodes, links: links }
+      return weights
     }
 }

@@ -18,7 +18,6 @@ import { CodeSideNavComponent } from './code-side-nav/code-side-nav.component';
 import { CodeEditorComponent } from './code-side-nav/code-editor/code-editor.component';
 import { VisualEditorComponent} from './visual-editor/visual-editor.component';
 import { VisualSideNavComponent } from './visual-side-nav/visual-side-nav.component';
-import { GraphVisualisationComponent } from './visual-editor/graph-visualisation/graph-visualisation.component';
 import { ObjectBuilderComponent } from './object-builder/object-builder.component';
 import { ObjectEditorComponent } from './object-editor/object-editor.component';
 
@@ -30,7 +29,6 @@ import { ObjectEditorComponent } from './object-editor/object-editor.component';
     CodeEditorComponent,
     VisualSideNavComponent,
     VisualEditorComponent,
-    GraphVisualisationComponent,
     ObjectBuilderComponent,
     ObjectEditorComponent,
   ],

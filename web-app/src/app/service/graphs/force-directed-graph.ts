@@ -2,7 +2,8 @@ import * as d3 from 'd3';
 
 import { GraphLink, GraphNode } from './graph-types';
 
-import { GraphListenerEvent, GraphObserver, GraphListenerEventKind } from './graph-listener-event';
+import { GraphListenerEvent, GraphListenerEventKind } from './graph-listener-event';
+import { Subject, Observable } from 'rxjs';
 
 export class ForceDirectedGraphData {
     links: GraphLink[] 
@@ -65,7 +66,8 @@ export class ForceDirectedGraph {
 
     options: ForceDirectedGraphOptions;
 
-    listener: GraphObserver
+    private graphUpdateSubject: Subject<GraphListenerEvent> = new Subject()
+    public graphUpdateObservable: Observable<GraphListenerEvent> = this.graphUpdateSubject.asObservable()
 
     nodes: any
     links: any
@@ -77,16 +79,9 @@ export class ForceDirectedGraph {
         this.data = data
     }
 
-    setListener(listener: GraphObserver) {
-        this.listener = listener
-    }
-
-    notifyListener(event: any, eventKind: GraphListenerEventKind) {
-        var listenerEvent: GraphListenerEvent = {
-            eventSelector: event,
-            eventKind: eventKind
-        }
-        this.listener(listenerEvent)
+    private notifySubscribers(machineID: number, eventKind: GraphListenerEventKind) {
+        const eventNotification = new GraphListenerEvent(machineID, eventKind)
+        this.graphUpdateSubject.next(eventNotification)
     }
 
     buildGraphIntoElement(selectedElement: HTMLElement) {
@@ -136,7 +131,7 @@ export class ForceDirectedGraph {
             .call(
                 this.options.nodeDragBehaviour(this.simulation)
             )
-            .on('click', (d: any) => this.notifyListener(d.id, GraphListenerEventKind.OnNodeClick));
+            .on('click', (d: any) => this.notifySubscribers(d.id, GraphListenerEventKind.OnNodeClick));
         
         this.nodes
             .append("title")
@@ -151,7 +146,7 @@ export class ForceDirectedGraph {
             .data(links)
             .join("line")
             .attr("stroke-width", d => d.weight)
-            .on("click", (d: any) => this.notifyListener(d, GraphListenerEventKind.OnLinkClick))
+            .on("click", (d: any) => this.notifySubscribers(d, GraphListenerEventKind.OnLinkClick))
     }
 
     initSVG() {
@@ -197,7 +192,7 @@ export class ForceDirectedGraph {
                 const currentTarget = d3.event.currentTarget 
                 const color = d3.select(currentTarget).attr("fill") == "orange" ? this.options.color : "orange"
                 d3.select(d3.event.currentTarget).attr("fill", color)
-                this.notifyListener(d.id, GraphListenerEventKind.OnNodeClick)
+                this.notifySubscribers(d.id, GraphListenerEventKind.OnNodeClick)
             })
             .on('mouseenter', () => {
                 d3.select(d3.event.currentTarget).attr("r", nodeRadius + 2)
@@ -221,6 +216,6 @@ export class ForceDirectedGraph {
             .on('mouseleave', (d: any) => {
                 d3.select(d3.event.currentTarget).attr("stroke-width", (d: any) => d.weight)
             })
-            .on("click", (d: any) => this.notifyListener(d, GraphListenerEventKind.OnLinkClick));
+            .on("click", (d: any) => this.notifySubscribers(d, GraphListenerEventKind.OnLinkClick));
     }
 }
