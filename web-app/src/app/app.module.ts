@@ -6,10 +6,10 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatSidenavModule } from '@angular/material/sidenav'; 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
-import { BsDropdownModule, ModalModule, } from 'ngx-bootstrap';
+import { BsDropdownModule, ModalModule, TypeaheadModule, } from 'ngx-bootstrap';
 
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 
@@ -18,7 +18,7 @@ import { CodeSideNavComponent } from './editors/code-component/code-side-nav/cod
 import { CodeEditorComponent } from './editors/code-component/code-editor/code-editor.component'
 import { VisualEditorComponent} from './editors/visual-component/visual-editor/visual-editor.component';
 import { VisualSideNavComponent } from './editors/visual-component/visual-side-nav/visual-side-nav.component';
-import { ObjectBuilderComponent } from './editors/visual-component/object-builder/object-builder.component';
+import { ObjectBuilderComponent } from './editors/visual-component/visual-object-builder/visual-object-builder.component';
 import { ObjectEditorComponent } from './editors/visual-component/object-editor/object-editor.component';
 
 @NgModule({
@@ -37,11 +37,15 @@ import { ObjectEditorComponent } from './editors/visual-component/object-editor/
     AppRoutingModule,
     BrowserAnimationsModule,
     
+    ReactiveFormsModule,
+    
     FormsModule,
     MatSidenavModule,
     DragDropModule,
 
     BsDropdownModule.forRoot(),
+    ModalModule.forRoot(),
+    TypeaheadModule.forRoot(),
     
     MonacoEditorModule.forRoot()
   ],

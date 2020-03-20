@@ -22,7 +22,6 @@ export class GraphLink implements d3.SimulationLinkDatum<GraphNode> {
     weight: number
 }
 
-
 export class GraphData {
     links: GraphLink[] 
     nodes: GraphNode[]

@@ -1,0 +1,12 @@
+<input [(ngModel)]="userSelection"
+    [typeahead]="typeAheadValues"
+    [typeaheadMinLength]="typeaheadMinLength"
+    [typeaheadSingleWords]="typeaheadSingleWords"
+    [typeaheadScrollable]="typeaheadScrollable"
+    [typeaheadOptionsInScrollableView]="typeaheadOptionsInScrollableView"
+    [typeaheadHideResultsOnBlur]="typeaheadHideResultsOnBlur"
+    (typeaheadOnSelect)="onTypeAheadSelect($event)"
+    class="form-control"
+    >
+
+

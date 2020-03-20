@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ObjectBuilderComponent } from './object-builder.component';
+import { ObjectBuilderComponent } from './visual-object-builder.component';
 
 describe('ObjectBuilderComponent', () => {
   let component: ObjectBuilderComponent;
