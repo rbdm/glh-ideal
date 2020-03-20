@@ -1,9 +1,8 @@
 import { Component, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
-import { AdjacencyMatrix } from '../data-model/adjacency-matrix/adjacency-matrix';
-import { ForceDirectedGraphOptions, ForceDirectedGraphData } from '../data-model/graphs/force-directed-graph';
-import { GraphTypes } from '../data-model/graphs/graph-types';
+import { ForceDirectedGraphOptions, ForceDirectedGraphData } from '../service/graphs/force-directed-graph';
+import { GraphTypes } from '../service/graphs/graph-types';
 import { GraphVisualisationComponent } from './graph-visualisation/graph-visualisation.component';
-import { DataModelService } from '../data-model/data-model.service';
+import { DataModelService } from '../service/data-model.service';
 
 @Component({
   selector: 'app-visual-editor',

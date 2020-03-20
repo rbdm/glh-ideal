@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataModelService } from 'src/app/data-model/data-model.service';
+import { DataModelService } from 'src/app/service/data-model.service';
 
 @Component({
   selector: 'app-code-editor',

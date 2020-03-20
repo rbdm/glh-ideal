@@ -1,9 +1,10 @@
 // This component handles the logic and styling of the side navigation bar.
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter } from '@angular/core';
 import { VisualEditorComponent } from '../visual-editor/visual-editor.component';
-import { GraphListenerEvent, GraphListenerEventKind } from '../data-model/graphs/graph-listener-event';
-import { DataModelService } from '../data-model/data-model.service';
-import { GraphLink } from '../data-model/graphs/graph-types';
+import { GraphListenerEvent, GraphListenerEventKind } from '../service/graphs/graph-listener-event';
+import { DataModelService } from '../service/data-model.service';
+import { DataModelEvent, DataModelEventKind } from '../service/data-model-listener';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-visual-side-nav',
@@ -14,15 +15,28 @@ export class VisualSideNavComponent implements OnInit {
 
   @ViewChild('editor') visualEditor: VisualEditorComponent
 
-  dataModel: DataModelService
+  private dataModelServiceSubscription: Subscription
 
-  selectedNodeID: any[] = []
+  selectedNodeID: number[]
 
-  constructor(dataModel: DataModelService) {
-    this.dataModel = dataModel
+  constructor(public dataModel: DataModelService) {
+    this.selectedNodeID = []
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.dataModelServiceSubscription = this.dataModel
+      .dataModeUpdateObservable
+      .subscribe(this.subscriptionEvent)
+  }
+
+  subscriptionEvent = (event: DataModelEvent) => {
+    this.refresh()
+  }
+
+  refresh() {
+    this.selectedNodeID = []
+    this.visualEditor.refreshGraph()
+  }
 
   addDirectedRelationship() {
     // for node in selected nodes, push edge onto adjacency matrix
@@ -33,21 +47,14 @@ export class VisualSideNavComponent implements OnInit {
         this.dataModel.adjacencyMatrix.addDirectedEdge(source, destination, 1)
       }
     }
-    this.selectedNodeID = []
-    this.visualEditor.refreshGraph()
+    this.refresh()
   }
 
-  addDisconnectedNode() {
-    this.dataModel.adjacencyMatrix.addDisconnectedVertex()
-    this.dataModel.nodeStorage.push({
-      humanReadableID: "MyDummyID", 
-      innerData: null,
-      machineID: this.dataModel.nodeStorage.length
-    })
-
-    this.visualEditor.refreshGraph()    
-
-    this.selectedNodeID = []
+  dataModelListenerEvent(event: DataModelEvent) {
+    switch (event.kind) {
+      case DataModelEventKind.GlobalUpdate:
+        console.log("got an event from the model.")
+    }
   }
 
   graphListenerEvent(event: GraphListenerEvent) {

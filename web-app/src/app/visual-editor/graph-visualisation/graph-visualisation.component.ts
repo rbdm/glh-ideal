@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter, Input } from '@angular/core';
-import { ForceDirectedGraph, ForceDirectedGraphData, ForceDirectedGraphOptions } from '../../data-model/graphs/force-directed-graph';
-import { GraphListenerEvent } from '../../data-model/graphs/graph-listener-event'
-import { GraphTypes } from '../../data-model/graphs/graph-types';
+import { ForceDirectedGraph, ForceDirectedGraphData, ForceDirectedGraphOptions } from '../../service/graphs/force-directed-graph';
+import { GraphListenerEvent } from '../../service/graphs/graph-listener-event'
+import { GraphTypes } from '../../service/graphs/graph-types';
 
 
 @Component({
