@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataModelService } from 'src/app/service/data-model.service';
+import { DataModelService } from 'src/app/service/data/data-model.service';
 
 @Component({
   selector: 'app-code-editor',
@@ -18,8 +18,4 @@ export class CodeEditorComponent implements OnInit {
   }
 
   public ngOnInit() { }
-
-  public emitCodeUpdateEvent() {
-    this.dataModel.storeTemporarySharedCode(this.editorCode)
-  }
 }

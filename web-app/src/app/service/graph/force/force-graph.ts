@@ -1,80 +1,26 @@
 import * as d3 from 'd3';
 
-import { GraphLink, GraphNode } from './graph-types';
+import { GraphLink, GraphData, GraphOptions } from '../graph-types';
 
-import { GraphListenerEvent, GraphListenerEventKind } from './graph-listener-event';
+import { GraphListenerEvent, GraphListenerEventKind } from '../graph-event';
 import { Subject, Observable } from 'rxjs';
 
-export class ForceDirectedGraphData {
-    links: GraphLink[] 
-    nodes: GraphNode[]
-
-    constructor(nodes: GraphNode[], links: GraphLink[]) {
-        this.nodes = nodes
-        this.links = links
-    }
-}
-
-export class ForceDirectedGraphOptions {
-    height: number
-    width: number
-
-    nodeDragBehaviour: any
-    color: any
-
-    constructor(height: number, width: number, nodeDragBehaviour?: any, color?: any) {
-        this.height = height
-        this.width = width
-       
-        this.nodeDragBehaviour = nodeDragBehaviour ? nodeDragBehaviour : this.defaultDragBehaviour
-        this.color = color ? color : this.defaultColor
-    }
-
-    defaultDragBehaviour = (simulation: d3.Simulation<GraphNode, GraphLink>): d3.DragBehavior<Element, GraphNode, unknown> => {
-        function dragStarted(d: any) {
-            if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-            d.fx = d.x;
-            d.fy = d.y;
-        }
-        
-        function dragged(d: any) {
-            d.fx = d3.event.x;
-            d.fy = d3.event.y;
-        }
-        
-        function dragEnded(d: any) {
-            if (!d3.event.active) simulation.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
-        }
-    
-        return d3.drag<Element, GraphNode, unknown>()
-            .on("start", dragStarted)
-            .on("drag", dragged)
-            .on("end", dragEnded);
-    }
-
-    defaultColor(d: any) {
-        return d3.scaleOrdinal(d3.schemeCategory10)(d.group)
-    }
-}
-
-export class ForceDirectedGraph {
+export class ForceGraph {
     
     graphElement: HTMLElement
-    data: ForceDirectedGraphData
+    data: GraphData
 
-    options: ForceDirectedGraphOptions;
+    options: GraphOptions;
 
     private graphUpdateSubject: Subject<GraphListenerEvent> = new Subject()
-    public graphUpdateObservable: Observable<GraphListenerEvent> = this.graphUpdateSubject.asObservable()
+    public observable: Observable<GraphListenerEvent> = this.graphUpdateSubject.asObservable()
 
     nodes: any
     links: any
     svg: any
     simulation: any
 
-    constructor(data: ForceDirectedGraphData, options: ForceDirectedGraphOptions) {
+    constructor(data: GraphData, options: GraphOptions) {
         this.options = options
         this.data = data
     }
@@ -165,7 +111,7 @@ export class ForceDirectedGraph {
         this.svg = svg
     }
 
-    updateData(newData: ForceDirectedGraphData) {
+    updateData(newData: GraphData) {
         const old = new Map(this.nodes.data().map(d => [d.id, d]));
 
         const nodes = newData.nodes.map(d => Object.assign(old.get(d.id) || {}, d)); // https://observablehq.com/@d3/modifying-a-force-directed-graph

@@ -14,12 +14,12 @@ import { BsDropdownModule, ModalModule, } from 'ngx-bootstrap';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
-import { CodeSideNavComponent } from './code-side-nav/code-side-nav.component';
-import { CodeEditorComponent } from './code-side-nav/code-editor/code-editor.component';
-import { VisualEditorComponent} from './visual-editor/visual-editor.component';
-import { VisualSideNavComponent } from './visual-side-nav/visual-side-nav.component';
-import { ObjectBuilderComponent } from './object-builder/object-builder.component';
-import { ObjectEditorComponent } from './object-editor/object-editor.component';
+import { CodeSideNavComponent } from './editors/code-component/code-side-nav/code-side-nav.component'
+import { CodeEditorComponent } from './editors/code-component/code-editor/code-editor.component'
+import { VisualEditorComponent} from './editors/visual-component/visual-editor/visual-editor.component';
+import { VisualSideNavComponent } from './editors/visual-component/visual-side-nav/visual-side-nav.component';
+import { ObjectBuilderComponent } from './editors/visual-component/object-builder/object-builder.component';
+import { ObjectEditorComponent } from './editors/visual-component/object-editor/object-editor.component';
 
 @NgModule({
   declarations: [

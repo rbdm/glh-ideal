@@ -1,10 +1,11 @@
 // This component handles the logic and styling of the side navigation bar.
 import { Component, OnInit } from '@angular/core';
-import { DataModelService } from '../service/data-model.service';
-import { DataModelEvent } from '../service/data-model-listener';
 import { Subscription } from 'rxjs';
-import { GraphVisualsService } from '../service/graph-visuals.service';
-import { GraphListenerEvent } from '../service/graphs/graph-listener-event';
+
+import { DataModelService } from 'src/app/service/data/data-model.service';
+import { GraphVisualService } from 'src/app/service/graph/graph-visual.service';
+import { DataEvent } from 'src/app/service/data/data-event';
+import { GraphListenerEvent } from 'src/app/service/graph/graph-event';
 
 @Component({
   selector: 'app-visual-side-nav',
@@ -19,7 +20,7 @@ export class VisualSideNavComponent implements OnInit {
 
   selectedNodeID: number[]
 
-  constructor(public dataModel: DataModelService, public graphVisual: GraphVisualsService) {
+  constructor(public dataModel: DataModelService, public graphVisual: GraphVisualService) {
     this.selectedNodeID = []
   }
 
@@ -29,11 +30,11 @@ export class VisualSideNavComponent implements OnInit {
       .subscribe(this.dataModelSubscriptionEvent)
 
     this.graphVisualServiceSubscription = this.graphVisual
-      .graphUpdateObservable
+      .observable
       .subscribe(this.graphVisualSubscriptionEvent)
   }
 
-  dataModelSubscriptionEvent = (event: DataModelEvent) => {
+  dataModelSubscriptionEvent = (event: DataEvent) => {
     this.refresh()
   }
 

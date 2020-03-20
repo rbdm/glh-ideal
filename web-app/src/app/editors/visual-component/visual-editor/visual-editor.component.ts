@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { DataModelService } from '../service/data-model.service';
-import { GraphVisualsService } from '../service/graph-visuals.service';
+import { DataModelService } from 'src/app/service/data/data-model.service';
+import { GraphVisualService } from 'src/app/service/graph/graph-visual.service';
 
 @Component({
   selector: 'app-visual-editor',
@@ -13,7 +13,7 @@ export class VisualEditorComponent implements AfterViewInit {
   
   constructor(
     public dataModelService: DataModelService, 
-    public graphVisualService: GraphVisualsService
+    public graphVisualService: GraphVisualService
   ) { }
 
   ngAfterViewInit(): void {

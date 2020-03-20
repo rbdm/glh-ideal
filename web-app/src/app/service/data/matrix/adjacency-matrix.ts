@@ -1,6 +1,5 @@
 import * as mathjs from 'mathjs';
-import { GraphNode, GraphLink } from './graph-types';
-
+import { GraphNode, GraphLink } from '../../graph/graph-types';
 
 // A graph can be represented by an adjacency matrix.
 // 

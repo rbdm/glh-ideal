@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { DataModelService } from '../service/data-model.service';
-import { GraphListenerEvent, GraphListenerEventKind } from '../service/graphs/graph-listener-event';
+import { DataModelService } from 'src/app/service/data/data-model.service';
+import { GraphListenerEvent } from 'src/app/service/graph/graph-event';
 
 
 @Component({
