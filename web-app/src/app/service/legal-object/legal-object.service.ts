@@ -1,28 +1,25 @@
-import { Injectable, Component } from '@angular/core';
-
-export class LegalObjectNode {
-  prettyID: string
-  machineID: number
-
-  inner: any
-
-  constructor(prettyID: string, machineID: number, inner: any) {
-    this.prettyID = prettyID
-    this.machineID = machineID
-    this.inner = inner
-  }
-}
+import { Injectable } from '@angular/core';
+import { BuildableByForm } from './buildable/buildable';
+import { PersonBuilder } from './buildable/person';
+import { FormBuilder } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LegalObjectService {
 
-  knownLegalObjects: string[] = [
+  knownLegalObjectsString = [
     'Person',
-    'Legislation',
-    'Event'
+    'Event',
+    'Legislation'
   ]
 
   constructor() { }
+
+  getForm(searchTerm: string): BuildableByForm {
+    switch (searchTerm) {
+      case 'Person':
+        return new PersonBuilder(new FormBuilder)
+    }
+  }
 }

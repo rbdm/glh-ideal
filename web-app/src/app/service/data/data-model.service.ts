@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AdjacencyMatrix } from './matrix/adjacency-matrix';
-import { LegalObjectNode } from '../legal-object/legal-object.service';
 import { DataEventKind, DataEvent } from './data-event';
 import { Subject, Observable } from 'rxjs';
+import { LegalObjectNode } from '../legal-object/legal-object';
 
 @Injectable({
   providedIn: 'root'
