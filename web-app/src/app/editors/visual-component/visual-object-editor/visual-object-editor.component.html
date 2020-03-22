@@ -43,6 +43,12 @@
                         style="margin: 5px;"
                         type="text" 
                         [formControlName]="i"
+                        [typeahead]="dataModel.getPrettyID()"
+                        [typeaheadMinLength]="typeaheadMinLength"
+                        [typeaheadSingleWords]="typeaheadSingleWords"
+                        [typeaheadScrollable]="typeaheadScrollable"
+                        [typeaheadOptionsInScrollableView]="typeaheadOptionsInScrollableView"
+                        [typeaheadHideResultsOnBlur]="typeaheadHideResultsOnBlur"
                         [placeholder]="objectBuilder.formNames[i]"
                         >
                 </div>

@@ -42,6 +42,10 @@ export class DataModelService {
     this.notifySubscribers(destinationID, [DataEventKind.MatrixUpdate])
   }
 
+  getPrettyID(): string[] {
+    return this.nodeStorage.map(value => value.prettyID)
+  }
+
   private notifySubscribers(machineID: number, eventKinds: DataEventKind[]) {
     for (let kind of eventKinds) {
       const eventNotification = new DataEvent(machineID, kind)

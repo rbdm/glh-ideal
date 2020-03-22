@@ -64,15 +64,15 @@ export class VisualObjectEditorComponent implements OnInit {
     this.modalRef.hide()
 
     const builtObject: DirectedLegalObjectLink<LegalLinkData> = this.objectBuilder.build()
-    
-    const sourceNode: LegalObjectNode<LegalNodeData> = this.globalSelection.selected[0]
-    builtObject.sourceNode = sourceNode 
 
-    this.globalSelection.selected.forEach((destinationNode, i) => {
-      if (i > 0) {
-        builtObject.destinationNode = destinationNode
-        this.dataModel.addDirectedLegalLink(builtObject, 1)
-      }
+    this.globalSelection.selected.forEach((sourceNode, i) => {
+      builtObject.sourceNode = sourceNode 
+      this.globalSelection.selected.forEach((destinationNode, j) => {
+        if (i != j) {
+          builtObject.destinationNode = destinationNode
+          this.dataModel.addDirectedLegalLink(builtObject, 1)
+        }
+      })
     })
   }
 }

@@ -50,6 +50,10 @@ export class GlobalSelectionService {
     this.selected = []
   }
 
+  getPrettyID(): string[] {
+    return this.selected.map(value => value.prettyID)
+  }
+
   private notifySubscribers(machineID: number, eventKinds: GlobalSelectionEventKind[]) {
     for (let kind of eventKinds) {
       const eventNotification = new GlobalSelectionEvent(machineID, kind)

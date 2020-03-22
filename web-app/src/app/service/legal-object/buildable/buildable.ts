@@ -1,5 +1,4 @@
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
-import { LegalObjectNode } from '../legal-object';
 
 export abstract class BuildableByForm<T> {
 

@@ -14,8 +14,6 @@ export class Possession extends DirectedLegalObjectLink<PossessionData> {
 }
 
 export class PossessionData extends LegalLinkData {
-    possessor: number
-    possessed: number
     name: string
     description: string
 }
@@ -27,16 +25,12 @@ export class PossessionBuilder extends BuildableByForm<Possession> {
     formBuilder = new FormBuilder
 
     formNames: string[] = [
-        'Possessor',
-        'Possessed',
         'Name',
         'Description'
     ]
 
     formGroup: FormGroup = this.formBuilder.group({
         inner: this.formBuilder.array([
-            this.formBuilder.control(''),
-            this.formBuilder.control(''),
             this.formBuilder.control(''),
             this.formBuilder.control('')
         ])
@@ -48,22 +42,14 @@ export class PossessionBuilder extends BuildableByForm<Possession> {
 
     build(): Possession {
         const controls = this.inner.controls
-
-        const possessorIndex: number = 0
-        const possessor: number = controls[possessorIndex].value
         
-        const possessedIndex: number = 1
-        const possessed: number = controls[possessedIndex].value
-        
-        const nameIndex: number = 2
+        const nameIndex: number = 0
         const name: string = controls[nameIndex].value
 
-        const descriptionIndex: number = 3
+        const descriptionIndex: number = 1
         const description: string = controls[descriptionIndex].value
 
         const possessionData: PossessionData = {
-            possessor: possessor,
-            possessed: possessed,
             name: name,
             description: description
         }
