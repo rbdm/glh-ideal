@@ -66,25 +66,6 @@ export class VisualSideNavComponent implements OnInit {
   //   this.refresh()
   // }
 
-  // graphListenerEvent(event: GraphListenerEvent) {
-  //   switch (event.eventKind) {
-  //     case GraphListenerEventKind.OnNodeClick:
-  //       this.handleNodeClickEvent(event.eventSelector)
-  //     case GraphListenerEventKind.OnLinkClick:
-  //       this.handleLinkClickEvent(event.eventSelector)
-  //   }
-  // }
-
-  // handleNodeClickEvent(nodeID: number) {
-  //   const nodeIndex = this.selectedNodeID.indexOf(nodeID)
-
-  //   if (nodeIndex < 0) { // the element is not in the selectedNodes list.
-  //     this.selectedNodeID.push(nodeID)
-  //   } else {
-  //     this.selectedNodeID.splice(nodeIndex, 1)
-  //   }
-  // }
-
   // handleLinkClickEvent(link: any) {
   //   if (link.source && link.target && link.weight) {
   //     console.log('Link from ', link.source.id, ' to ', link.target.id)

@@ -3,3 +3,10 @@
         {{selected.prettyID}}
     </button>
 </div>
+
+<div *ngIf="displayLinkBuilder()">
+    <h1>
+        Relationship Editor
+    </h1>
+    <button class="btn btn-primary" (click)="addDirectedRelationship()">Add Relationship</button>
+</div>

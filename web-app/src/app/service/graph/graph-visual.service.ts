@@ -3,7 +3,7 @@ import { ForceGraph } from './force/force-graph';
 import { Observable } from 'rxjs';
 import { GraphListenerEvent } from './graph-event';
 import { DataModelService } from '../data/data-model.service';
-import { GraphOptions } from './graph-types';
+import { GraphOptions, GraphNode, GraphLink } from './graph-types';
 
 @Injectable({
   providedIn: 'root'
@@ -31,13 +31,14 @@ export class GraphVisualService {
   }
 
   refresh() {
+    console.log('refreshing')
     const newData = this.getGraphData()
     this.graph.updateData(newData)
   }
 
   private getGraphData() {
-    const nodes = this.dataService.matrix.getNodes()
-    const links = this.dataService.matrix.getLinks()
+    const nodes: GraphNode[] = this.dataService.matrix.getNodes()
+    const links: GraphLink[] = this.dataService.matrix.getLinks()
     return {
       nodes: nodes,
       links: links

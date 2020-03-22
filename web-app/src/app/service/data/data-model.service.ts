@@ -27,8 +27,13 @@ export class DataModelService {
     this.nodeStorage.push(data)
 
     const machineID = this.matrix.length
-
     this.notifySubscribers(machineID, [DataEventKind.MatrixUpdate, DataEventKind.NodeUpdate])
+  }
+
+  addLegalLink(sourceNode: number, destinationNode: number, weight: number) {
+    this.matrix.addDirectedEdge(sourceNode, destinationNode, weight)
+    this.notifySubscribers(sourceNode, [DataEventKind.MatrixUpdate])
+    this.notifySubscribers(destinationNode, [DataEventKind.MatrixUpdate])
   }
 
   private notifySubscribers(machineID: number, eventKinds: DataEventKind[]) {
