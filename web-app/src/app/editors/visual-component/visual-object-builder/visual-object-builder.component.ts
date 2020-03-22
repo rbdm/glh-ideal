@@ -40,8 +40,8 @@ export class ObjectBuilderComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  addLegalObject(id: string, data: any) {
-    this.dataModelService.addLegalObject(id, data)
+  addLegalObject(data: LegalObjectNode<LegalObjectData>) {
+    this.dataModelService.addLegalObject(data)
   }
 
   onTypeAheadSelect(event: TypeaheadMatch) {
@@ -61,7 +61,8 @@ export class ObjectBuilderComponent implements OnInit {
   }
 
   onSubmit() {
-    this.objectBuilder.build()
+    const builtObject: LegalObjectNode<LegalObjectData> = this.objectBuilder.build()
+    this.addLegalObject(builtObject)
     this.modalRef.hide()
   }
 }

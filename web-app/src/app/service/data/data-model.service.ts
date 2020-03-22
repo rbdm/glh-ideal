@@ -19,7 +19,7 @@ export class DataModelService {
     return this.nodeStorage[nodeID]
   }
 
-  addLegalObject(humanReadableID: string, data: any) {
+  addLegalObject(data: LegalObjectNode<LegalObjectData>) {
     const machineID = this.matrix.length
     const object = new LegalObjectNode(data)
 
