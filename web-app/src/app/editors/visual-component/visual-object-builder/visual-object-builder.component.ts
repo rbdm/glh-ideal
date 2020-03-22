@@ -6,7 +6,7 @@ import { LegalObjectService } from 'src/app/service/legal-object/legal-object.se
 import { FormGroup, FormArray } from '@angular/forms';
 import { TypeaheadMatch } from 'ngx-bootstrap';
 import { BuildableByForm } from 'src/app/service/legal-object/buildable/buildable';
-import { LegalObjectNode, LegalObjectData } from 'src/app/service/legal-object/legal-object';
+import { LegalObjectNode, LegalNodeData } from 'src/app/service/legal-object/legal-object';
 
 
 @Component({
@@ -30,7 +30,7 @@ export class ObjectBuilderComponent implements OnInit {
   
   modalTitle: string
   
-  objectBuilder: BuildableByForm<LegalObjectNode<LegalObjectData>>
+  objectBuilder: BuildableByForm<LegalObjectNode<LegalNodeData>>
   objectBuilderForm: FormGroup
 
   constructor(
@@ -41,7 +41,7 @@ export class ObjectBuilderComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  addLegalObject(data: LegalObjectNode<LegalObjectData>) {
+  addLegalObject(data: LegalObjectNode<LegalNodeData>) {
     this.dataModelService.addLegalObject(data)
   }
 
@@ -64,7 +64,7 @@ export class ObjectBuilderComponent implements OnInit {
   onSubmit() {
     this.modalRef.hide()
 
-    const builtObject: LegalObjectNode<LegalObjectData> = this.objectBuilder.build()
+    const builtObject: LegalObjectNode<LegalNodeData> = this.objectBuilder.build()
     this.addLegalObject(builtObject)
   }
 }

@@ -1,23 +1,52 @@
+export class LegalObject<DATA extends LegalData> {
+  constructor(
+    public prettyID: string,
+    public objectData: DATA,
+  ) { }  
+}
+
+export class LegalObjectLink<DATA extends LegalLinkData> {
+  constructor(
+    public prettyID: string,
+
+    public sourceNode: LegalObjectNode<LegalLinkData>,
+    public destinationNode: LegalObjectNode<LegalLinkData>,
+
+    public objectData: DATA,
+  ) { }
+}
+
+export class DirectedLegalObjectLink<DATA extends LegalLinkData> extends LegalObjectLink<LegalLinkData>  {
+  constructor(
+    public prettyID: string,
+
+    public sourceNode: LegalObjectNode<LegalLinkData>,
+    public destinationNode: LegalObjectNode<LegalLinkData>,
+
+    public objectData: DATA,
+  ) {
+    super(prettyID, sourceNode, destinationNode, objectData)
+  }
+}
+
 export class LegalObjectNode<LegalObjectData> {
   constructor(
     public prettyID: string, 
     public objectData: LegalObjectData,
-    public objectType: LegalObjectType
   ) { }
+}
 
-  typeToString(): string {
-    return LegalObjectType[this.objectType]
+export class LegalData {
+
+}
+
+export class LegalLinkData extends LegalData {
+  constructor() {
+    super()
   }
 }
 
-export class LegalObjectData {
 
-}
+export class LegalNodeData extends LegalData {
 
-export enum LegalObjectType {
-  Person,
-  Event,
-  Location,
-  Legislation,
-  Amendment
 }

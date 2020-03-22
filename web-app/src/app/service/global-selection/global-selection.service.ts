@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LegalObjectNode, LegalObjectData } from '../legal-object/legal-object';
+import { LegalObjectNode, LegalNodeData } from '../legal-object/legal-object';
 import { DataModelService } from '../data/data-model.service';
 import { Subject, Observable } from 'rxjs';
 import { GlobalSelectionEvent, GlobalSelectionEventKind } from './global-selection-event';
@@ -11,16 +11,16 @@ export class GlobalSelectionService {
   private globalSelectionUpdateSubject: Subject<GlobalSelectionEvent> = new Subject()
   public globalSelectionUpdateObservable: Observable<GlobalSelectionEvent> = this.globalSelectionUpdateSubject.asObservable()
 
-  selected: LegalObjectNode<LegalObjectData>[] = []
+  selected: LegalObjectNode<LegalNodeData>[] = []
 
   constructor(private dataService: DataModelService) { }
 
   toggleGloballySelectedByID(machineID: number) {
-    const selectedNode: LegalObjectNode<LegalObjectData> = this.dataService.lookUpNode(machineID)
+    const selectedNode: LegalObjectNode<LegalNodeData> = this.dataService.lookUpNode(machineID)
     this.toggleGloballySelectedNode(selectedNode, machineID)
   }
 
-  toggleGloballySelectedNode(node: LegalObjectNode<LegalObjectData>, machineID?:number) {
+  toggleGloballySelectedNode(node: LegalObjectNode<LegalNodeData>, machineID?:number) {
     var eventNotificationKind: GlobalSelectionEventKind
     if (!machineID) {
       machineID = this.dataService.lookUpMachineID(node)
@@ -38,7 +38,7 @@ export class GlobalSelectionService {
     this.notifySubscribers(machineID, [eventNotificationKind])
   }
 
-  addGloballySelectedNode(node: LegalObjectNode<LegalObjectData>) {
+  addGloballySelectedNode(node: LegalObjectNode<LegalNodeData>) {
     this.selected.push(node)
   }
 

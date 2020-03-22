@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { GlobalSelectionService } from 'src/app/service/global-selection/global-selection.service';
-import { Subscription } from 'rxjs';
-import { GlobalSelectionEvent } from 'src/app/service/global-selection/global-selection-event';
 import { DataModelService } from 'src/app/service/data/data-model.service';
-import { LegalObjectNode, LegalObjectData } from 'src/app/service/legal-object/legal-object';
+import { LegalObjectNode, LegalNodeData, DirectedLegalObjectLink, LegalLinkData, LegalObjectLink } from 'src/app/service/legal-object/legal-object';
+import { BsModalRef, BsModalService, TypeaheadMatch } from 'ngx-bootstrap';
+import { BuildableByForm } from 'src/app/service/legal-object/buildable/buildable';
+import { FormGroup } from '@angular/forms';
+import { LegalObjectService } from 'src/app/service/legal-object/legal-object.service';
 
 @Component({
   selector: 'app-visual-object-editor',
@@ -12,49 +14,65 @@ import { LegalObjectNode, LegalObjectData } from 'src/app/service/legal-object/l
 })
 export class VisualObjectEditorComponent implements OnInit {
 
-  private globalSelectionServiceSubscription: Subscription
+  @ViewChild('template') templateView: TemplateRef<any> 
+  modalRef: BsModalRef
+
+  typeaheadMinLength = 0
+  typeaheadSingleWords = true
+  typeaheadScrollable = true
+  typeaheadOptionsInScrollableView = 5
+  typeaheadHideResultsOnBlur = true
+  typeaheadValues = this.legalService.knownLegalLinksString
+
+  userSelectionBuffer: string
+  
+  modalTitle: string
+  
+  objectBuilder: BuildableByForm<LegalObjectLink<LegalLinkData>>
+  objectBuilderForm: FormGroup
 
   constructor(
     public globalSelection: GlobalSelectionService,
-    public dataModel: DataModelService
+    public dataModel: DataModelService,
+    public legalService: LegalObjectService,
+    private modalService: BsModalService
   ) { }
 
   ngOnInit(): void {
-    this.globalSelection
-      .globalSelectionUpdateObservable
-      .subscribe(this.globalSelectionSubscriptionEvent)
+
   }
 
-  globalSelectionSubscriptionEvent = (event: GlobalSelectionEvent) => {
-    this.ngOnInit()
-  }
-
-  addBidirectionalRelationship() {
-    const selected = this.globalSelection.selected
-
-    selected.forEach((sourceNode, i) => {
-      selected.forEach((destinationNode, j) => {
-        if (i != j) {
-          var sourceID: number = this.dataModel.lookUpMachineID(sourceNode)
-          var destinationID: number = this.dataModel.lookUpMachineID(destinationNode)
-          this.dataModel.addLegalLink(sourceID, destinationID, 1)
-        }
-      })
-    })
-  }
-
-  addDirectedRelationship() {
-    const sourceNode: LegalObjectNode<LegalObjectData> = this.globalSelection.selected[0]
-    const sourceID: number = this.dataModel.lookUpMachineID(sourceNode)
-    this.globalSelection
-      .selected
-      .forEach((destinationNode, j) => {
-        var destinationID: number = this.dataModel.lookUpMachineID(destinationNode)
-        this.dataModel.addLegalLink(sourceID, destinationID, 1)
-      })
+  onTypeAheadSelect(event: TypeaheadMatch) {
+    this.modalTitle = event.value
+    this.objectBuilder = this.legalService.getBuilder(event.value)
+    this.objectBuilderForm = this.objectBuilder.formGroup
   }
 
   displayLinkBuilder(): boolean {
     return this.globalSelection.selected.length > 1
+  }
+
+  openModal() {
+    this.modalRef = this.modalService.show(this.templateView);
+  }
+
+  onCancel() {
+    this.modalRef.hide()
+  }
+
+  onDirectedSubmit() {
+    this.modalRef.hide()
+
+    const builtObject: DirectedLegalObjectLink<LegalLinkData> = this.objectBuilder.build()
+    
+    const sourceNode: LegalObjectNode<LegalNodeData> = this.globalSelection.selected[0]
+    builtObject.sourceNode = sourceNode 
+
+    this.globalSelection.selected.forEach((destinationNode, i) => {
+      if (i > 0) {
+        builtObject.destinationNode = destinationNode
+        this.dataModel.addDirectedLegalLink(builtObject, 1)
+      }
+    })
   }
 }

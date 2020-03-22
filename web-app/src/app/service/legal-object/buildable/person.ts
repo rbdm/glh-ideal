@@ -1,15 +1,15 @@
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 
-import { LegalObjectNode, LegalObjectData, LegalObjectType } from '../legal-object';
+import { LegalObjectNode, LegalNodeData } from '../legal-object';
 import { BuildableByForm } from './buildable';
 
 export class Person extends LegalObjectNode<PersonData> {
     constructor(prettyID: string, objectData: PersonData) {
-        super(prettyID, objectData, LegalObjectType.Person)
+        super(prettyID, objectData)
     }
 }
 
-export class PersonData extends LegalObjectData {
+export class PersonData extends LegalNodeData {
     dateOfBirth: any
     placeOfBirth: any
     name: any
@@ -38,14 +38,16 @@ export class PersonBuilder extends BuildableByForm<Person> {
     }
 
     build(): Person {
+        const controls = this.inner.controls
+
         const personNameIndex: number = 0
-        const personName: string = this.inner.controls[personNameIndex].value
+        const personName: string = controls[personNameIndex].value
 
         const personDateOfBirthIndex: number = 1
-        const personDateOfBirth: any = this.inner.controls[personDateOfBirthIndex].value
+        const personDateOfBirth: any = controls[personDateOfBirthIndex].value
 
         const personPlaceOfBirthIndex: number = 2
-        const personPlaceOfBirth: any = this.inner.controls[personPlaceOfBirthIndex].value
+        const personPlaceOfBirth: any = controls[personPlaceOfBirthIndex].value
 
         const personData: PersonData = {
             name: personName,

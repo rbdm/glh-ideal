@@ -8,6 +8,49 @@
     <h1>
         Relationship Editor
     </h1>
-    <button class="btn btn-primary" style="margin: 5px;" (click)="addBidirectionalRelationship()">Add Two-Way Relationship</button>
-    <button class="btn btn-primary" style="margin: 5px;" (click)="addDirectedRelationship()">Add One-Way Relationship</button>
+    <button class="btn btn-primary" style="margin: 5px;" (click)="openModal()">Add One-Way Relationship</button>
 </div>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h2 class="modal-title pull-left">{{modalTitle}}</h2>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div *ngIf="!objectBuilder">
+        <input [(ngModel)]="userSelectionBuffer"
+            [placeholder]="'What kind of relationship is this?'"
+            [typeahead]="typeaheadValues"
+            [typeaheadMinLength]="typeaheadMinLength"
+            [typeaheadSingleWords]="typeaheadSingleWords"
+            [typeaheadScrollable]="typeaheadScrollable"
+            [typeaheadOptionsInScrollableView]="typeaheadOptionsInScrollableView"
+            [typeaheadHideResultsOnBlur]="typeaheadHideResultsOnBlur"
+            (typeaheadOnSelect)="onTypeAheadSelect($event)"
+            class="form-control"
+            style="margin: 20px; width: 425px;"
+        >
+    </div>
+
+    <div class="modal-body" *ngIf="objectBuilder">
+        <form class="form-group" [formGroup]="objectBuilderForm">
+            <div formArrayName="inner">
+                <div *ngFor="let field of objectBuilder.inner.controls; let i=index">
+                    <input 
+                        class="form-control" 
+                        style="margin: 5px;"
+                        type="text" 
+                        [formControlName]="i"
+                        [placeholder]="objectBuilder.formNames[i]"
+                        >
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <button style="margin: 5px" class="btn btn-success" (click)="onDirectedSubmit()">Directed Relationship</button>
+    <button style="margin: 5px" class="btn btn-danger" (click)="onCancel()">Cancel</button> 
+
+    </ng-template>
