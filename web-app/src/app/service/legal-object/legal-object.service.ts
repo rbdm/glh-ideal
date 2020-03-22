@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BuildableByForm } from './buildable/buildable';
-import { PersonBuilder } from './buildable/person';
-import { FormBuilder } from '@angular/forms';
+import { PersonBuilder, PersonData } from './buildable/person';
+import { LegalObjectNode, LegalObjectData } from './legal-object';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +16,10 @@ export class LegalObjectService {
 
   constructor() { }
 
-  getForm(searchTerm: string): BuildableByForm {
+  getForm(searchTerm: string): BuildableByForm<LegalObjectNode<LegalObjectData>> {
     switch (searchTerm) {
       case 'Person':
-        return new PersonBuilder(new FormBuilder)
+        return new PersonBuilder()
     }
   }
 }

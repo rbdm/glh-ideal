@@ -6,6 +6,7 @@ import { LegalObjectService } from 'src/app/service/legal-object/legal-object.se
 import { FormGroup, FormArray } from '@angular/forms';
 import { TypeaheadMatch } from 'ngx-bootstrap';
 import { BuildableByForm } from 'src/app/service/legal-object/buildable/buildable';
+import { LegalObjectNode, LegalObjectData } from 'src/app/service/legal-object/legal-object';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class ObjectBuilderComponent implements OnInit {
 
   userSelection: string
   
-  objectBuilder: BuildableByForm
+  objectBuilder: BuildableByForm<LegalObjectNode<LegalObjectData>>
   objectBuilderTitle: string
   objectBuilderForm: FormGroup
 
@@ -60,7 +61,7 @@ export class ObjectBuilderComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.objectBuilder.formGroup.value)
+    this.objectBuilder.build()
     this.modalRef.hide()
   }
 }

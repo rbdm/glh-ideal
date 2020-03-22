@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AdjacencyMatrix } from './matrix/adjacency-matrix';
 import { DataEventKind, DataEvent } from './data-event';
 import { Subject, Observable } from 'rxjs';
-import { LegalObjectNode } from '../legal-object/legal-object';
+import { LegalObjectNode, LegalObjectData } from '../legal-object/legal-object';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ import { LegalObjectNode } from '../legal-object/legal-object';
 export class DataModelService {
 
   matrix: AdjacencyMatrix = new AdjacencyMatrix()
-  nodeStorage: LegalObjectNode[] = []
+  nodeStorage: LegalObjectNode<LegalObjectData>[] = []
 
   private dataModelUpdateSubject: Subject<DataEvent> = new Subject()
   public dataModeUpdateObservable: Observable<DataEvent> = this.dataModelUpdateSubject.asObservable()
@@ -21,7 +21,7 @@ export class DataModelService {
 
   addLegalObject(humanReadableID: string, data: any) {
     const machineID = this.matrix.length
-    const object = new LegalObjectNode(humanReadableID, machineID, data)
+    const object = new LegalObjectNode(data)
 
     this.matrix.addDisconnectedVertex()
     this.nodeStorage.push(object)

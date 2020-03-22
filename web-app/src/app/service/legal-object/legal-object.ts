@@ -1,12 +1,11 @@
-export class LegalObjectNode {
-    prettyID: string
-    machineID: number
+export class LegalObjectNode<LegalObjectData> {
+
+  constructor(public objectData: LegalObjectData) { }
+
+}
+
+export class LegalObjectData {
+
   
-    inner: any
-  
-    constructor(prettyID: string, machineID: number, inner: any) {
-      this.prettyID = prettyID
-      this.machineID = machineID
-      this.inner = inner
-    }
-  }
+
+}
