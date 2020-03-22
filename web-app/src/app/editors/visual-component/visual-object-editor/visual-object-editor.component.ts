@@ -3,6 +3,7 @@ import { GlobalSelectionService } from 'src/app/service/global-selection/global-
 import { Subscription } from 'rxjs';
 import { GlobalSelectionEvent } from 'src/app/service/global-selection/global-selection-event';
 import { DataModelService } from 'src/app/service/data/data-model.service';
+import { LegalObjectNode, LegalObjectData } from 'src/app/service/legal-object/legal-object';
 
 @Component({
   selector: 'app-visual-object-editor',
@@ -28,7 +29,7 @@ export class VisualObjectEditorComponent implements OnInit {
     this.ngOnInit()
   }
 
-  addDirectedRelationship() {
+  addBidirectionalRelationship() {
     const selected = this.globalSelection.selected
 
     selected.forEach((sourceNode, i) => {
@@ -40,6 +41,17 @@ export class VisualObjectEditorComponent implements OnInit {
         }
       })
     })
+  }
+
+  addDirectedRelationship() {
+    const sourceNode: LegalObjectNode<LegalObjectData> = this.globalSelection.selected[0]
+    const sourceID: number = this.dataModel.lookUpMachineID(sourceNode)
+    this.globalSelection
+      .selected
+      .forEach((destinationNode, j) => {
+        var destinationID: number = this.dataModel.lookUpMachineID(destinationNode)
+        this.dataModel.addLegalLink(sourceID, destinationID, 1)
+      })
   }
 
   displayLinkBuilder(): boolean {
