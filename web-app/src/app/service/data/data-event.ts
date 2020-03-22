@@ -1,13 +1,10 @@
 export class DataEvent {
-  nodeID: number
+  constructor(
+    public nodeID: number, 
+    public eventKind: DataEventKind, 
+    public eventData?: any
+  ) {
 
-  event: any
-  kind: DataEventKind
-
-  constructor(nodeID: number, eventKind: DataEventKind, eventData?: any,) {
-    this.nodeID = nodeID
-    this.event = eventData
-    this.kind = eventKind
   }
 }
 

@@ -1,4 +1,4 @@
-<input [(ngModel)]="userSelection"
+<input [(ngModel)]="userSelectionBuffer"
     [typeahead]="typeAheadValues"
     [typeaheadMinLength]="typeaheadMinLength"
     [typeaheadSingleWords]="typeaheadSingleWords"
@@ -11,7 +11,7 @@
 
 <ng-template #template>
     <div class="modal-header">
-        <h2 class="modal-title pull-left">{{objectBuilderTitle}}</h2>
+        <h2 class="modal-title pull-left">{{modalTitle}}</h2>
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true">&times;</span>
         </button>

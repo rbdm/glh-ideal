@@ -19,7 +19,7 @@ import { CodeEditorComponent } from './editors/code-component/code-editor/code-e
 import { VisualEditorComponent} from './editors/visual-component/visual-editor/visual-editor.component';
 import { VisualSideNavComponent } from './editors/visual-component/visual-side-nav/visual-side-nav.component';
 import { ObjectBuilderComponent } from './editors/visual-component/visual-object-builder/visual-object-builder.component';
-import { ObjectEditorComponent } from './editors/visual-component/object-editor/object-editor.component';
+import { VisualObjectEditorComponent } from './editors/visual-component/visual-object-editor/visual-object-editor.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import { ObjectEditorComponent } from './editors/visual-component/object-editor/
     VisualSideNavComponent,
     VisualEditorComponent,
     ObjectBuilderComponent,
-    ObjectEditorComponent,
+    VisualObjectEditorComponent,
   ],
   imports: [
     BrowserModule,

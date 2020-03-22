@@ -5,7 +5,9 @@ import { Subscription } from 'rxjs';
 import { DataModelService } from 'src/app/service/data/data-model.service';
 import { GraphVisualService } from 'src/app/service/graph/graph-visual.service';
 import { DataEvent } from 'src/app/service/data/data-event';
-import { GraphListenerEvent } from 'src/app/service/graph/graph-event';
+import { GraphListenerEvent, GraphListenerEventKind } from 'src/app/service/graph/graph-event';
+import { GlobalSelectionService } from 'src/app/service/global-selection/global-selection.service';
+import { GlobalSelectionEvent } from 'src/app/service/global-selection/global-selection-event';
 
 @Component({
   selector: 'app-visual-side-nav',
@@ -13,16 +15,15 @@ import { GraphListenerEvent } from 'src/app/service/graph/graph-event';
   styleUrls: ['./visual-side-nav.component.css']
 })
 export class VisualSideNavComponent implements OnInit {
-
-
   private dataModelServiceSubscription: Subscription
   private graphVisualServiceSubscription: Subscription
+  private globalSelectionServiceSubscription: Subscription
 
-  selectedNodeID: number[]
-
-  constructor(public dataModel: DataModelService, public graphVisual: GraphVisualService) {
-    this.selectedNodeID = []
-  }
+  constructor(
+    public dataModel: DataModelService, 
+    public graphVisual: GraphVisualService,
+    public globallySelected: GlobalSelectionService
+  ) { }
 
   ngOnInit(): void {
     this.dataModelServiceSubscription = this.dataModel
@@ -32,18 +33,25 @@ export class VisualSideNavComponent implements OnInit {
     this.graphVisualServiceSubscription = this.graphVisual
       .observable
       .subscribe(this.graphVisualSubscriptionEvent)
+
+    this.globalSelectionServiceSubscription = this.globallySelected
+      .globalSelectionUpdateObservable
+      .subscribe(this.globalSelectionSubscriptionEvent)
   }
 
   dataModelSubscriptionEvent = (event: DataEvent) => {
-    this.refresh()
+    this.globallySelected.deselectAll()
   }
 
   graphVisualSubscriptionEvent = (event: GraphListenerEvent) => {
-    this.refresh()
+    switch (event.eventKind) {
+      case GraphListenerEventKind.OnNodeClick:
+        this.globallySelected.toggleGloballySelectedByID(event.eventSelector)
+    }
   }
 
-  refresh() {
-    this.selectedNodeID = []
+  globalSelectionSubscriptionEvent = (event: GlobalSelectionEvent) => {
+
   }
 
   // addDirectedRelationship() {

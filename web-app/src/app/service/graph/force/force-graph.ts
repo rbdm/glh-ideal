@@ -6,11 +6,7 @@ import { GraphListenerEvent, GraphListenerEventKind } from '../graph-event';
 import { Subject, Observable } from 'rxjs';
 
 export class ForceGraph {
-    
     graphElement: HTMLElement
-    data: GraphData
-
-    options: GraphOptions;
 
     private graphUpdateSubject: Subject<GraphListenerEvent> = new Subject()
     public observable: Observable<GraphListenerEvent> = this.graphUpdateSubject.asObservable()
@@ -20,9 +16,8 @@ export class ForceGraph {
     svg: any
     simulation: any
 
-    constructor(data: GraphData, options: GraphOptions) {
-        this.options = options
-        this.data = data
+    constructor(public data: GraphData, public options: GraphOptions) {
+
     }
 
     private notifySubscribers(machineID: number, eventKind: GraphListenerEventKind) {
@@ -67,6 +62,8 @@ export class ForceGraph {
     }
 
     initNodes(nodes: any) {
+        var nodeRadius: number = 5
+
         this.nodes = this.svg
             .append("g")
             .selectAll("circle")
@@ -74,14 +71,19 @@ export class ForceGraph {
             .join("circle")
             .attr("r", 5)
             .attr("fill", this.options.color)
-            .call(
-                this.options.nodeDragBehaviour(this.simulation)
-            )
-            .on('click', (d: any) => this.notifySubscribers(d.id, GraphListenerEventKind.OnNodeClick));
-        
-        this.nodes
-            .append("title")
-            .text((d: any) => d.id);
+            .call(this.options.nodeDragBehaviour(this.simulation))
+            .on('click', (d: any) => {
+                const currentTarget = d3.event.currentTarget 
+                const color = d3.select(currentTarget).attr("fill") == "orange" ? this.options.color : "orange"
+                d3.select(d3.event.currentTarget).attr("fill", color)
+                this.notifySubscribers(d.id, GraphListenerEventKind.OnNodeClick)
+            })
+            .on('mouseenter', () => {
+                d3.select(d3.event.currentTarget).attr("r", nodeRadius + 2)
+            })
+            .on('mouseleave', () => {
+                d3.select(d3.event.currentTarget).attr("r", nodeRadius)
+            })
     }
 
     initLinks(links: any) {
@@ -112,7 +114,11 @@ export class ForceGraph {
     }
 
     updateData(newData: GraphData) {
-        const old = new Map(this.nodes.data().map(d => [d.id, d]));
+        const old = new Map(
+            this.nodes
+                .data()
+                .map((d: any) => [d.id, d])
+        );
 
         const nodes = newData.nodes.map(d => Object.assign(old.get(d.id) || {}, d)); // https://observablehq.com/@d3/modifying-a-force-directed-graph
         const links = newData.links.map(d => Object.assign({}, d));
@@ -146,10 +152,6 @@ export class ForceGraph {
             .on('mouseleave', () => {
                 d3.select(d3.event.currentTarget).attr("r", nodeRadius)
             })
-
-        this.nodes
-            .append("title")
-            .text((d: any) => d.id);
     }
 
     refreshLinks(links: any) {

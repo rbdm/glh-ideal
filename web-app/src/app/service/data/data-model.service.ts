@@ -8,28 +8,27 @@ import { LegalObjectNode, LegalObjectData } from '../legal-object/legal-object';
   providedIn: 'root'
 })
 export class DataModelService {
+  private dataModelUpdateSubject: Subject<DataEvent> = new Subject()
+  public dataModeUpdateObservable: Observable<DataEvent> = this.dataModelUpdateSubject.asObservable()
 
   matrix: AdjacencyMatrix = new AdjacencyMatrix()
   nodeStorage: LegalObjectNode<LegalObjectData>[] = []
 
-  private dataModelUpdateSubject: Subject<DataEvent> = new Subject()
-  public dataModeUpdateObservable: Observable<DataEvent> = this.dataModelUpdateSubject.asObservable()
-
-  lookUpNode(nodeID: number): any {
+  lookUpNode(nodeID: number): LegalObjectNode<LegalObjectData> {
     return this.nodeStorage[nodeID]
   }
 
+  lookUpMachineID(node: LegalObjectNode<LegalObjectData>) {
+    return this.nodeStorage.indexOf(node)
+  }
+
   addLegalObject(data: LegalObjectNode<LegalObjectData>) {
-    const machineID = this.matrix.length
-    const object = new LegalObjectNode(data)
-
     this.matrix.addDisconnectedVertex()
-    this.nodeStorage.push(object)
+    this.nodeStorage.push(data)
 
-    this.notifySubscribers(
-      machineID, 
-      [DataEventKind.MatrixUpdate, DataEventKind.NodeUpdate]
-    )
+    const machineID = this.matrix.length
+
+    this.notifySubscribers(machineID, [DataEventKind.MatrixUpdate, DataEventKind.NodeUpdate])
   }
 
   private notifySubscribers(machineID: number, eventKinds: DataEventKind[]) {

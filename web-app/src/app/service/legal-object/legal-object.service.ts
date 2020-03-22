@@ -16,7 +16,7 @@ export class LegalObjectService {
 
   constructor() { }
 
-  getForm(searchTerm: string): BuildableByForm<LegalObjectNode<LegalObjectData>> {
+  getBuilder(searchTerm: string): BuildableByForm<LegalObjectNode<LegalObjectData>> {
     switch (searchTerm) {
       case 'Person':
         return new PersonBuilder()

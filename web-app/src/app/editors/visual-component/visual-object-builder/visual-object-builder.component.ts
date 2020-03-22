@@ -26,10 +26,11 @@ export class ObjectBuilderComponent implements OnInit {
   typeaheadHideResultsOnBlur = true
   typeAheadValues = this.legalService.knownLegalObjectsString
 
-  userSelection: string
+  userSelectionBuffer: string
+  
+  modalTitle: string
   
   objectBuilder: BuildableByForm<LegalObjectNode<LegalObjectData>>
-  objectBuilderTitle: string
   objectBuilderForm: FormGroup
 
   constructor(
@@ -45,8 +46,8 @@ export class ObjectBuilderComponent implements OnInit {
   }
 
   onTypeAheadSelect(event: TypeaheadMatch) {
-    this.objectBuilderTitle = event.value
-    this.objectBuilder = this.legalService.getForm(event.value)
+    this.modalTitle = event.value
+    this.objectBuilder = this.legalService.getBuilder(event.value)
     this.objectBuilderForm = this.objectBuilder.formGroup
 
     this.openModal(this.templateView)
@@ -57,12 +58,13 @@ export class ObjectBuilderComponent implements OnInit {
   }
 
   onCancel() {
-
+    this.modalRef.hide()
   }
 
   onSubmit() {
+    this.modalRef.hide()
+
     const builtObject: LegalObjectNode<LegalObjectData> = this.objectBuilder.build()
     this.addLegalObject(builtObject)
-    this.modalRef.hide()
   }
 }
