@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AdjacencyMatrix } from './matrix/adjacency-matrix';
 import { DataEventKind, DataEvent } from './data-event';
 import { Subject, Observable } from 'rxjs';
-import { LegalObjectNode, LegalNodeData, DirectedLegalObjectLink, LegalLinkData } from '../legal-object/legal-object';
+import { LegalObjectNode, LegalNodeData, DirectedLegalObjectLink, LegalLinkData, LegalObjectLink } from '../legal-object/legal-object';
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +13,23 @@ export class DataModelService {
 
   matrix: AdjacencyMatrix = new AdjacencyMatrix()
   nodeStorage: LegalObjectNode<LegalNodeData>[] = []
-  directedLinkStorage: DirectedLegalObjectLink<LegalLinkData>[] = []
 
   lookUpNode(nodeID: number): LegalObjectNode<LegalNodeData> {
     return this.nodeStorage[nodeID]
   }
 
-  lookUpMachineID(node: LegalObjectNode<LegalNodeData>) {
+  lookUpNodeMachineID(node: LegalObjectNode<LegalNodeData>): number {
     return this.nodeStorage.indexOf(node)
+  }
+
+  lookUpLinkByNodes(source: LegalObjectNode<LegalNodeData>, destination: LegalObjectNode<LegalNodeData>): LegalObjectLink<LegalLinkData> {
+    const sourceID: number = this.lookUpNodeMachineID(source)
+    const destinationID: number = this.lookUpNodeMachineID(destination)
+    return this.lookUpLinkByNodeID(sourceID, destinationID)
+  }
+
+  lookUpLinkByNodeID(sourceID: number, destinationID: number): LegalObjectLink<LegalLinkData> {
+    return this.matrix.get(sourceID, destinationID)
   }
 
   addLegalObject(data: LegalObjectNode<LegalNodeData>) {
@@ -32,12 +41,10 @@ export class DataModelService {
   }
 
   addDirectedLegalLink(legalLink: DirectedLegalObjectLink<LegalLinkData>, weight: number) {
-    const sourceID: number = this.lookUpMachineID(legalLink.sourceNode)
-    const destinationID: number = this.lookUpMachineID(legalLink.destinationNode)
-    this.matrix.addDirectedEdge(sourceID, destinationID, weight)
+    const sourceID: number = this.lookUpNodeMachineID(legalLink.sourceNode)
+    const destinationID: number = this.lookUpNodeMachineID(legalLink.destinationNode)
+    this.matrix.addDirectedEdge(sourceID, destinationID, legalLink)
     
-    this.directedLinkStorage.push(legalLink)
-
     this.notifySubscribers(sourceID, [DataEventKind.MatrixUpdate])
     this.notifySubscribers(destinationID, [DataEventKind.MatrixUpdate])
   }

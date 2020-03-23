@@ -9,7 +9,7 @@ export class Possession extends DirectedLegalObjectLink<PossessionData> {
         destinationNode: LegalObjectNode<LegalNodeData>,
         objectData: PossessionData
     ) {
-        super(prettyID, sourceNode, destinationNode, objectData)
+        super(prettyID, 2, sourceNode, destinationNode, objectData)
     }
 }
 

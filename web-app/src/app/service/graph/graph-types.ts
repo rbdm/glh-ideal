@@ -4,22 +4,23 @@ export enum GraphTypes {
     ForceDirectedGraph
 }
 
-export class GraphNode implements d3.SimulationNodeDatum {
+export abstract class GraphNode implements d3.SimulationNodeDatum {
     index?: number; 
     x?: number; 
     y?: number; 
     vx?: number; 
     vy?: number;
   
-    id: number
+    abstract id: number
     group: number
 }
   
-export class GraphLink implements d3.SimulationLinkDatum<GraphNode> {
-    source: number
-    target: number
+export abstract class GraphLink implements d3.SimulationLinkDatum<GraphNode> {
+    abstract source: number
+    abstract target: number
 
-    weight: number
+    abstract get weight(): number
+    abstract get data(): any
 }
 
 export class GraphData {

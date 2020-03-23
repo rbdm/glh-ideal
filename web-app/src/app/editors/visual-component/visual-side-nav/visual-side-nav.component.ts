@@ -40,13 +40,20 @@ export class VisualSideNavComponent implements OnInit {
   }
 
   dataModelSubscriptionEvent = (event: DataEvent) => {
-    this.globallySelected.deselectAll()
+    this.globallySelected.deselectAllNodes()
   }
 
   graphVisualSubscriptionEvent = (event: GraphListenerEvent) => {
     switch (event.eventKind) {
       case GraphListenerEventKind.OnNodeClick:
-        this.globallySelected.toggleGloballySelectedByID(event.eventSelector)
+          this.globallySelected.toggleNodeByID(event.eventSelector)
+      case GraphListenerEventKind.OnLinkClick:
+        const sourceID = event.eventSelector.source
+        const destinationID = event.eventSelector.destination
+        if (sourceID && destinationID) {
+            const legalLink = this.dataModel.lookUpLinkByNodeID(sourceID.id, destinationID.id)
+            this.globallySelected.toggleLink(legalLink)
+        }
     }
   }
 

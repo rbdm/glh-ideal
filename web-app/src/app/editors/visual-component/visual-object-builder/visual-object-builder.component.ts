@@ -54,7 +54,7 @@ export class ObjectBuilderComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
+    this.modalRef = this.modalService.show(template, { animated: false });
   }
 
   onCancel() {

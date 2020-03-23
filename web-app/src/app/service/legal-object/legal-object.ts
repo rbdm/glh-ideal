@@ -8,6 +8,7 @@ export class LegalObject<DATA extends LegalData> {
 export class LegalObjectLink<DATA extends LegalLinkData> {
   constructor(
     public prettyID: string,
+    public weight: number,
 
     public sourceNode: LegalObjectNode<LegalLinkData>,
     public destinationNode: LegalObjectNode<LegalLinkData>,
@@ -19,13 +20,14 @@ export class LegalObjectLink<DATA extends LegalLinkData> {
 export class DirectedLegalObjectLink<DATA extends LegalLinkData> extends LegalObjectLink<LegalLinkData>  {
   constructor(
     public prettyID: string,
+    public weight: number,
 
     public sourceNode: LegalObjectNode<LegalLinkData>,
     public destinationNode: LegalObjectNode<LegalLinkData>,
 
     public objectData: DATA,
   ) {
-    super(prettyID, sourceNode, destinationNode, objectData)
+    super(prettyID, weight, sourceNode, destinationNode, objectData)
   }
 }
 

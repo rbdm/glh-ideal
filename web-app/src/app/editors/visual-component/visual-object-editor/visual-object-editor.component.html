@@ -1,4 +1,10 @@
-<div *ngFor="let selected of globalSelection.selected">
+<div *ngFor="let selected of globalSelection.selectedNodes">
+    <button class="btn btn-primary" style="margin: 5px; width: fit-content;">
+        {{selected.prettyID}}
+    </button>
+</div>
+
+<div *ngFor="let selected of globalSelection.selectedLinks">
     <button class="btn btn-primary" style="margin: 5px; width: fit-content;">
         {{selected.prettyID}}
     </button>
@@ -43,7 +49,7 @@
                         style="margin: 5px;"
                         type="text" 
                         [formControlName]="i"
-                        [typeahead]="dataModel.getPrettyID()"
+                        [typeahead]="globalSelection.getNodePrettyID()"
                         [typeaheadMinLength]="typeaheadMinLength"
                         [typeaheadSingleWords]="typeaheadSingleWords"
                         [typeaheadScrollable]="typeaheadScrollable"

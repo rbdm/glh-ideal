@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { GlobalSelectionService } from 'src/app/service/global-selection/global-selection.service';
 import { DataModelService } from 'src/app/service/data/data-model.service';
-import { LegalObjectNode, LegalNodeData, DirectedLegalObjectLink, LegalLinkData, LegalObjectLink } from 'src/app/service/legal-object/legal-object';
+import { DirectedLegalObjectLink, LegalLinkData, LegalObjectLink } from 'src/app/service/legal-object/legal-object';
 import { BsModalRef, BsModalService, TypeaheadMatch } from 'ngx-bootstrap';
 import { BuildableByForm } from 'src/app/service/legal-object/buildable/buildable';
 import { FormGroup } from '@angular/forms';
@@ -49,11 +49,11 @@ export class VisualObjectEditorComponent implements OnInit {
   }
 
   displayLinkBuilder(): boolean {
-    return this.globalSelection.selected.length > 1
+    return this.globalSelection.selectedNodes.length > 1
   }
 
   openModal() {
-    this.modalRef = this.modalService.show(this.templateView);
+    this.modalRef = this.modalService.show(this.templateView, { animated: false });
   }
 
   onCancel() {
@@ -65,9 +65,9 @@ export class VisualObjectEditorComponent implements OnInit {
 
     const builtObject: DirectedLegalObjectLink<LegalLinkData> = this.objectBuilder.build()
 
-    this.globalSelection.selected.forEach((sourceNode, i) => {
+    this.globalSelection.selectedNodes.forEach((sourceNode, i) => {
       builtObject.sourceNode = sourceNode 
-      this.globalSelection.selected.forEach((destinationNode, j) => {
+      this.globalSelection.selectedNodes.forEach((destinationNode, j) => {
         if (i != j) {
           builtObject.destinationNode = destinationNode
           this.dataModel.addDirectedLegalLink(builtObject, 1)

@@ -20,7 +20,7 @@ export class ForceGraph {
 
     }
 
-    private notifySubscribers(machineID: number, eventKind: GraphListenerEventKind) {
+    private notifySubscribers(machineID: any, eventKind: GraphListenerEventKind) {
         const eventNotification = new GraphListenerEvent(machineID, eventKind)
         this.graphUpdateSubject.next(eventNotification)
     }
@@ -110,6 +110,7 @@ export class ForceGraph {
             )
             .append("g")
             .attr("transform", "translate(" + 1 + "," + 1 + ")");
+    
         this.svg = svg
     }
 
@@ -158,12 +159,17 @@ export class ForceGraph {
         this.links = this.links
             .data(links, (d: GraphLink) => [d.source, d.target])
             .join("line")
-            .on('mouseenter', (d: any) => {
-                d3.select(d3.event.currentTarget).attr("stroke-width", (d: any) => d.weight * 2)
+            .on('mouseenter', (d: GraphLink) => {
+                d3.select(d3.event.currentTarget).attr("stroke-width", (d: GraphLink) => d.weight * 2)
             })
-            .on('mouseleave', (d: any) => {
-                d3.select(d3.event.currentTarget).attr("stroke-width", (d: any) => d.weight)
+            .on('mouseleave', (d: GraphLink) => {
+                d3.select(d3.event.currentTarget).attr("stroke-width", (d: GraphLink) => d.weight)
             })
-            .on("click", (d: any) => this.notifySubscribers(d, GraphListenerEventKind.OnLinkClick));
+            .on("click", (d: GraphLink) => {
+                const currentTarget = d3.event.currentTarget 
+                const color = d3.select(currentTarget).attr("fill") == "orange" ? this.options.color : "orange"
+                d3.select(d3.event.currentTarget).attr("fill", color)
+                this.notifySubscribers({source: d.source, destination:  d.target}, GraphListenerEventKind.OnLinkClick)
+            });
     }
 }

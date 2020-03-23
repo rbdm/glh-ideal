@@ -1,5 +1,6 @@
 import * as mathjs from 'mathjs';
 import { GraphNode, GraphLink } from '../../graph/graph-types';
+import { LegalLinkData, LegalObjectLink } from '../../legal-object/legal-object';
 
 // A graph can be represented by an adjacency matrix.
 // 
@@ -36,8 +37,8 @@ export class AdjacencyMatrix {
       this.innerMatrix.forEach(callback)
     }
 
-    get(i: number, j: number) {
-      return this.innerMatrix.subset(mathjs.index([i], [j]))
+    get(i: number, j: number): any {
+      return this.innerMatrix.subset(mathjs.index(i, j))
     }
 
     addDisconnectedVertex() {
@@ -45,10 +46,10 @@ export class AdjacencyMatrix {
       this.innerMatrix.resize([this.length, this.length])
     }
 
-    addDirectedEdge(sourceNode: number, destinationNode: number, weight: number) {
+    addDirectedEdge(sourceNode: number, destinationNode: number, linkData: LegalObjectLink<LegalLinkData>) {
       if ((sourceNode < this.length) && (destinationNode < this.length)) {
         var index = mathjs.index([sourceNode], [destinationNode]) 
-        this.innerMatrix.subset(index, weight) // set the element at this index to the given weight
+        this.innerMatrix.subset(index, linkData) // set the element at this index to the given weight
       } else {
         throw Error("SourceNode or DestinationNode index is out of matrix")
       }
@@ -66,11 +67,12 @@ export class AdjacencyMatrix {
     }
 
     getLinks(): GraphLink[] {
-      var weights = []
+      var weights: GraphLink[] = []
+
       this.forEach((value: number, index: number[], _matrix: any) => {
         if (value != 0) {
           weights.push({
-            source: index[0], target: index[1], weight: value
+            source: index[0], target: index[1], data: value, weight: 1
           })
         }
       })
