@@ -22,6 +22,14 @@ export class DataModelService {
     return this.nodeStorage.indexOf(node)
   }
 
+  lookUpNodeByPrettyID(prettyID: string): LegalObjectNode<LegalNodeData> {
+    for (let node of this.nodeStorage) {
+      if (node.prettyID == prettyID) {
+        return node
+      }
+    }
+  }
+
   lookUpLinkByNodes(source: LegalObjectNode<LegalNodeData>, destination: LegalObjectNode<LegalNodeData>): LegalObjectLink<LegalLinkData> {
     const sourceID: number = this.lookUpNodeMachineID(source)
     const destinationID: number = this.lookUpNodeMachineID(destination)
@@ -40,7 +48,7 @@ export class DataModelService {
     this.notifySubscribers(machineID, [DataEventKind.MatrixUpdate, DataEventKind.NodeUpdate])
   }
 
-  addDirectedLegalLink(legalLink: DirectedLegalObjectLink<LegalLinkData>, weight: number) {
+  addDirectedLegalLink(legalLink: DirectedLegalObjectLink<LegalLinkData>) {
     const sourceID: number = this.lookUpNodeMachineID(legalLink.sourceNode)
     const destinationID: number = this.lookUpNodeMachineID(legalLink.destinationNode)
     this.matrix.addDirectedEdge(sourceID, destinationID, legalLink)

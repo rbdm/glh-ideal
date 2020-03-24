@@ -5,8 +5,8 @@ import { DataModelService } from 'src/app/service/data/data-model.service';
 import { LegalObjectService } from 'src/app/service/legal-object/legal-object.service';
 import { FormGroup, FormArray } from '@angular/forms';
 import { TypeaheadMatch } from 'ngx-bootstrap';
-import { BuildableByForm } from 'src/app/service/legal-object/buildable/buildable';
-import { LegalObjectNode, LegalNodeData } from 'src/app/service/legal-object/legal-object';
+import { BuildableNode } from 'src/app/service/legal-object/buildable/buildable';
+import { LegalObjectNode, LegalNodeData, LegalObjectLink, LegalLinkData } from 'src/app/service/legal-object/legal-object';
 
 
 @Component({
@@ -18,19 +18,24 @@ export class ObjectBuilderComponent implements OnInit {
 
   @ViewChild('template') templateView: TemplateRef<any> 
   modalRef: BsModalRef
+  modalConfig = {
+    animated: false
+  }
 
   typeaheadMinLength = 0
   typeaheadSingleWords = true
   typeaheadScrollable = true
   typeaheadOptionsInScrollableView = 5
   typeaheadHideResultsOnBlur = true
-  typeAheadValues = this.legalService.knownLegalObjectsString
+  
+  nodeTypeAheadValues = this.legalService.knownLegalObjectsString
 
-  userSelectionBuffer: string
+  userNodeSelectionBuffer: string
+  nodeSelectionPlaceholder: string = 'New object'
   
   modalTitle: string
   
-  objectBuilder: BuildableByForm<LegalObjectNode<LegalNodeData>>
+  objectBuilder: BuildableNode<LegalObjectNode<LegalNodeData>>
   objectBuilderForm: FormGroup
 
   constructor(
@@ -54,15 +59,17 @@ export class ObjectBuilderComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, { animated: false });
+    this.modalRef = this.modalService.show(template, this.modalConfig);
   }
 
   onCancel() {
     this.modalRef.hide()
+    this.userNodeSelectionBuffer = null
   }
 
   onSubmit() {
     this.modalRef.hide()
+    this.userNodeSelectionBuffer = null
 
     const builtObject: LegalObjectNode<LegalNodeData> = this.objectBuilder.build()
     this.addLegalObject(builtObject)

@@ -36,7 +36,7 @@ export class ForceGraph {
 
         this.simulation = d3
             .forceSimulation(nodes)
-            .force("link", d3.forceLink(links).id((d: any) => d.id))
+            .force("link", d3.forceLink(links).id((d: any) => d.id).distance(d => 60 + d.weight/2))
             .force("charge", d3.forceManyBody() )
             .force("center", d3.forceCenter(width / 2, height / 2))
             .on("tick", this.tickBehaviour());
@@ -94,6 +94,7 @@ export class ForceGraph {
             .data(links)
             .join("line")
             .attr("stroke-width", d => d.weight)
+            // .attr("marker-end", "url(#triangle)")
             .on("click", (d: any) => this.notifySubscribers(d, GraphListenerEventKind.OnLinkClick))
     }
 
@@ -102,15 +103,35 @@ export class ForceGraph {
             .append("svg")
             .attr("width", this.options.width)
             .attr("height", this.options.height)
-            .call(
-                d3.zoom()
-                    .on("zoom", () => {
-                        svg.attr("transform", d3.event.transform)
-                    }).scaleExtent([0.5, 2.0])
-            )
-            .append("g")
-            .attr("transform", "translate(" + 1 + "," + 1 + ")");
     
+        // svg.append("svg:defs")
+        //     .append("svg:marker")
+        //     .attr("id", "triangle")
+        //     .attr("refX", 17)
+        //     .attr("refY", 6)
+        //     .attr("markerWidth", 13)
+        //     .attr("markerHeight", 13)
+        //     .attr("markerUnits","userSpaceOnUse")
+        //     .attr("orient", "auto")
+        //     .append("path")
+        //     .attr("d", "M 0 0 12 6 0 12 3 6")
+        //     .style("fill", "black");
+
+        // svg.append("path")
+        //     .attr("marker-end", "url(#triangle)")
+        //     .attr("stroke", "grey")
+        //     .attr("stroke-width", "1.5")          
+        //     .attr("fill", "transparent")
+        //     .attr("class", "edges")
+
+        // svg.call(
+        //         d3.zoom().on("zoom", () => {
+        //             svg.attr("transform", d3.event.transform)
+        //         }).scaleExtent([0.5, 2.0])
+        //     )
+        //     .append("g")
+            // .attr("transform", "translate(" + 1 + "," + 1 + ")");
+
         this.svg = svg
     }
 
@@ -159,6 +180,7 @@ export class ForceGraph {
         this.links = this.links
             .data(links, (d: GraphLink) => [d.source, d.target])
             .join("line")
+            .attr("marker-end", "url(#triangle)")
             .on('mouseenter', (d: GraphLink) => {
                 d3.select(d3.event.currentTarget).attr("stroke-width", (d: GraphLink) => d.weight * 2)
             })

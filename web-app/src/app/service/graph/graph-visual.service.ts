@@ -10,7 +10,7 @@ import { GraphOptions, GraphNode, GraphLink } from './graph-types';
 })
 export class GraphVisualService {
 
-  @Input() graphOptions = new GraphOptions(1200, 1600)
+  @Input() graphOptions = new GraphOptions(window.innerHeight * 0.9, window.innerWidth * 0.8)
 
   graph: ForceGraph
 

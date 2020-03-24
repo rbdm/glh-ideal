@@ -1,7 +1,7 @@
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 
 import { LegalObjectNode, LegalNodeData } from '../legal-object';
-import { BuildableByForm } from './buildable';
+import { BuildableNode } from './buildable';
 
 export class Person extends LegalObjectNode<PersonData> {
     constructor(prettyID: string, objectData: PersonData) {
@@ -16,7 +16,7 @@ export class PersonData extends LegalNodeData {
     
 }
 
-export class PersonBuilder extends BuildableByForm<Person> {
+export class PersonBuilder extends BuildableNode<Person> {
     formBuilder = new FormBuilder
 
     formNames: string[] = [

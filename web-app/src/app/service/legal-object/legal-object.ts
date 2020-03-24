@@ -10,8 +10,8 @@ export class LegalObjectLink<DATA extends LegalLinkData> {
     public prettyID: string,
     public weight: number,
 
-    public sourceNode: LegalObjectNode<LegalLinkData>,
-    public destinationNode: LegalObjectNode<LegalLinkData>,
+    public sourceNode: LegalObject<LegalData>,
+    public destinationNode: LegalObject<LegalData>,
 
     public objectData: DATA,
   ) { }
@@ -43,11 +43,8 @@ export class LegalData {
 }
 
 export class LegalLinkData extends LegalData {
-  constructor() {
-    super()
-  }
-}
 
+}
 
 export class LegalNodeData extends LegalData {
 

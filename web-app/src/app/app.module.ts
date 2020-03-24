@@ -20,6 +20,8 @@ import { VisualEditorComponent} from './editors/visual-component/visual-editor/v
 import { VisualSideNavComponent } from './editors/visual-component/visual-side-nav/visual-side-nav.component';
 import { ObjectBuilderComponent } from './editors/visual-component/visual-object-builder/visual-object-builder.component';
 import { VisualObjectEditorComponent } from './editors/visual-component/visual-object-editor/visual-object-editor.component';
+import { VisualRelationshipBuilderComponent } from './editors/visual-component/visual-relationship-builder/visual-relationship-builder.component';
+import { VisualRelationshipEditorComponent } from './editors/visual-component/visual-relationship-editor/visual-relationship-editor.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { VisualObjectEditorComponent } from './editors/visual-component/visual-o
     VisualEditorComponent,
     ObjectBuilderComponent,
     VisualObjectEditorComponent,
+    VisualRelationshipBuilderComponent,
+    VisualRelationshipEditorComponent,
   ],
   imports: [
     BrowserModule,

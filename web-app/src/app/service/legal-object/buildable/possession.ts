@@ -1,6 +1,7 @@
-import { DirectedLegalObjectLink, LegalLinkData, LegalObjectNode, LegalNodeData } from '../legal-object';
-import { BuildableByForm } from './buildable';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { DirectedLegalObjectLink, LegalLinkData, LegalObjectNode, LegalNodeData, LegalData } from '../legal-object';
+import { BuildableNode, BuildableLink } from './buildable';
+import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
+import { DataModelService } from '../../data/data-model.service';
 
 export class Possession extends DirectedLegalObjectLink<PossessionData> {
     constructor(
@@ -14,46 +15,47 @@ export class Possession extends DirectedLegalObjectLink<PossessionData> {
 }
 
 export class PossessionData extends LegalLinkData {
-    name: string
     description: string
 }
 
-export class PossessionBuilder extends BuildableByForm<Possession> {
-    sourceNode: LegalObjectNode<LegalNodeData>
-    destinationNode: LegalObjectNode<LegalNodeData>
+export class PossessionBuilder extends BuildableLink<Possession> {
 
     formBuilder = new FormBuilder
 
     formNames: string[] = [
-        'Name',
         'Description'
     ]
 
     formGroup: FormGroup = this.formBuilder.group({
         inner: this.formBuilder.array([
-            this.formBuilder.control(''),
             this.formBuilder.control('')
-        ])
+        ]),
     })
 
     get inner(): FormArray {
         return this.formGroup.get('inner') as FormArray
     }
 
+    constructor(private dataService: DataModelService) {
+        super()
+    }
+
     build(): Possession {
         const controls = this.inner.controls
         
-        const nameIndex: number = 0
-        const name: string = controls[nameIndex].value
+        const fromValue: string = this.sourceNodeForm.value
+        const from: LegalObjectNode<LegalNodeData> = this.dataService.lookUpNodeByPrettyID(fromValue)
 
-        const descriptionIndex: number = 1
+        const toValue: string = this.destinationNodeForm.value
+        const to: LegalObjectNode<LegalNodeData> = this.dataService.lookUpNodeByPrettyID(toValue)
+
+        const descriptionIndex: number = 0
         const description: string = controls[descriptionIndex].value
 
         const possessionData: PossessionData = {
-            name: name,
             description: description
         }
 
-        return new Possession(name, this.sourceNode, this.destinationNode, possessionData)
+        return new Possession(name, from, to, possessionData)
     }   
 }

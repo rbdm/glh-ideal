@@ -1,11 +1,13 @@
-<input [(ngModel)]="userSelectionBuffer"
-    [typeahead]="typeAheadValues"
+<input [(ngModel)]="userNodeSelectionBuffer"
+    [placeholder]="nodeSelectionPlaceholder"
+    [typeahead]="nodeTypeAheadValues"
     [typeaheadMinLength]="typeaheadMinLength"
     [typeaheadSingleWords]="typeaheadSingleWords"
     [typeaheadScrollable]="typeaheadScrollable"
     [typeaheadOptionsInScrollableView]="typeaheadOptionsInScrollableView"
     [typeaheadHideResultsOnBlur]="typeaheadHideResultsOnBlur"
     (typeaheadOnSelect)="onTypeAheadSelect($event)"
+    style="margin-top: 5px;"
     class="form-control"
     >
 
