@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VisualObjectEditorComponent } from './visual-object-editor.component';
+import { VisualGraphComponent } from './visual-graph.component';
 
-describe('VisualObjectEditorComponent', () => {
-  let component: VisualObjectEditorComponent;
-  let fixture: ComponentFixture<VisualObjectEditorComponent>;
+describe('VisualGraphComponent', () => {
+  let component: VisualGraphComponent;
+  let fixture: ComponentFixture<VisualGraphComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VisualObjectEditorComponent ]
+      declarations: [ VisualGraphComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VisualObjectEditorComponent);
+    fixture = TestBed.createComponent(VisualGraphComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

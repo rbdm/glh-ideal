@@ -26,12 +26,12 @@ export class Person extends LegalObject<PersonData> {
         return this.personFormGroupControls.get('inner') as FormArray
     }
 
-    get editorFormPlaceholders(): string[] | null {
+    get editorFormPlaceholders(): string[] {
         return this.personFormPlaceholders
     }
 
-    get editorFormTypeAheads(): string[][] | null {
-        return null
+    get editorFormTypeAheads(): string[][] {
+        return [[]]
     }
 
     constructor(public prettyID: string, public objectData: PersonData) {

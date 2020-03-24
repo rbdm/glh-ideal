@@ -25,13 +25,12 @@ export class Possession extends LegalObjectLink<PossessionData> {
         return this.possessionFormGroupControls.get('inner') as FormArray
     }
 
-    get editorFormPlaceholders(): string[] | null {
+    get editorFormPlaceholders(): string[] {
         return this.possessionFormPlaceholders
     }
 
-    get editorFormTypeAheads(): string[][] | null {
-        // TODO.
-        return null
+    get editorFormTypeAheads(): string[][] {
+        return [[]]
     }
 
     get editorSourceNode(): FormControl {

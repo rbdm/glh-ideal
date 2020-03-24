@@ -1,0 +1,82 @@
+<input [(ngModel)]="inputBuffer.nodes"
+    [placeholder]="typeAheadPlaceholders.nodes"
+    [typeahead]="knownLegalObjects"
+    [typeaheadMinLength]="typeAheadOptions.minLength"
+    [typeaheadSingleWords]="typeAheadOptions.singleWords"
+    [typeaheadScrollable]="typeAheadOptions.scrollable"
+    [typeaheadOptionsInScrollableView]="typeAheadOptions.optionsInScrollableView"
+    [typeaheadHideResultsOnBlur]="typeAheadOptions.hideResultsOnBlur"
+    (typeaheadOnSelect)="onMatch($event, true)"
+    class="form-control"
+    style="margin-top: 5px;"
+    >
+
+<input [(ngModel)]="inputBuffer.links"
+    [placeholder]="typeAheadPlaceholders.links"
+    [typeahead]="knownLegalLinks"
+    [typeaheadMinLength]="typeAheadOptions.minLength"
+    [typeaheadSingleWords]="typeAheadOptions.singleWords"
+    [typeaheadScrollable]="typeAheadOptions.scrollable"
+    [typeaheadOptionsInScrollableView]="typeAheadOptions.optionsInScrollableView"
+    [typeaheadHideResultsOnBlur]="typeAheadOptions.hideResultsOnBlur"
+    (typeaheadOnSelect)="onMatch($event, false)"
+    class="form-control"
+    style="margin-top: 5px;"
+    >
+
+<ng-template #template>
+    <div class="modal-header">
+        <h2 class="modal-title pull-left">{{modalTitle}}</h2>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form *ngIf='showLinksModal()' class="form-group" [formGroup]="currentSelection.editorFormGroup">
+            <input
+                class="form-control" 
+                style="margin: 5px;"
+                type="text" 
+                [formControlName]="'sourceNode'"
+                [placeholder]="'From'"
+                [typeahead]="dataModel.getPrettyID()"
+                [typeaheadMinLength]="typeAheadOptions.minLength"
+                [typeaheadSingleWords]="typeAheadOptions.singleWords"
+                [typeaheadScrollable]="typeAheadOptions.scrollable"
+                [typeaheadOptionsInScrollableView]="typeAheadOptions.optionsInScrollableView"
+                [typeaheadHideResultsOnBlur]="typeAheadOptions.hideResultsOnBlur"
+            >
+            <input
+                class="form-control" 
+                style="margin: 5px;"
+                type="text" 
+                [formControlName]="'destinationNode'"
+                [placeholder]="'To'"
+                [typeahead]="dataModel.getPrettyID()"
+                [typeaheadMinLength]="typeAheadOptions.minLength"
+                [typeaheadSingleWords]="typeAheadOptions.singleWords"
+                [typeaheadScrollable]="typeAheadOptions.scrollable"
+                [typeaheadOptionsInScrollableView]="typeAheadOptions.optionsInScrollableView"
+                [typeaheadHideResultsOnBlur]="typeAheadOptions.hideResultsOnBlur"
+            >
+            
+        </form>
+        <form class="form-group" [formGroup]="currentSelection.editorFormGroup">
+            <div formArrayName="inner">
+                <div *ngFor="let field of currentSelection.editorFormArray.controls; let i=index">
+                    <input 
+                        class="form-control" 
+                        style="margin: 5px;"
+                        type="text" 
+                        [formControlName]="i"
+                        [placeholder]="currentSelection.editorFormPlaceholders[i]"
+                        >
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <button style="margin: 5px" class="btn btn-success" (click)="onSubmit()">Submit</button>
+    <button style="margin: 5px" class="btn btn-danger" (click)="onCancel()">Cancel</button> 
+
+    </ng-template>

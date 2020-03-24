@@ -5,24 +5,21 @@
             <h1>
                 Quick Access Tools
             </h1>
-            <app-visual-object-builder></app-visual-object-builder>
-            <app-visual-relationship-builder></app-visual-relationship-builder>
+            <app-visual-builder></app-visual-builder>
         </div>        
+        <hr>
         <br>
         <div *ngIf="globallySelected.selectedNodes.length > 0 || globallySelected.selectedLinks.length > 0">
-            <h1>
-                Edit Selected
-            </h1>
-            <app-visual-object-editor></app-visual-object-editor>
+            <app-visual-editor></app-visual-editor>
         </div>
 
-        <div style="left: 0; bottom: 0; position: absolute;">
+        <div *ngIf='globallySelected.selectedNodes.length > 0' style="left: 0; bottom: 0; position: absolute;">
             <app-visual-object-remover></app-visual-object-remover>
         </div>
     </mat-sidenav>
 
     <mat-sidenav-content>
-        <app-visual-editor></app-visual-editor>
+        <app-visual-graph></app-visual-graph>
     </mat-sidenav-content>
 
 </mat-sidenav-container>

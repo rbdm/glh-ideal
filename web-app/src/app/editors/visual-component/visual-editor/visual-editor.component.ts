@@ -1,25 +1,27 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { GlobalSelectionService } from 'src/app/service/global-selection/global-selection.service';
 import { DataModelService } from 'src/app/service/data/data-model.service';
-import { GraphVisualService } from 'src/app/service/graph/graph-visual.service';
+import { LegalObjectService } from 'src/app/service/legal-object/legal-object.service';
 
 @Component({
   selector: 'app-visual-editor',
   templateUrl: './visual-editor.component.html',
   styleUrls: ['./visual-editor.component.css']
 })
-export class VisualEditorComponent implements AfterViewInit { 
-  
-  @ViewChild('graph') divView: ElementRef | undefined
-  
+export class VisualEditorComponent implements OnInit {
   constructor(
-    public dataModelService: DataModelService, 
-    public graphVisualService: GraphVisualService
+    public globalSelection: GlobalSelectionService,
+    public dataModel: DataModelService,
+    public legalService: LegalObjectService
   ) { }
 
-  ngAfterViewInit(): void {
-    if (!this.divView) {
-      throw Error('Could not select a template to draw the graph.')
+  ngOnInit(): void {
+  }
+
+  onSubmit() {
+    for (let node of this.globalSelection.selectedNodes) {
+      node.update()
     }
-    this.graphVisualService.draw(this.divView.nativeElement as HTMLElement)    
+    this.globalSelection.deselectAllNodes()
   }
 }

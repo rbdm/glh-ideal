@@ -19,6 +19,7 @@
     "noImplicitReturns": true,
     "strict": true,
     "noUnusedLocals": true,
+    "strictNullChecks": true
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

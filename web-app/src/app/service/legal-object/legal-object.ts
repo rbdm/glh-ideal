@@ -7,8 +7,8 @@ export abstract class LegalObject<DATA extends LegalData> {
   
   abstract get editorFormGroup(): FormGroup
   abstract get editorFormArray(): FormArray
-  abstract get editorFormPlaceholders(): string[] | null
-  abstract get editorFormTypeAheads(): string[][] | null 
+  abstract get editorFormPlaceholders(): string[]
+  abstract get editorFormTypeAheads(): string[][] 
 
   /**
    * Update the object with the values in the form.
@@ -27,8 +27,8 @@ export abstract class LegalObjectLink<DATA extends LegalLinkData> {
 
   abstract get editorFormGroup(): FormGroup
   abstract get editorFormArray(): FormArray
-  abstract get editorFormPlaceholders(): string[] | null
-  abstract get editorFormTypeAheads(): string[][] | null 
+  abstract get editorFormPlaceholders(): string[]
+  abstract get editorFormTypeAheads(): string[][] 
 
   abstract get editorSourceNode(): FormControl
   abstract get editorDestinationNode(): FormControl

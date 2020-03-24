@@ -42,7 +42,6 @@ export class GraphVisualService {
   }
 
   refresh() {
-    console.log('refreshing')
     const newData = this.getGraphData()
     this.graph.updateData(newData)
   }

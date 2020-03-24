@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VisualEditorComponent } from './visual-editor.component';
 
-describe('VisualEditorComponent', () => {
+describe('VisualObjectEditorComponent', () => {
   let component: VisualEditorComponent;
   let fixture: ComponentFixture<VisualEditorComponent>;
 
