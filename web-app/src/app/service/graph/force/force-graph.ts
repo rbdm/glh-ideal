@@ -124,11 +124,11 @@ export class ForceGraph {
         //     .attr("fill", "transparent")
         //     .attr("class", "edges")
 
-        // svg.call(
-        //         d3.zoom().on("zoom", () => {
-        //             svg.attr("transform", d3.event.transform)
-        //         }).scaleExtent([0.5, 2.0])
-        //     )
+        svg.call(
+                d3.zoom().on("zoom", () => {
+                    svg.attr("transform", d3.event.transform)
+                }).scaleExtent([0.5, 2.0])
+            )
         //     .append("g")
             // .attr("transform", "translate(" + 1 + "," + 1 + ")");
 
@@ -189,8 +189,8 @@ export class ForceGraph {
             })
             .on("click", (d: GraphLink) => {
                 const currentTarget = d3.event.currentTarget 
-                const color = d3.select(currentTarget).attr("fill") == "orange" ? this.options.color : "orange"
-                d3.select(d3.event.currentTarget).attr("fill", color)
+                const color = d3.select(currentTarget).attr("stroke") == "orange" ? this.options.color : "orange"
+                d3.select(d3.event.currentTarget).attr("stroke", color)
                 this.notifySubscribers({source: d.source, destination:  d.target}, GraphListenerEventKind.OnLinkClick)
             });
     }
