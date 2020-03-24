@@ -17,7 +17,7 @@ export class GraphVisualService {
   public observable: Observable<GraphListenerEvent>
 
   constructor(public dataService: DataModelService) {
-    this.graph = new ForceGraph(null, this.graphOptions)
+    this.graph = new ForceGraph(undefined, this.graphOptions)
     this.observable = this.graph.observable
 
     this.dataService

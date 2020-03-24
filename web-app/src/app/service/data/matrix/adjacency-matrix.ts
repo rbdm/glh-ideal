@@ -1,6 +1,6 @@
 import * as mathjs from 'mathjs';
 import { GraphNode, GraphLink } from '../../graph/graph-types';
-import { LegalObjectLink, LegalData } from '../../legal-object/legal-object';
+import { LegalObjectLink, LegalLinkData } from '../../legal-object/legal-object';
 
 // A graph can be represented by an adjacency matrix.
 // 
@@ -83,7 +83,7 @@ export class AdjacencyMatrix {
       this.length = newLength
     }
 
-    addDirectedEdge(sourceNode: number, destinationNode: number, linkData: LegalObjectLink<LegalData>) {
+    addDirectedEdge(sourceNode: number, destinationNode: number, linkData: LegalObjectLink<LegalLinkData>) {
       if ((sourceNode < this.length) && (destinationNode < this.length)) {
         var index = mathjs.index([sourceNode], [destinationNode]) 
         this.innerMatrix.subset(index, linkData) // set the element at this index to the given weight

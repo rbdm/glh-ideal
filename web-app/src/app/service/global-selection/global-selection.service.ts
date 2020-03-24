@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DataModelService } from '../data/data-model.service';
 import { Subject, Observable } from 'rxjs';
 import { GlobalSelectionEvent, GlobalSelectionEventKind } from './global-selection-event';
-import { LegalObject, LegalData, LegalObjectLink } from '../legal-object/legal-object';
+import { LegalObject, LegalData, LegalObjectLink, LegalLinkData } from '../legal-object/legal-object';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class GlobalSelectionService {
   public globalSelectionUpdateObservable: Observable<GlobalSelectionEvent> = this.globalSelectionUpdateSubject.asObservable()
 
   selectedNodes: LegalObject<LegalData>[] = []
-  selectedLinks: LegalObjectLink<LegalData>[] = []
+  selectedLinks: LegalObjectLink<LegalLinkData>[] = []
 
   constructor(private dataService: DataModelService) { }
 
@@ -39,7 +39,7 @@ export class GlobalSelectionService {
     this.notifySubscribers(machineID, [eventNotificationKind])
   }
 
-  toggleLink(link: LegalObjectLink<LegalData>) {
+  toggleLink(link: LegalObjectLink<LegalLinkData>) {
     var eventNotificationKind: GlobalSelectionEventKind
 
     const linkIndex: number = this.selectedLinks.indexOf(link)
@@ -62,7 +62,7 @@ export class GlobalSelectionService {
     this.selectedNodes.splice(index, 1)
   }
 
-  addLink(link: LegalObjectLink<LegalData>) {
+  addLink(link: LegalObjectLink<LegalLinkData>) {
     this.selectedLinks.push(link)
   }
 

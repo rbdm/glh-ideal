@@ -6,7 +6,7 @@ import { LegalObjectService } from 'src/app/service/legal-object/legal-object.se
 import { FormGroup } from '@angular/forms';
 import { TypeaheadMatch } from 'ngx-bootstrap';
 import { BuildableLink } from 'src/app/service/legal-object/buildable';
-import { LegalObjectLink, LegalData } from 'src/app/service/legal-object/legal-object';
+import { LegalObjectLink, LegalLinkData } from 'src/app/service/legal-object/legal-object';
 
 @Component({
   selector: 'app-visual-relationship-builder',
@@ -14,8 +14,8 @@ import { LegalObjectLink, LegalData } from 'src/app/service/legal-object/legal-o
   styleUrls: ['./visual-relationship-builder.component.css']
 })
 export class VisualRelationshipBuilderComponent implements OnInit {
-  @ViewChild('template') templateView: TemplateRef<any> 
-  modalRef: BsModalRef
+  @ViewChild('template') templateView: TemplateRef<any> | undefined = undefined 
+  modalRef: BsModalRef | undefined = undefined
   modalConfig = {
     animated: false
   }
@@ -28,13 +28,13 @@ export class VisualRelationshipBuilderComponent implements OnInit {
   
   linkTypeAheadValues = this.legalService.knownLegalLinksString
 
-  userLinkSelectionBuffer: string
+  userLinkSelectionBuffer: string = ''
   linkSelectionPlaceholder: string = 'New relationship'
 
-  modalTitle: string
+  modalTitle: string | undefined
   
-  objectBuilder: BuildableLink<LegalObjectLink<LegalData>>
-  objectBuilderForm: FormGroup
+  objectBuilder: BuildableLink<LegalObjectLink<LegalLinkData>> | undefined
+  objectBuilderForm: FormGroup | undefined
 
   constructor(
     public dataModelService: DataModelService, 
@@ -44,7 +44,7 @@ export class VisualRelationshipBuilderComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  addLegalLink(legalLink: LegalObjectLink<LegalData>) {
+  addLegalLink(legalLink: LegalObjectLink<LegalLinkData>) {
     this.dataModelService.addDirectedLegalLink(legalLink)
   }
 
@@ -62,14 +62,14 @@ export class VisualRelationshipBuilderComponent implements OnInit {
 
   onCancel() {
     this.modalRef.hide()
-    this.userLinkSelectionBuffer = null
+    this.userLinkSelectionBuffer = ''
   }
 
   onSubmit() {
     this.modalRef.hide()
-    this.userLinkSelectionBuffer = null
+    this.userLinkSelectionBuffer = ''
 
-    const builtObject: LegalObjectLink<LegalData> = this.objectBuilder.build()
+    const builtObject: LegalObjectLink<LegalLinkData> = this.objectBuilder.build()
     this.addLegalLink(builtObject)    
   }
 }

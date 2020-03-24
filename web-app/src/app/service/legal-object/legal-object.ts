@@ -16,28 +16,33 @@ export abstract class LegalObject<DATA extends LegalData> {
   abstract update(): any;
 }
 
-export abstract class LegalObjectLink<DATA extends LegalData> { 
+export abstract class LegalObjectLink<DATA extends LegalLinkData> { 
   abstract classType: string
   abstract prettyID: string
-  
-  // abstract weight: number
   
   abstract sourceNode: LegalObject<LegalData>
   abstract destinationNode: LegalObject<LegalData>
   
   abstract objectData: DATA
 
-  // abstract get editorFormGroup(): FormGroup
-  // abstract get editorFormArray(): FormArray
-  // abstract get editorFormPlaceholders(): string[]
-  // abstract get editorFormTypeAheads(): string[][]
+  abstract get editorFormGroup(): FormGroup
+  abstract get editorFormArray(): FormArray
+  abstract get editorFormPlaceholders(): string[]
+  abstract get editorFormTypeAheads(): string[][]
 
-  // /**
-  //  * Update the object with the values in the form.
-  //  */
-  // abstract update(): any;
+  abstract get editorSourceNode(): FormControl
+  abstract get editorDestinationNode(): FormControl
+
+  /**
+   * Update the object with the values in the form.
+   */
+  abstract update(): any;
 }
 
-export class LegalData {
+export abstract class LegalData {
 
+}
+
+export abstract class LegalLinkData {
+  abstract weight: number
 }

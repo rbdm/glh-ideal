@@ -1,35 +1,33 @@
-import { FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, FormControl, Form } from '@angular/forms';
 import { LegalObject, LegalData } from '../legal-object';
-
-const personFormPlaceholders: string[] = [
-    'Name',
-    'Date of Birth',
-    'Place of Birth'
-]
-
-const personFormGroupControls: FormGroup = new FormGroup({ 
-    inner: new FormArray([
-        new FormControl(''),
-        new FormControl(''),
-        new FormControl('')
-    ])
-})
 
 export class Person extends LegalObject<PersonData> {
     classType: string = 'Person'
 
-    private personFormGroupControlsCopy: FormGroup
+    private personFormPlaceholders: string[] = [
+        'Name',
+        'Date of Birth',
+        'Place of Birth'
+    ]
+
+    private personFormGroupControls: FormGroup = new FormGroup({ 
+        inner: new FormArray([
+            new FormControl(''),
+            new FormControl(''),
+            new FormControl('')
+        ])
+    })
 
     get editorFormGroup(): FormGroup {
-        return this.personFormGroupControlsCopy
+        return this.personFormGroupControls
     }
 
     get editorFormArray(): FormArray {
-        return this.personFormGroupControlsCopy.get('inner') as FormArray
+        return this.personFormGroupControls.get('inner') as FormArray
     }
 
     get editorFormPlaceholders(): string[] {
-        return personFormPlaceholders
+        return this.personFormPlaceholders
     }
 
     get editorFormTypeAheads(): string[][] {
@@ -38,17 +36,18 @@ export class Person extends LegalObject<PersonData> {
 
     constructor(public prettyID: string, public objectData: PersonData) {
         super()
-        this.personFormGroupControlsCopy = Object.create(personFormGroupControls)
     }
 
     update(): any {
-        const controls = this.personFormGroupControlsCopy
+        const controls: FormArray = this.editorFormArray
         
         const nameIndex: number = 0
-        const nameControl: string = controls[nameIndex]
+        const nameControl: FormControl = controls[nameIndex]
         if (nameControl) {
-            this.objectData.name = nameControl
+            this.objectData.name = nameControl.value
+            this.prettyID = nameControl.value
         }
+
 
         const dateOfBirthIndex: number = 1
         const dateOfBirthControl: string = controls[dateOfBirthIndex]

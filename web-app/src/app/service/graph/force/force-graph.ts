@@ -6,7 +6,7 @@ import { GraphListenerEvent, GraphListenerEventKind } from '../graph-event';
 import { Subject, Observable } from 'rxjs';
 
 export class ForceGraph {
-    graphElement: HTMLElement
+    graphElement: HTMLElement | undefined = undefined
 
     private graphUpdateSubject: Subject<GraphListenerEvent> = new Subject()
     public observable: Observable<GraphListenerEvent> = this.graphUpdateSubject.asObservable()
@@ -16,7 +16,7 @@ export class ForceGraph {
     svg: any
     simulation: any
 
-    constructor(public data: GraphData, public options: GraphOptions) {
+    constructor(public data: GraphData | undefined, public options: GraphOptions) {
 
     }
 
@@ -26,6 +26,10 @@ export class ForceGraph {
     }
 
     buildGraphIntoElement(selectedElement: HTMLElement) {
+        if (!this.data) {
+            throw Error('D3.js graph has not been loaded with any data')
+        }
+
         this.graphElement = selectedElement
 
         const nodes = this.data.nodes
@@ -93,13 +97,14 @@ export class ForceGraph {
             .selectAll("line")
             .data(links)
             .join("line")
-            .attr("stroke-width", d => d.weight)
+            .attr("stroke-width", (d: GraphLink) => d.weight)
             // .attr("marker-end", "url(#triangle)")
             .on("click", (d: any) => this.notifySubscribers(d, GraphListenerEventKind.OnLinkClick))
     }
 
     initSVG() {
-        var svg = d3.select(this.graphElement)
+        if (this.graphElement) {
+            var svg = d3.select(this.graphElement)
             .append("svg")
             .attr("width", this.options.width)
             .attr("height", this.options.height)
@@ -110,7 +115,9 @@ export class ForceGraph {
             )
             .append("g")
             .attr("transform", "translate(" + 1 + "," + 1 + ")");
-
+        } else {
+            throw Error('Graph element selected for D3.js is undefined.')
+        }
     
         // svg.append("svg:defs")
         //     .append("svg:marker")
@@ -182,10 +189,10 @@ export class ForceGraph {
             .join("line")
             .attr("marker-end", "url(#triangle)")
             .on('mouseenter', (d: GraphLink) => {
-                d3.select(d3.event.currentTarget).attr("stroke-width", (d: GraphLink) => d.weight * 2)
+                d3.select(d3.event.currentTarget).attr("stroke-width", () => d.weight * 2)
             })
             .on('mouseleave', (d: GraphLink) => {
-                d3.select(d3.event.currentTarget).attr("stroke-width", (d: GraphLink) => d.weight)
+                d3.select(d3.event.currentTarget).attr("stroke-width", () => d.weight)
             })
             .on("click", (d: GraphLink) => {
                 const currentTarget = d3.event.currentTarget 

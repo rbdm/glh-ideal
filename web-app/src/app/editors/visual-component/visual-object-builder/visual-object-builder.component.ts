@@ -15,8 +15,8 @@ import { LegalObject, LegalData } from 'src/app/service/legal-object/legal-objec
 })
 export class ObjectBuilderComponent implements OnInit {
 
-  @ViewChild('template') templateView: TemplateRef<any> 
-  modalRef: BsModalRef
+  @ViewChild('template') templateView: TemplateRef<any> | undefined = undefined 
+  modalRef: BsModalRef | undefined = undefined
   modalConfig = {
     animated: false
   }
@@ -29,13 +29,13 @@ export class ObjectBuilderComponent implements OnInit {
   
   nodeTypeAheadValues = this.legalService.knownLegalObjectsString
 
-  userNodeSelectionBuffer: string
+  userNodeSelectionBuffer: string = ''
   nodeSelectionPlaceholder: string = 'New object'
   
-  modalTitle: string
+  modalTitle: string = ''
   
-  emptyObject: LegalObject<LegalData>
-  objectEditorForm: FormGroup
+  emptyObject: LegalObject<LegalData> | undefined = undefined 
+  objectEditorForm: FormGroup | undefined = undefined
 
   constructor(
     private dataModelService: DataModelService, 
@@ -50,10 +50,18 @@ export class ObjectBuilderComponent implements OnInit {
   }
 
   onTypeAheadSelect(event: TypeaheadMatch) {
-    this.modalTitle = event.value
-    this.emptyObject = this.legalService.getBuilder(event.value)
+    const getBuilderResult: LegalObject<LegalData> | null = this.legalService.getBuilder(event.value)
+    if (!getBuilderResult) {
+      throw Error('Failed to fetch a legal object that can be built from a form.')
+    }
+    this.emptyObject = getBuilderResult
     this.objectEditorForm = this.emptyObject.editorFormGroup
 
+    this.modalTitle = event.value
+
+    if (!this.templateView) {
+      throw Error('The template defining the modal is undefined.')
+    }
     this.openModal(this.templateView)
   }
 
@@ -62,14 +70,23 @@ export class ObjectBuilderComponent implements OnInit {
   }
 
   onCancel() {
+    if (!this.modalRef) {
+      throw Error('Could not cancel the modal ref, because the modal ref is currently undefined')
+    }
     this.modalRef.hide()
-    this.userNodeSelectionBuffer = null
+    this.userNodeSelectionBuffer = ''
   }
 
   onSubmit() {
+    if (!this.modalRef) {
+      throw Error('Could not submit the form on the modal ref, because the modal ref is currently undefined')
+    }
     this.modalRef.hide()
-    this.userNodeSelectionBuffer = null
+    this.userNodeSelectionBuffer = ''
 
+    if (!this.emptyObject) {
+      throw Error('Could not update the legal object with form values, because the legal object is undefined.')
+    }
     this.emptyObject.update()
     this.addLegalObject(this.emptyObject)
   }

@@ -1,9 +1,46 @@
-import { LegalObject, LegalObjectLink, LegalData } from '../legal-object';
+import { LegalObject, LegalObjectLink, LegalData, LegalLinkData } from '../legal-object';
 import { BuildableLink } from '../buildable';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { DataModelService } from '../../data/data-model.service';
 
 export class Possession extends LegalObjectLink<PossessionData> {
+    get editorFormGroup(): FormGroup {
+        // TODO.
+        return null
+    }
+
+    get editorFormArray(): FormArray {
+        // TODO.
+        return null
+    }
+
+    get editorFormPlaceholders(): string[] {
+        // TODO.
+        return null
+    }
+
+    get editorFormTypeAheads(): string[][] {
+        // TODO.
+        return null
+    }
+
+    get editorSourceNode(): FormControl {
+        // TODO.
+        return null
+    }
+
+    get editorDestinationNode(): FormControl {
+        // TODO.
+        return null
+    }
+
+    /**
+     * Update the object with the values in the form.
+     */
+    update(): any {
+        // TODO.
+    }
+
     constructor(
         public classType: string,
         public prettyID: string,
@@ -15,8 +52,9 @@ export class Possession extends LegalObjectLink<PossessionData> {
     }
 }
 
-export class PossessionData extends LegalData {
-    description: string
+export class PossessionData extends LegalLinkData {
+    weight: number | undefined
+    description: string  | undefined
 }
 
 export class PossessionBuilder extends BuildableLink<Possession> {
@@ -54,6 +92,7 @@ export class PossessionBuilder extends BuildableLink<Possession> {
         const description: string = controls[descriptionIndex].value
 
         const possessionData: PossessionData = {
+            weight: undefined,
             description: description
         }
 

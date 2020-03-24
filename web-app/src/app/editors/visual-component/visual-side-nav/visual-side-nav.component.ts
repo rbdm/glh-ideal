@@ -47,6 +47,7 @@ export class VisualSideNavComponent implements OnInit {
     switch (event.eventKind) {
       case GraphListenerEventKind.OnNodeClick:
           this.globallySelected.toggleNodeByID(event.eventSelector)
+          console.log(this.dataModel.lookUpNode(event.eventSelector))
       case GraphListenerEventKind.OnLinkClick:
         const sourceID = event.eventSelector.source
         const destinationID = event.eventSelector.destination

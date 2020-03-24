@@ -12,7 +12,7 @@ export abstract class GraphNode implements d3.SimulationNodeDatum {
     vy?: number;
   
     abstract id: number
-    group: number
+    group?: number 
 }
   
 export abstract class GraphLink implements d3.SimulationLinkDatum<GraphNode> {
