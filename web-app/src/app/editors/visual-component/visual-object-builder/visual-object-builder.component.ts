@@ -3,10 +3,9 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { DataModelService } from 'src/app/service/data/data-model.service';
 import { LegalObjectService } from 'src/app/service/legal-object/legal-object.service';
-import { FormGroup, FormArray } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { TypeaheadMatch } from 'ngx-bootstrap';
-import { BuildableNode } from 'src/app/service/legal-object/buildable/buildable';
-import { LegalObjectNode, LegalNodeData, LegalObjectLink, LegalLinkData } from 'src/app/service/legal-object/legal-object';
+import { LegalObjectNode, LegalNodeData } from 'src/app/service/legal-object/legal-object';
 
 
 @Component({
@@ -35,8 +34,8 @@ export class ObjectBuilderComponent implements OnInit {
   
   modalTitle: string
   
-  objectBuilder: BuildableNode<LegalObjectNode<LegalNodeData>>
-  objectBuilderForm: FormGroup
+  emptyObject: LegalObjectNode<LegalNodeData>
+  objectEditorForm: FormGroup
 
   constructor(
     private dataModelService: DataModelService, 
@@ -52,8 +51,8 @@ export class ObjectBuilderComponent implements OnInit {
 
   onTypeAheadSelect(event: TypeaheadMatch) {
     this.modalTitle = event.value
-    this.objectBuilder = this.legalService.getBuilder(event.value)
-    this.objectBuilderForm = this.objectBuilder.formGroup
+    this.emptyObject = this.legalService.getBuilder(event.value)
+    this.objectEditorForm = this.emptyObject.editorFormGroup
 
     this.openModal(this.templateView)
   }
@@ -71,7 +70,7 @@ export class ObjectBuilderComponent implements OnInit {
     this.modalRef.hide()
     this.userNodeSelectionBuffer = null
 
-    const builtObject: LegalObjectNode<LegalNodeData> = this.objectBuilder.build()
-    this.addLegalObject(builtObject)
+    this.emptyObject.update()
+    this.addLegalObject(this.emptyObject)
   }
 }

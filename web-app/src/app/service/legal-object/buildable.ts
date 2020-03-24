@@ -1,15 +1,5 @@
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
-import { LegalObject, LegalData, LegalObjectLink, LegalLinkData } from '../legal-object';
-
-export abstract class BuildableNode<T extends LegalObject<LegalData>> {
-    abstract formGroup: FormGroup
-    abstract formNames: string[]
-    abstract formBuilder: FormBuilder
-
-    abstract get inner(): FormArray
-
-    abstract build(): T
-}
+import { LegalObjectLink, LegalLinkData } from './legal-object';
 
 export abstract class BuildableLink<T extends LegalObjectLink<LegalLinkData>> {
     abstract formGroup: FormGroup

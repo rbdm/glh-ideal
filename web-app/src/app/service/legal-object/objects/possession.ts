@@ -1,16 +1,17 @@
 import { DirectedLegalObjectLink, LegalLinkData, LegalObjectNode, LegalNodeData, LegalData } from '../legal-object';
-import { BuildableNode, BuildableLink } from './buildable';
-import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
+import { BuildableLink } from '../buildable';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { DataModelService } from '../../data/data-model.service';
 
 export class Possession extends DirectedLegalObjectLink<PossessionData> {
     constructor(
+        classType: string,
         prettyID: string,
         sourceNode: LegalObjectNode<LegalNodeData>,
         destinationNode: LegalObjectNode<LegalNodeData>,
         objectData: PossessionData
     ) {
-        super(prettyID, 2, sourceNode, destinationNode, objectData)
+        super(classType, prettyID, 2, sourceNode, destinationNode, objectData)
     }
 }
 
@@ -56,6 +57,6 @@ export class PossessionBuilder extends BuildableLink<Possession> {
             description: description
         }
 
-        return new Possession(name, from, to, possessionData)
+        return new Possession('Possession', name, from, to, possessionData)
     }   
 }

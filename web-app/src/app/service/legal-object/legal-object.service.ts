@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BuildableNode, BuildableLink } from './buildable/buildable';
-import { PersonBuilder, PersonData } from './buildable/person';
-import { LegalObjectNode, LegalNodeData } from './legal-object';
-import { PossessionBuilder } from './buildable/possession';
+import { BuildableLink } from './buildable';
+import { Person } from './objects/person';
+import { PossessionBuilder } from './objects/possession';
 import { DataModelService } from '../data/data-model.service';
+import { LegalObjectNode, LegalNodeData } from './legal-object';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,6 @@ export class LegalObjectService {
 
   knownLegalObjectsString = [
     'Person',
-    'Event',
-    'Legislation'
   ]
 
   knownLegalLinksString = [
@@ -22,10 +20,10 @@ export class LegalObjectService {
 
   constructor(public dataService: DataModelService) { }
 
-  getBuilder(searchTerm: string): BuildableNode<any> {
+  getBuilder(searchTerm: string): LegalObjectNode<LegalNodeData> {
     switch (searchTerm) {
       case 'Person':
-        return new PersonBuilder()
+        return new Person(null, null)
     }
   }
 

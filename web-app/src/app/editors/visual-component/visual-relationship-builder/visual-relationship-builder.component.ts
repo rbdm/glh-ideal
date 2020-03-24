@@ -3,11 +3,10 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { DataModelService } from 'src/app/service/data/data-model.service';
 import { LegalObjectService } from 'src/app/service/legal-object/legal-object.service';
-import { FormGroup, FormArray } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { TypeaheadMatch } from 'ngx-bootstrap';
-import { BuildableNode, BuildableLink } from 'src/app/service/legal-object/buildable/buildable';
-import { LegalObjectNode, LegalNodeData, LegalObjectLink, LegalLinkData } from 'src/app/service/legal-object/legal-object';
-import { GlobalSelectionService } from 'src/app/service/global-selection/global-selection.service';
+import { BuildableLink } from 'src/app/service/legal-object/buildable';
+import { LegalLinkData, DirectedLegalObjectLink } from 'src/app/service/legal-object/legal-object';
 
 @Component({
   selector: 'app-visual-relationship-builder',
@@ -34,7 +33,7 @@ export class VisualRelationshipBuilderComponent implements OnInit {
 
   modalTitle: string
   
-  objectBuilder: BuildableLink<LegalObjectLink<LegalLinkData>>
+  objectBuilder: BuildableLink<DirectedLegalObjectLink<LegalLinkData>>
   objectBuilderForm: FormGroup
 
   constructor(
@@ -45,7 +44,7 @@ export class VisualRelationshipBuilderComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  addLegalLink(legalLink: LegalObjectLink<LegalLinkData>) {
+  addLegalLink(legalLink: DirectedLegalObjectLink<LegalLinkData>) {
     this.dataModelService.addDirectedLegalLink(legalLink)
   }
 
@@ -70,7 +69,7 @@ export class VisualRelationshipBuilderComponent implements OnInit {
     this.modalRef.hide()
     this.userLinkSelectionBuffer = null
 
-    const builtObject: LegalObjectLink<LegalLinkData> = this.objectBuilder.build()
+    const builtObject: DirectedLegalObjectLink<LegalLinkData> = this.objectBuilder.build()
     this.addLegalLink(builtObject)    
   }
 }
