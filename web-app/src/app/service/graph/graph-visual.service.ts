@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { GraphListenerEvent } from './graph-event';
 import { DataModelService } from '../data/data-model.service';
 import { GraphOptions, GraphNode, GraphLink } from './graph-types';
+import { GlobalSelectionService } from '../global-selection/global-selection.service';
+import { GlobalSelectionEvent, GlobalSelectionEventKind } from '../global-selection/global-selection-event';
 
 @Injectable({
   providedIn: 'root'
@@ -16,13 +18,22 @@ export class GraphVisualService {
 
   public observable: Observable<GraphListenerEvent>
 
-  constructor(public dataService: DataModelService) {
+  constructor(public dataService: DataModelService, public globalSelection: GlobalSelectionService ) {
     this.graph = new ForceGraph(undefined, this.graphOptions)
     this.observable = this.graph.observable
 
     this.dataService
       .dataModeUpdateObservable
       .subscribe(( ) => this.refresh())
+
+    this.globalSelection
+      .globalSelectionUpdateObservable
+      .subscribe((event: GlobalSelectionEvent) => {
+        switch (event.eventKind) {
+          case GlobalSelectionEventKind.GlobalDeselection:
+            this.refresh()
+        }
+      })
   }
 
   draw(divElement: HTMLElement) {

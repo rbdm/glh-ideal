@@ -8,6 +8,13 @@
             <app-visual-object-builder></app-visual-object-builder>
             <app-visual-relationship-builder></app-visual-relationship-builder>
         </div>        
+        <br>
+        <div *ngIf="globallySelected.selectedNodes.length > 0 || globallySelected.selectedLinks.length > 0">
+            <h1>
+                Edit Selected
+            </h1>
+            <app-visual-object-editor></app-visual-object-editor>
+        </div>
 
         <div style="left: 0; bottom: 0; position: absolute;">
             <app-visual-object-remover></app-visual-object-remover>

@@ -72,6 +72,7 @@ export class GlobalSelectionService {
 
   deselectAllNodes() {
     this.selectedNodes = []
+    this.notifySubscribers(null, [GlobalSelectionEventKind.GlobalDeselection])
   }
 
   getNodePrettyID(): string[] {

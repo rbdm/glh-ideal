@@ -3,7 +3,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { DataModelService } from 'src/app/service/data/data-model.service';
 import { LegalObjectService } from 'src/app/service/legal-object/legal-object.service';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, AbstractControl } from '@angular/forms';
 import { TypeaheadMatch } from 'ngx-bootstrap';
 import { LegalObjectLink, LegalLinkData } from 'src/app/service/legal-object/legal-object';
 
@@ -58,37 +58,67 @@ export class VisualRelationshipBuilderComponent implements OnInit {
     this.objectEditorForm = this.emptyObject.editorFormGroup
 
     if (!this.templateView) {
-      throw Error('The template defining the modal is undefined.')
+      throw Error(this.UndefinedModalRef)
     }
     this.openModal(this.templateView)
   }
 
   openModal(template: TemplateRef<any>) {
     if (!this.emptyObject) {
-      throw Error('There is no object selected for the modal form to display and edit.')
+      throw Error(this.UndefinedObjectBuilder)
     }
     this.modalRef = this.modalService.show(template, this.modalConfig);
   }
 
   onCancel() {
     if (!this.modalRef) {
-      throw Error('Could not cancel the modal ref, because the modal ref is currently undefined')
+      throw Error(this.UndefinedModalRef)
     }
     this.modalRef.hide()
     this.userLinkSelectionBuffer = ''
   }
 
   onSubmit() {
-    if (!this.modalRef) {
-      throw Error('Could not submit the form on the modal ref, because the modal ref is currently undefined')
-    }
-    this.modalRef.hide()
+    this.hideModal()
     this.userLinkSelectionBuffer = ''
 
     if (!this.emptyObject) {
-      throw Error('Could not update the legal object with form values, because the legal object is undefined.')
+      throw Error(this.UndefinedObjectBuilder)
     }
     this.emptyObject.update()
     this.addLegalLink(this.emptyObject)
   }
+
+  hideModal() {
+    if (!this.modalRef) {
+      throw Error(this.UndefinedModalRef)
+    }
+    this.modalRef.hide()  
+  }
+
+  indexObjectPlaceholders(index: number): string {
+    const placeholders: string[] | null | undefined = this.emptyObject?.editorFormPlaceholders
+    if (!placeholders) {
+      throw Error('Could not find placeholders for this form.')
+    }
+
+    const placeholdersLength: number = placeholders.length
+    if (index > placeholdersLength) {
+      throw Error('Index for placeholder exceeds the length of the placeholders.')
+    }
+
+    return placeholders[index]
+  } 
+
+  getObjectFormArrayControls(): AbstractControl[] {
+    const formArrayControls: AbstractControl[] | null | undefined = this.emptyObject?.editorFormArray.controls
+    if (!formArrayControls) {
+      throw Error(this.UndefinedObjectBuilder)
+    }
+    return formArrayControls
+  }
+
+  private UndefinedObjectBuilder = 'Could not update the legal object with form values, because the legal object is undefined.'
+  private UndefinedModalRef = 'Could not submit the form on the modal ref, because the modal ref is currently undefined'
+
 }

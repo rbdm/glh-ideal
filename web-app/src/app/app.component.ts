@@ -1,6 +1,3 @@
-// This component controls the placement of the sidenav, toolbar and main content
-// components. It is immutable and should not handle any logic. 
-
 import { Component } from '@angular/core';
 
 @Component({

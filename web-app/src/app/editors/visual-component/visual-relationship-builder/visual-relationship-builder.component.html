@@ -14,7 +14,7 @@
 <ng-template #template>
     <div class="modal-header">
         <h2 class="modal-title pull-left">New Relationship</h2>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
         <span aria-hidden="true">&times;</span>
         </button>
     </div>
@@ -50,13 +50,13 @@
         </form>
         <form class="form-group" [formGroup]="objectEditorForm">
             <div formArrayName="inner">
-                <div *ngFor="let field of emptyObject.editorFormArray.controls ; let i=index">
+                <div *ngFor="let field of getObjectFormArrayControls(); let i=index">
                     <input 
                         class="form-control" 
                         style="margin: 5px;"
                         type="text" 
                         [formControlName]="i"
-                        [placeholder]="emptyObject.editorFormPlaceholders[i]"
+                        [placeholder]="indexObjectPlaceholders(i)"
                         >
                 </div>
             </div>

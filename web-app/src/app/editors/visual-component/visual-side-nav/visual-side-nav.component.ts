@@ -1,4 +1,3 @@
-// This component handles the logic and styling of the side navigation bar.
 import { Component, OnInit } from '@angular/core';
 
 import { DataModelService } from 'src/app/service/data/data-model.service';

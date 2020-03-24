@@ -10,5 +10,6 @@ export class GlobalSelectionEvent {
 
 export enum GlobalSelectionEventKind {
     NodeSelection,
-    NodeDeselection
+    NodeDeselection,
+    GlobalDeselection
 }

@@ -31,7 +31,7 @@ export class LegalObjectService {
   getLinkBuilder(searchTerm: string): LegalObjectLink<LegalLinkData> | null {
     switch (searchTerm) {
       case 'Possession':
-        return new Possession('', undefined, undefined, new PossessionData(undefined, ''))
+        return new Possession('', undefined, undefined, new PossessionData(undefined, ''), this.dataService)
     }
     return null;
   }

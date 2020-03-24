@@ -1,5 +1,6 @@
 import { LegalObject, LegalObjectLink, LegalData, LegalLinkData } from '../legal-object';
-import { FormGroup, FormArray, FormControl } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, AbstractControl } from '@angular/forms';
+import { DataModelService } from '../../data/data-model.service';
 
 export class Possession extends LegalObjectLink<PossessionData> {
     classType = 'Possession'
@@ -45,14 +46,33 @@ export class Possession extends LegalObjectLink<PossessionData> {
      * Update the object with the values in the form.
      */
     update(): any {
-        // TODO.
+        const controls: AbstractControl[] = this.editorFormArray.controls
+
+        const sourceNodePrettyID: string = this.editorSourceNode.value
+        const sourceNodeLookUpResult = this.dataService.lookUpNodeByPrettyID(sourceNodePrettyID)
+        if (!sourceNodeLookUpResult) {
+            throw Error('Could not parse the source node\'s \'prettyID\' as a valid node.')
+        }
+        this.sourceNode = sourceNodeLookUpResult
+
+        const destinationNodePrettyID: string = this.editorDestinationNode.value
+        const destinationNodeLookUpResult = this.dataService.lookUpNodeByPrettyID(destinationNodePrettyID)
+        if (!destinationNodeLookUpResult) {
+            throw Error('Could not parse destination node\'s \'prettyID\' as a valid node')
+        }
+        this.destinationNode = destinationNodeLookUpResult
+
+        const description: string = controls[0].value
+        this.objectData.description = description
+        console.log(this)
     }
 
     constructor(
         public prettyID: string,
         public sourceNode: LegalObject<LegalData> | undefined,
         public destinationNode: LegalObject<LegalData> | undefined,
-        public objectData: PossessionData
+        public objectData: PossessionData,
+        private dataService: DataModelService
     ) {
         super()
     }

@@ -1,3 +1,18 @@
 <div *ngFor='let node of globalSelection.selectedNodes'>
-    
+    <form class="form-group" [formGroup]="node.editorFormGroup">
+        <div formArrayName="inner">
+            <div *ngFor="let field of node.editorFormArray.controls; let i=index">
+                <input 
+                    class="form-control" 
+                    style="margin-top: 5px;"
+                    type="text" 
+                    [formControlName]="i"
+                    [placeholder]="node.editorFormPlaceholders[i]"
+                    >
+            </div>
+        </div>
+    </form>
 </div>
+
+<button style="margin-top: 10px;" class="btn btn-primary" (click)="onSubmit()">Confirm</button>
+

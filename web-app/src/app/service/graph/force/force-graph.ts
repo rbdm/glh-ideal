@@ -108,11 +108,11 @@ export class ForceGraph {
             .append("svg")
             .attr("width", this.options.width)
             .attr("height", this.options.height)
-            .call(
-                d3.zoom().on("zoom", () => {
-                    svg.attr("transform", d3.event.transform)
-                }).scaleExtent([0.5, 2.0])
-            )
+            // .call(
+            //     d3.zoom().on("zoom", () => {
+            //         svg.attr("transform", d3.event.transform)
+            //     }).scaleExtent([0.5, 2.0])
+            // )
             .append("g")
             .attr("transform", "translate(" + 1 + "," + 1 + ")");
         } else {
