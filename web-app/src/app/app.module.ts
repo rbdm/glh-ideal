@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material/sidenav'; 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import {MatIconModule } from '@angular/material/icon';
 
 import { BsDropdownModule, ModalModule, TypeaheadModule, } from 'ngx-bootstrap';
 
@@ -46,6 +47,7 @@ import { VisualRelationshipEditorComponent } from './editors/visual-component/vi
     FormsModule,
     MatSidenavModule,
     DragDropModule,
+    MatIconModule,
 
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
