@@ -57,6 +57,17 @@ export class DataModelService {
     this.notifySubscribers(destinationID, [DataEventKind.MatrixUpdate])
   }
 
+  removeLegalObject(node: number | LegalObjectNode<LegalNodeData>) {
+    if (typeof(node) == "number") {
+      this.matrix.removeVertex(node)
+      this.notifySubscribers(node, [DataEventKind.MatrixUpdate])
+    } else {
+      const nodeID: number = this.lookUpNodeMachineID(node)
+      this.matrix.removeVertex(nodeID)
+      this.notifySubscribers(nodeID, [DataEventKind.MatrixUpdate])
+    }
+  }
+
   getPrettyID(): string[] {
     return this.nodeStorage.map(value => value.prettyID)
   }

@@ -46,6 +46,24 @@ export class AdjacencyMatrix {
       this.innerMatrix.resize([this.length, this.length])
     }
 
+    removeVertex(index: number) {
+      var newMatrix: mathjs.Matrix = mathjs.matrix()
+      var newLength: number = 0
+
+      for (var i=0; i < this.length; i++) {
+        for (var j=0; j < this.length; j++) {
+          if (i != index && j != index) {
+            const element: any = this.get(i, j)
+            newMatrix.resize([newLength, newLength], element)
+            newLength++
+          }
+        }
+      }
+
+      this.innerMatrix = newMatrix
+      this.length = newLength
+    }
+
     addDirectedEdge(sourceNode: number, destinationNode: number, linkData: LegalObjectLink<LegalLinkData>) {
       if ((sourceNode < this.length) && (destinationNode < this.length)) {
         var index = mathjs.index([sourceNode], [destinationNode]) 

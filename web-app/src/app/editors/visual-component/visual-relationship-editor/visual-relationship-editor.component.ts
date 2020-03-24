@@ -11,5 +11,4 @@ export class VisualRelationshipEditorComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

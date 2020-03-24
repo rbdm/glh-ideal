@@ -49,15 +49,15 @@ export class ForceGraph {
 
     tickBehaviour() {
         return () => {
-            this.links
-                .attr("x1", (d: any) => d.source.x)
-                .attr("y1", (d: any) => d.source.y)
-                .attr("x2", (d: any) => d.target.x)
-                .attr("y2", (d: any) => d.target.y);
-    
             this.nodes
-                .attr("cx", (d: any) => d.x)
-                .attr("cy", (d: any) => d.y);
+                .attr("cx", (d: any) => { return d.x = Math.max(5, Math.min(this.options.width - 5, d.x)); })
+                .attr("cy", (d: any) => { return d.y = Math.max(5, Math.min(this.options.height - 5, d.y)); });
+    
+            this.links
+                .attr("x1", (d: any) => { return d.source.x; })
+                .attr("y1", (d: any) => { return d.source.y; })
+                .attr("x2", (d: any) => { return d.target.x; })
+                .attr("y2", (d: any) => { return d.target.y; });
         }
     }
 
@@ -103,6 +103,14 @@ export class ForceGraph {
             .append("svg")
             .attr("width", this.options.width)
             .attr("height", this.options.height)
+            .call(
+                d3.zoom().on("zoom", () => {
+                    svg.attr("transform", d3.event.transform)
+                }).scaleExtent([0.5, 2.0])
+            )
+            .append("g")
+            .attr("transform", "translate(" + 1 + "," + 1 + ")");
+
     
         // svg.append("svg:defs")
         //     .append("svg:marker")
@@ -123,14 +131,6 @@ export class ForceGraph {
         //     .attr("stroke-width", "1.5")          
         //     .attr("fill", "transparent")
         //     .attr("class", "edges")
-
-        svg.call(
-                d3.zoom().on("zoom", () => {
-                    svg.attr("transform", d3.event.transform)
-                }).scaleExtent([0.5, 2.0])
-            )
-        //     .append("g")
-            // .attr("transform", "translate(" + 1 + "," + 1 + ")");
 
         this.svg = svg
     }
