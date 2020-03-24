@@ -51,6 +51,10 @@ export class DataModelService {
   }
 
   addDirectedLegalLink(legalLink: LegalObjectLink<LegalLinkData>) {
+    if (!legalLink.sourceNode || !legalLink.destinationNode) {
+      throw Error('The link does not have a source or destination node.')
+    }
+
     const sourceID: number = this.lookUpNodeMachineID(legalLink.sourceNode)
     const destinationID: number = this.lookUpNodeMachineID(legalLink.destinationNode)
     this.matrix.addDirectedEdge(sourceID, destinationID, legalLink)

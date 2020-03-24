@@ -1,37 +1,44 @@
 import { LegalObject, LegalObjectLink, LegalData, LegalLinkData } from '../legal-object';
-import { BuildableLink } from '../buildable';
-import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
-import { DataModelService } from '../../data/data-model.service';
+import { FormGroup, FormArray, FormControl } from '@angular/forms';
 
 export class Possession extends LegalObjectLink<PossessionData> {
+    classType = 'Possession'
+
+    private possessionFormGroupControls: FormGroup = new FormGroup({
+        sourceNode: new FormControl(''),
+        destinationNode: new FormControl(''),
+        inner: new FormArray([
+            new FormControl('')
+        ])
+    })
+
+    private possessionFormPlaceholders: string[] = [
+        'Description of Relationship'
+    ]
+
     get editorFormGroup(): FormGroup {
-        // TODO.
-        return null
+        return this.possessionFormGroupControls
     }
 
     get editorFormArray(): FormArray {
-        // TODO.
-        return null
+        return this.possessionFormGroupControls.get('inner') as FormArray
     }
 
-    get editorFormPlaceholders(): string[] {
-        // TODO.
-        return null
+    get editorFormPlaceholders(): string[] | null {
+        return this.possessionFormPlaceholders
     }
 
-    get editorFormTypeAheads(): string[][] {
+    get editorFormTypeAheads(): string[][] | null {
         // TODO.
         return null
     }
 
     get editorSourceNode(): FormControl {
-        // TODO.
-        return null
+        return this.possessionFormGroupControls.get('sourceNode') as FormControl
     }
 
     get editorDestinationNode(): FormControl {
-        // TODO.
-        return null
+        return this.possessionFormGroupControls.get('destinationNode') as FormControl
     }
 
     /**
@@ -42,10 +49,9 @@ export class Possession extends LegalObjectLink<PossessionData> {
     }
 
     constructor(
-        public classType: string,
         public prettyID: string,
-        public sourceNode: LegalObject<LegalData>,
-        public destinationNode: LegalObject<LegalData>,
+        public sourceNode: LegalObject<LegalData> | undefined,
+        public destinationNode: LegalObject<LegalData> | undefined,
         public objectData: PossessionData
     ) {
         super()
@@ -53,49 +59,20 @@ export class Possession extends LegalObjectLink<PossessionData> {
 }
 
 export class PossessionData extends LegalLinkData {
-    weight: number | undefined
-    description: string  | undefined
-}
+    weight: number
+    description: string  = ''
 
-export class PossessionBuilder extends BuildableLink<Possession> {
-
-    formBuilder = new FormBuilder
-
-    formNames: string[] = [
-        'Description'
-    ]
-
-    formGroup: FormGroup = this.formBuilder.group({
-        inner: this.formBuilder.array([
-            this.formBuilder.control('')
-        ]),
-    })
-
-    get inner(): FormArray {
-        return this.formGroup.get('inner') as FormArray
-    }
-
-    constructor(private dataService: DataModelService) {
+    constructor(weight: number | undefined, description?: string) {
         super()
-    }
-
-    build(): Possession {
-        const controls = this.inner.controls
         
-        const fromValue: string = this.sourceNodeForm.value
-        const from: LegalObject<LegalData> = this.dataService.lookUpNodeByPrettyID(fromValue)
-
-        const toValue: string = this.destinationNodeForm.value
-        const to: LegalObject<LegalData> = this.dataService.lookUpNodeByPrettyID(toValue)
-
-        const descriptionIndex: number = 0
-        const description: string = controls[descriptionIndex].value
-
-        const possessionData: PossessionData = {
-            weight: undefined,
-            description: description
+        if (!weight){
+            this.weight = 1
+        } else {
+            this.weight = weight
         }
 
-        return new Possession('Possession', name, from, to, possessionData)
-    }   
+        if (description) {
+            this.description = description
+        }
+    }
 }

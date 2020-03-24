@@ -78,7 +78,7 @@ export class GlobalSelectionService {
     return this.selectedNodes.map(value => value.prettyID)
   }
 
-  private notifySubscribers(machineID: number, eventKinds: GlobalSelectionEventKind[]) {
+  private notifySubscribers(machineID: number | null, eventKinds: GlobalSelectionEventKind[]) {
     for (let kind of eventKinds) {
       const eventNotification = new GlobalSelectionEvent(machineID, kind)
       this.globalSelectionUpdateSubject.next(eventNotification)

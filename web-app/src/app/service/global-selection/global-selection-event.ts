@@ -1,6 +1,6 @@
 export class GlobalSelectionEvent {
     constructor(
-        public nodeID: number, 
+        public nodeID: number | null, 
         public eventKind: GlobalSelectionEventKind, 
         public eventData?: any
     ) {

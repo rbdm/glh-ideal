@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BuildableLink } from './buildable';
 import { Person, PersonData } from './objects/person';
-import { PossessionBuilder } from './objects/possession';
 import { DataModelService } from '../data/data-model.service';
-import { LegalObject, LegalData } from './legal-object';
+import { LegalObject, LegalData, LegalObjectLink, LegalLinkData } from './legal-object';
+import { Possession, PossessionData } from './objects/possession';
 
 
 @Injectable({
@@ -29,10 +28,10 @@ export class LegalObjectService {
     return null;
   }
 
-  getLinkBuilder(searchTerm: string): BuildableLink<any> | null {
+  getLinkBuilder(searchTerm: string): LegalObjectLink<LegalLinkData> | null {
     switch (searchTerm) {
       case 'Possession':
-        return new PossessionBuilder(this.dataService)
+        return new Possession('', undefined, undefined, new PossessionData(undefined, ''))
     }
     return null;
   }

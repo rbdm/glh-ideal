@@ -9,7 +9,7 @@ import { GraphVisualService } from 'src/app/service/graph/graph-visual.service';
 })
 export class VisualEditorComponent implements AfterViewInit { 
   
-  @ViewChild('graph') divView: ElementRef
+  @ViewChild('graph') divView: ElementRef | undefined
   
   constructor(
     public dataModelService: DataModelService, 
@@ -17,6 +17,9 @@ export class VisualEditorComponent implements AfterViewInit {
   ) { }
 
   ngAfterViewInit(): void {
+    if (!this.divView) {
+      throw Error('Could not select a template to draw the graph.')
+    }
     this.graphVisualService.draw(this.divView.nativeElement as HTMLElement)    
   }
 }

@@ -1,4 +1,4 @@
-import { FormGroup, FormArray, FormBuilder, FormControl, Form } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, AbstractControl } from '@angular/forms';
 import { LegalObject, LegalData } from '../legal-object';
 
 export class Person extends LegalObject<PersonData> {
@@ -26,12 +26,12 @@ export class Person extends LegalObject<PersonData> {
         return this.personFormGroupControls.get('inner') as FormArray
     }
 
-    get editorFormPlaceholders(): string[] {
+    get editorFormPlaceholders(): string[] | null {
         return this.personFormPlaceholders
     }
 
-    get editorFormTypeAheads(): string[][] {
-        return undefined
+    get editorFormTypeAheads(): string[][] | null {
+        return null
     }
 
     constructor(public prettyID: string, public objectData: PersonData) {
@@ -39,10 +39,10 @@ export class Person extends LegalObject<PersonData> {
     }
 
     update(): any {
-        const controls: FormArray = this.editorFormArray
+        const controls: AbstractControl[] = this.editorFormArray.controls
         
         const nameIndex: number = 0
-        const nameControl: FormControl = controls[nameIndex]
+        const nameControl: AbstractControl = controls[nameIndex]
         if (nameControl) {
             this.objectData.name = nameControl.value
             this.prettyID = nameControl.value
@@ -50,21 +50,21 @@ export class Person extends LegalObject<PersonData> {
 
 
         const dateOfBirthIndex: number = 1
-        const dateOfBirthControl: string = controls[dateOfBirthIndex]
+        const dateOfBirthControl: AbstractControl = controls[dateOfBirthIndex]
         if (dateOfBirthControl) {
-            this.objectData.dateOfBirth = dateOfBirthControl
+            this.objectData.dateOfBirth = dateOfBirthControl.value
         }
 
         const placeOfBirthIndex: number = 2
-        const placeOfBirthControl: string = controls[placeOfBirthIndex]
+        const placeOfBirthControl: AbstractControl = controls[placeOfBirthIndex]
         if (nameControl) {
-            this.objectData.placeOfBirth = placeOfBirthControl
+            this.objectData.placeOfBirth = placeOfBirthControl.value
         }
     }
 }
 
 export class PersonData extends LegalData {
-    dateOfBirth: any
-    placeOfBirth: any
-    name: any
+    dateOfBirth: string = ''
+    placeOfBirth: string = ''
+    name: string = ''
 }

@@ -5,7 +5,6 @@ import { DataModelService } from 'src/app/service/data/data-model.service';
 import { LegalObjectService } from 'src/app/service/legal-object/legal-object.service';
 import { FormGroup } from '@angular/forms';
 import { TypeaheadMatch } from 'ngx-bootstrap';
-import { BuildableLink } from 'src/app/service/legal-object/buildable';
 import { LegalObjectLink, LegalLinkData } from 'src/app/service/legal-object/legal-object';
 
 @Component({
@@ -33,8 +32,8 @@ export class VisualRelationshipBuilderComponent implements OnInit {
 
   modalTitle: string | undefined
   
-  objectBuilder: BuildableLink<LegalObjectLink<LegalLinkData>> | undefined
-  objectBuilderForm: FormGroup | undefined
+  emptyObject: LegalObjectLink<LegalLinkData> | undefined
+  objectEditorForm: FormGroup | undefined
 
   constructor(
     public dataModelService: DataModelService, 
@@ -50,26 +49,46 @@ export class VisualRelationshipBuilderComponent implements OnInit {
 
   onTypeAheadSelect(event: TypeaheadMatch) {
     this.modalTitle = event.value
-    this.objectBuilder = this.legalService.getLinkBuilder(event.value)
-    this.objectBuilderForm = this.objectBuilder.formGroup
 
+    const getLinkBuilderResult = this.legalService.getLinkBuilder(event.value)
+    if (!getLinkBuilderResult) {
+      throw Error('Failed to fetch a legal object that can be built from a form.')
+    }
+    this.emptyObject = getLinkBuilderResult
+    this.objectEditorForm = this.emptyObject.editorFormGroup
+
+    if (!this.templateView) {
+      throw Error('The template defining the modal is undefined.')
+    }
     this.openModal(this.templateView)
   }
 
   openModal(template: TemplateRef<any>) {
+    if (!this.emptyObject) {
+      throw Error('There is no object selected for the modal form to display and edit.')
+    }
     this.modalRef = this.modalService.show(template, this.modalConfig);
   }
 
   onCancel() {
+    if (!this.modalRef) {
+      throw Error('Could not cancel the modal ref, because the modal ref is currently undefined')
+    }
     this.modalRef.hide()
     this.userLinkSelectionBuffer = ''
   }
 
   onSubmit() {
+    if (!this.modalRef) {
+      throw Error('Could not submit the form on the modal ref, because the modal ref is currently undefined')
+    }
     this.modalRef.hide()
     this.userLinkSelectionBuffer = ''
 
-    const builtObject: LegalObjectLink<LegalLinkData> = this.objectBuilder.build()
-    this.addLegalLink(builtObject)    
+    if (!this.emptyObject) {
+      throw Error('Could not update the legal object with form values, because the legal object is undefined.')
+    }
+    this.emptyObject.update()
+    this.addLegalLink(this.emptyObject)
   }
 }

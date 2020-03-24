@@ -19,7 +19,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <form class="form-group" [formGroup]="objectBuilder.pathEndForms">
+        <form class="form-group" [formGroup]="objectEditorForm">
             <input
                 class="form-control" 
                 style="margin: 5px;"
@@ -48,15 +48,15 @@
             >
             
         </form>
-        <form class="form-group" [formGroup]="objectBuilderForm">
+        <form class="form-group" [formGroup]="objectEditorForm">
             <div formArrayName="inner">
-                <div *ngFor="let field of objectBuilder.inner.controls; let i=index">
+                <div *ngFor="let field of emptyObject.editorFormArray.controls ; let i=index">
                     <input 
                         class="form-control" 
                         style="margin: 5px;"
                         type="text" 
                         [formControlName]="i"
-                        [placeholder]="objectBuilder.formNames[i]"
+                        [placeholder]="emptyObject.editorFormPlaceholders[i]"
                         >
                 </div>
             </div>
