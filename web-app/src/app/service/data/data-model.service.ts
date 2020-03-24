@@ -58,14 +58,20 @@ export class DataModelService {
   }
 
   removeLegalObject(node: number | LegalObjectNode<LegalNodeData>) {
-    if (typeof(node) == "number") {
-      this.matrix.removeVertex(node)
-      this.notifySubscribers(node, [DataEventKind.MatrixUpdate])
-    } else {
-      const nodeID: number = this.lookUpNodeMachineID(node)
-      this.matrix.removeVertex(nodeID)
-      this.notifySubscribers(nodeID, [DataEventKind.MatrixUpdate])
+    if (typeof(node) != "number") {
+      node = this.lookUpNodeMachineID(node)
     }
+
+    console.log(this.nodeStorage)
+    console.log(this.matrix)
+
+    this.matrix.removeVertex(node)
+    this.nodeStorage.splice(node, 1)
+
+    console.log(this.nodeStorage)
+    console.log(this.matrix)
+
+    this.notifySubscribers(node, [DataEventKind.MatrixUpdate])
   }
 
   getPrettyID(): string[] {

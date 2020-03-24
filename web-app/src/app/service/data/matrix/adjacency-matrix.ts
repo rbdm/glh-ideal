@@ -46,20 +46,39 @@ export class AdjacencyMatrix {
       this.innerMatrix.resize([this.length, this.length])
     }
 
+    /**
+     * We iterate over each element in the old matrix.
+     * 
+     * Each iteration is an index (i,j). If i or j 
+     * are equal to the index of the removed node,
+     * then the iteration is in a deleted row or col.
+     * 
+     * If it is not in a deleted row or col, then we
+     * need to insert the element at (m,n) in the new matrix,
+     * where (m,n) does not necessarily eqaual (i,j). Hence,
+     * we need to maintain a separate tracking system.
+     * 
+     * @param index 
+     */
     removeVertex(index: number) {
       var newMatrix: mathjs.Matrix = mathjs.matrix()
-      var newLength: number = 0
+      var m: number = 0, n: number = 0, newLength: number = 0
 
-      for (var i=0; i < this.length; i++) {
-        for (var j=0; j < this.length; j++) {
-          if (i != index && j != index) {
-            const element: any = this.get(i, j)
-            newMatrix.resize([newLength, newLength], element)
-            newLength++
+      for (var i=0; i < this.length; i++) { 
+        if (i != index) {
+          newLength++
+          newMatrix.resize([newLength, newLength], 0)
+          
+          for (var j=0; j < this.length; j++) {
+            if (j != index) {
+              m++, n++
+              const element: any = this.get(i, j)
+              newMatrix.subset(mathjs.index(m, n), element)
+            }
           }
         }
       }
-
+    
       this.innerMatrix = newMatrix
       this.length = newLength
     }
