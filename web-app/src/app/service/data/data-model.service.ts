@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { AdjacencyMatrix } from './matrix/adjacency-matrix';
 import { DataEventKind, DataEvent } from './data-event';
 import { Subject, Observable } from 'rxjs';
-import { LegalObjectNode, LegalNodeData, DirectedLegalObjectLink, LegalLinkData, LegalObjectLink } from '../legal-object/legal-object';
+import { LegalObject, LegalData, LegalObjectLink } from '../legal-object/legal-object';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +13,17 @@ export class DataModelService {
   public dataModeUpdateObservable: Observable<DataEvent> = this.dataModelUpdateSubject.asObservable()
 
   matrix: AdjacencyMatrix = new AdjacencyMatrix()
-  nodeStorage: LegalObjectNode<LegalNodeData>[] = []
+  nodeStorage: LegalObject<LegalData>[] = []
 
-  lookUpNode(nodeID: number): LegalObjectNode<LegalNodeData> {
+  lookUpNode(nodeID: number): LegalObject<LegalData> {
     return this.nodeStorage[nodeID]
   }
 
-  lookUpNodeMachineID(node: LegalObjectNode<LegalNodeData>): number {
+  lookUpNodeMachineID(node: LegalObject<LegalData>): number {
     return this.nodeStorage.indexOf(node)
   }
 
-  lookUpNodeByPrettyID(prettyID: string): LegalObjectNode<LegalNodeData> {
+  lookUpNodeByPrettyID(prettyID: string): LegalObject<LegalData> {
     for (let node of this.nodeStorage) {
       if (node.prettyID == prettyID) {
         return node
@@ -30,17 +31,17 @@ export class DataModelService {
     }
   }
 
-  lookUpLinkByNodes(source: LegalObjectNode<LegalNodeData>, destination: LegalObjectNode<LegalNodeData>): LegalObjectLink<LegalLinkData> {
+  lookUpLinkByNodes(source: LegalObject<LegalData>, destination: LegalObject<LegalData>): LegalObjectLink<LegalData> {
     const sourceID: number = this.lookUpNodeMachineID(source)
     const destinationID: number = this.lookUpNodeMachineID(destination)
     return this.lookUpLinkByNodeID(sourceID, destinationID)
   }
 
-  lookUpLinkByNodeID(sourceID: number, destinationID: number): LegalObjectLink<LegalLinkData> {
+  lookUpLinkByNodeID(sourceID: number, destinationID: number): LegalObjectLink<LegalData> {
     return this.matrix.get(sourceID, destinationID)
   }
 
-  addLegalObject(data: LegalObjectNode<LegalNodeData>) {
+  addLegalObject(data: LegalObject<LegalData>) {
     this.matrix.addDisconnectedVertex()
     this.nodeStorage.push(data)
 
@@ -48,7 +49,7 @@ export class DataModelService {
     this.notifySubscribers(machineID, [DataEventKind.MatrixUpdate, DataEventKind.NodeUpdate])
   }
 
-  addDirectedLegalLink(legalLink: DirectedLegalObjectLink<LegalLinkData>) {
+  addDirectedLegalLink(legalLink: LegalObjectLink<LegalData>) {
     const sourceID: number = this.lookUpNodeMachineID(legalLink.sourceNode)
     const destinationID: number = this.lookUpNodeMachineID(legalLink.destinationNode)
     this.matrix.addDirectedEdge(sourceID, destinationID, legalLink)
@@ -57,7 +58,7 @@ export class DataModelService {
     this.notifySubscribers(destinationID, [DataEventKind.MatrixUpdate])
   }
 
-  removeLegalObject(node: number | LegalObjectNode<LegalNodeData>) {
+  removeLegalObject(node: number | LegalObject<LegalData>) {
     if (typeof(node) != "number") {
       node = this.lookUpNodeMachineID(node)
     }

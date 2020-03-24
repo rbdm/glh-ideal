@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { LegalObjectNode, LegalNodeData, LegalObjectLink, LegalLinkData } from '../legal-object/legal-object';
 import { DataModelService } from '../data/data-model.service';
 import { Subject, Observable } from 'rxjs';
 import { GlobalSelectionEvent, GlobalSelectionEventKind } from './global-selection-event';
+import { LegalObject, LegalData, LegalObjectLink } from '../legal-object/legal-object';
 
 @Injectable({
   providedIn: 'root'
@@ -11,17 +11,17 @@ export class GlobalSelectionService {
   private globalSelectionUpdateSubject: Subject<GlobalSelectionEvent> = new Subject()
   public globalSelectionUpdateObservable: Observable<GlobalSelectionEvent> = this.globalSelectionUpdateSubject.asObservable()
 
-  selectedNodes: LegalObjectNode<LegalNodeData>[] = []
-  selectedLinks: LegalObjectLink<LegalLinkData>[] = []
+  selectedNodes: LegalObject<LegalData>[] = []
+  selectedLinks: LegalObjectLink<LegalData>[] = []
 
   constructor(private dataService: DataModelService) { }
 
   toggleNodeByID(machineID: number) {
-    const selectedNode: LegalObjectNode<LegalNodeData> = this.dataService.lookUpNode(machineID)
+    const selectedNode: LegalObject<LegalData> = this.dataService.lookUpNode(machineID)
     this.toggleNode(selectedNode, machineID)
   }
 
-  toggleNode(node: LegalObjectNode<LegalNodeData>, machineID?:number) {
+  toggleNode(node: LegalObject<LegalData>, machineID?:number) {
     var eventNotificationKind: GlobalSelectionEventKind
     if (!machineID) {
       machineID = this.dataService.lookUpNodeMachineID(node)
@@ -39,7 +39,7 @@ export class GlobalSelectionService {
     this.notifySubscribers(machineID, [eventNotificationKind])
   }
 
-  toggleLink(link: LegalObjectLink<LegalLinkData>) {
+  toggleLink(link: LegalObjectLink<LegalData>) {
     var eventNotificationKind: GlobalSelectionEventKind
 
     const linkIndex: number = this.selectedLinks.indexOf(link)
@@ -54,7 +54,7 @@ export class GlobalSelectionService {
     this.notifySubscribers(null, [eventNotificationKind])
   }
 
-  addNode(node: LegalObjectNode<LegalNodeData>) {
+  addNode(node: LegalObject<LegalData>) {
     this.selectedNodes.push(node)
   }
 
@@ -62,7 +62,7 @@ export class GlobalSelectionService {
     this.selectedNodes.splice(index, 1)
   }
 
-  addLink(link: LegalObjectLink<LegalLinkData>) {
+  addLink(link: LegalObjectLink<LegalData>) {
     this.selectedLinks.push(link)
   }
 

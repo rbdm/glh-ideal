@@ -1,5 +1,5 @@
 import { FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
-import { LegalObjectNode, LegalNodeData } from '../legal-object';
+import { LegalObject, LegalData } from '../legal-object';
 
 const personFormPlaceholders: string[] = [
     'Name',
@@ -15,7 +15,9 @@ const personFormGroupControls: FormGroup = new FormGroup({
     ])
 })
 
-export class Person extends LegalObjectNode<PersonData> {
+export class Person extends LegalObject<PersonData> {
+    classType: string = 'Person'
+
     private personFormGroupControlsCopy: FormGroup
 
     get editorFormGroup(): FormGroup {
@@ -34,8 +36,8 @@ export class Person extends LegalObjectNode<PersonData> {
         return undefined
     }
 
-    constructor(prettyID: string, objectData: PersonData) {
-        super('Person', prettyID, objectData)
+    constructor(public prettyID: string, public objectData: PersonData) {
+        super()
         this.personFormGroupControlsCopy = Object.create(personFormGroupControls)
     }
 
@@ -62,7 +64,7 @@ export class Person extends LegalObjectNode<PersonData> {
     }
 }
 
-export class PersonData extends LegalNodeData {
+export class PersonData extends LegalData {
     dateOfBirth: any
     placeOfBirth: any
     name: any

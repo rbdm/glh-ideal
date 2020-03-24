@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalSelectionService } from 'src/app/service/global-selection/global-selection.service';
 import { DataModelService } from 'src/app/service/data/data-model.service';
-import { LegalObjectNode, LegalNodeData } from 'src/app/service/legal-object/legal-object';
 import { LegalObjectService } from 'src/app/service/legal-object/legal-object.service';
+import { LegalObject, LegalData } from 'src/app/service/legal-object/legal-object';
 
 @Component({
   selector: 'app-visual-object-editor',
@@ -19,7 +19,7 @@ export class VisualObjectEditorComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getNodeForm(node: LegalObjectNode<LegalNodeData>) {
+  getNodeForm(node: LegalObject<LegalData>) {
     // TODO.
   }
 }

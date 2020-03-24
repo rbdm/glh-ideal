@@ -3,7 +3,8 @@ import { BuildableLink } from './buildable';
 import { Person } from './objects/person';
 import { PossessionBuilder } from './objects/possession';
 import { DataModelService } from '../data/data-model.service';
-import { LegalObjectNode, LegalNodeData } from './legal-object';
+import { LegalObject, LegalData } from './legal-object';
+
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class LegalObjectService {
 
   constructor(public dataService: DataModelService) { }
 
-  getBuilder(searchTerm: string): LegalObjectNode<LegalNodeData> {
+  getBuilder(searchTerm: string): LegalObject<LegalData> {
     switch (searchTerm) {
       case 'Person':
         return new Person(null, null)

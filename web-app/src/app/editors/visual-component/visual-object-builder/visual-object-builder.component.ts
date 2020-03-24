@@ -5,7 +5,7 @@ import { DataModelService } from 'src/app/service/data/data-model.service';
 import { LegalObjectService } from 'src/app/service/legal-object/legal-object.service';
 import { FormGroup } from '@angular/forms';
 import { TypeaheadMatch } from 'ngx-bootstrap';
-import { LegalObjectNode, LegalNodeData } from 'src/app/service/legal-object/legal-object';
+import { LegalObject, LegalData } from 'src/app/service/legal-object/legal-object';
 
 
 @Component({
@@ -34,7 +34,7 @@ export class ObjectBuilderComponent implements OnInit {
   
   modalTitle: string
   
-  emptyObject: LegalObjectNode<LegalNodeData>
+  emptyObject: LegalObject<LegalData>
   objectEditorForm: FormGroup
 
   constructor(
@@ -45,7 +45,7 @@ export class ObjectBuilderComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  addLegalObject(data: LegalObjectNode<LegalNodeData>) {
+  addLegalObject(data: LegalObject<LegalData>) {
     this.dataModelService.addLegalObject(data)
   }
 
