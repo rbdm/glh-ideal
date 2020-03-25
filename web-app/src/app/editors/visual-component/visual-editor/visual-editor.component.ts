@@ -31,4 +31,10 @@ export class VisualEditorComponent implements OnInit {
     for (let link of this.globalSelection.selectedLinks) link.update()
     this.globalSelection.deselectAll()
   }
+
+  removeAll() {
+    for (let node of this.globalSelection.selectedNodes) this.dataModel.removeLegalObject(node)
+    for (let link of this.globalSelection.selectedLinks) this.dataModel.removeLegalLink(link)
+    this.globalSelection.deselectAll()
+  }
 }

@@ -17,7 +17,6 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { CodeSideNavComponent } from './editors/code-component/code-side-nav/code-side-nav.component'
 import { CodeEditorComponent } from './editors/code-component/code-editor/code-editor.component'
 import { VisualSideNavComponent } from './editors/visual-component/visual-side-nav/visual-side-nav.component';
-import { VisualObjectRemoverComponent } from './editors/visual-component/visual-object-remover/visual-object-remover.component';
 import { VisualBuilderComponent } from './editors/visual-component/visual-builder/visual-builder.component';
 import { VisualGraphComponent } from './editors/visual-component/visual-graph/visual-graph.component';
 import { VisualEditorComponent } from './editors/visual-component/visual-editor/visual-editor.component';
@@ -29,7 +28,6 @@ import { VisualEditorComponent } from './editors/visual-component/visual-editor/
     CodeSideNavComponent,
     CodeEditorComponent,
     VisualSideNavComponent,
-    VisualObjectRemoverComponent,
     VisualBuilderComponent,
     VisualGraphComponent,
     VisualEditorComponent

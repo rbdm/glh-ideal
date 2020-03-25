@@ -38,6 +38,7 @@ export class GraphOptions {
     width: number
 
     nodeDragBehaviour: any
+    nodeClickBehaviour: any
     color: any
 
     constructor(height: number, width: number, nodeDragBehaviour?: any, color?: any) {

@@ -97,8 +97,7 @@ export class ForceGraph {
             .selectAll("line")
             .data(links)
             .join("line")
-            .attr("stroke-width", (d: GraphLink) => d.weight)
-            // .attr("marker-end", "url(#triangle)")
+            .attr("stroke-width", (d: GraphLink) => d.weight*2)
             .on("click", (d: GraphLink) => {
                 const currentTarget = d3.event.currentTarget 
                 const color = d3.select(currentTarget).attr("stroke") == "orange" ? this.options.color : "orange"
@@ -108,42 +107,16 @@ export class ForceGraph {
     }
 
     initSVG() {
-        if (this.graphElement) {
-            var svg = d3.select(this.graphElement)
+        if (!this.graphElement) {
+            throw Error('Graph element selected for D3.js is undefined.')
+        }
+
+        var svg = d3.select(this.graphElement)
             .append("svg")
             .attr("width", this.options.width)
             .attr("height", this.options.height)
-            // .call(
-            //     d3.zoom().on("zoom", () => {
-            //         svg.attr("transform", d3.event.transform)
-            //     }).scaleExtent([0.5, 2.0])
-            // )
             .append("g")
             .attr("transform", "translate(" + 1 + "," + 1 + ")");
-        } else {
-            throw Error('Graph element selected for D3.js is undefined.')
-        }
-    
-        // svg.append("svg:defs")
-        //     .append("svg:marker")
-        //     .attr("id", "triangle")
-        //     .attr("refX", 17)
-        //     .attr("refY", 6)
-        //     .attr("markerWidth", 13)
-        //     .attr("markerHeight", 13)
-        //     .attr("markerUnits","userSpaceOnUse")
-        //     .attr("orient", "auto")
-        //     .append("path")
-        //     .attr("d", "M 0 0 12 6 0 12 3 6")
-        //     .style("fill", "black");
-
-        // svg.append("path")
-        //     .attr("marker-end", "url(#triangle)")
-        //     .attr("stroke", "grey")
-        //     .attr("stroke-width", "1.5")          
-        //     .attr("fill", "transparent")
-        //     .attr("class", "edges")
-
         this.svg = svg
     }
 
@@ -166,7 +139,7 @@ export class ForceGraph {
     }
 
     refreshNodes(nodes: any) {
-        var nodeRadius: number = 5
+        var nodeRadius: number = 7
 
         this.nodes = this.nodes
             .data(nodes)
@@ -194,10 +167,10 @@ export class ForceGraph {
             .join("line")
             .attr("marker-end", "url(#triangle)")
             .on('mouseenter', (d: GraphLink) => {
-                d3.select(d3.event.currentTarget).attr("stroke-width", () => d.weight * 2)
+                d3.select(d3.event.currentTarget).attr("stroke-width", () => d.weight * 4)
             })
             .on('mouseleave', (d: GraphLink) => {
-                d3.select(d3.event.currentTarget).attr("stroke-width", () => d.weight)
+                d3.select(d3.event.currentTarget).attr("stroke-width", () => d.weight * 2)
             })
             .on("click", (d: GraphLink) => {
                 const currentTarget = d3.event.currentTarget 

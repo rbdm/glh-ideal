@@ -1,5 +1,5 @@
 <mat-sidenav-container style="height: 94.5%;">
-    <mat-sidenav mode="side" opened>
+    <mat-sidenav mode="side" opened #autosize>
         <div>
             <h1>
                 Quick Access Tools
@@ -10,10 +10,6 @@
         <br>
         <div *ngIf="globallySelected.selectedNodes.length > 0 || globallySelected.selectedLinks.length > 0">
             <app-visual-editor></app-visual-editor>
-        </div>
-
-        <div *ngIf='globallySelected.selectedNodes.length > 0' style="left: 0; bottom: 0; position: absolute;">
-            <app-visual-object-remover></app-visual-object-remover>
         </div>
     </mat-sidenav>
 
