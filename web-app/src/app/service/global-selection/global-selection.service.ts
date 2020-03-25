@@ -70,8 +70,18 @@ export class GlobalSelectionService {
     this.selectedLinks.splice(index, 1)
   }
 
+  deselectAll() {
+    this.deselectAllNodes()
+    this.deselectAllLinks()
+  }
+
   deselectAllNodes() {
     this.selectedNodes = []
+    this.notifySubscribers(null, [GlobalSelectionEventKind.GlobalDeselection])
+  }
+
+  deselectAllLinks() {
+    this.selectedLinks = []
     this.notifySubscribers(null, [GlobalSelectionEventKind.GlobalDeselection])
   }
 

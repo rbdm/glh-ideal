@@ -38,7 +38,19 @@ export class AdjacencyMatrix {
     }
 
     get(i: number, j: number): any {
-      return this.innerMatrix.subset(mathjs.index(i, j))
+      if (this.length > i && this.length > j) {
+        return this.innerMatrix.subset(mathjs.index(i, j))
+      } else {
+        throw Error('The index passed to the adjacency matrix exceeded the number of rows or columns')
+      }
+    }
+
+    set(i: number, j: number, element: any) {
+      if (this.length < i && this.length < j) {
+        this.innerMatrix.subset(mathjs.index(i, j), element)
+      } else {
+        throw Error('The index passed to the adjacency matrix exceeded the number of rows or columns')
+      }
     }
 
     addDisconnectedVertex() {

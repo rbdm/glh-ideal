@@ -23,6 +23,8 @@
     <h2>Selected Links</h2>
 
     <div *ngFor='let link of globalSelection.selectedLinks'>
+        <h5>A link of {{link.classType}} from {{link.sourceNode?.prettyID}} to {{link.destinationNode?.prettyID}} </h5>
+
         <form class="form-group" [formGroup]="link.editorFormGroup">
             <input
                 class="form-control" 

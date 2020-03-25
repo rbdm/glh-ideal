@@ -40,7 +40,7 @@ export class ForceGraph {
 
         this.simulation = d3
             .forceSimulation(nodes)
-            .force("link", d3.forceLink(links).id((d: any) => d.id).distance(d => 60 + d.weight/2))
+            .force("link", d3.forceLink(links).id((d: any) => d.id).distance((d: GraphLink) => 60 + d.weight/2))
             .force("charge", d3.forceManyBody() )
             .force("center", d3.forceCenter(width / 2, height / 2))
             .on("tick", this.tickBehaviour());
@@ -99,7 +99,12 @@ export class ForceGraph {
             .join("line")
             .attr("stroke-width", (d: GraphLink) => d.weight)
             // .attr("marker-end", "url(#triangle)")
-            .on("click", (d: any) => this.notifySubscribers(d, GraphListenerEventKind.OnLinkClick))
+            .on("click", (d: GraphLink) => {
+                const currentTarget = d3.event.currentTarget 
+                const color = d3.select(currentTarget).attr("stroke") == "orange" ? this.options.color : "orange"
+                d3.select(d3.event.currentTarget).attr("stroke", color)
+                this.notifySubscribers({source: d.source, destination:  d.target}, GraphListenerEventKind.OnLinkClick)
+            });
     }
 
     initSVG() {

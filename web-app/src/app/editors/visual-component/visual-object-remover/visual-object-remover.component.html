@@ -1,8 +1,17 @@
 <div *ngIf='globalSelection.selectedNodes.length > 0'>
-    <button style="margin: 5px;" class="btn btn-danger" (click)="removeAll()" >
+    <button style="margin: 5px;" class="btn btn-danger" (click)="removeAllNodes()" >
         <mat-icon style="position: absolute; left: 5px"> delete </mat-icon>
         <div style="padding-left: 15px; padding-top: 2.5px;">
             Nodes
+        </div>
+    </button>
+</div>
+
+<div *ngIf='globalSelection.selectedLinks.length > 0'>
+    <button style="margin: 5px;" class="btn btn-danger" (click)="removeAllNodes()" >
+        <mat-icon style="position: absolute; left: 5px"> delete </mat-icon>
+        <div style="padding-left: 15px; padding-top: 2.5px;">
+            Links
         </div>
     </button>
 </div>

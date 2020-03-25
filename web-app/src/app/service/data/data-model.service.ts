@@ -1,3 +1,5 @@
+// This should all be split into two services...
+
 import { Injectable } from '@angular/core';
 import { AdjacencyMatrix } from './matrix/adjacency-matrix';
 import { DataEventKind, DataEvent } from './data-event';
@@ -76,6 +78,21 @@ export class DataModelService {
     this.nodeStorage.splice(node, 1)
 
     this.notifySubscribers(node, [DataEventKind.MatrixUpdate])
+  }
+
+  removeLegalLink(link: LegalObjectLink<LegalLinkData>) {
+    if (link.sourceNode && link.destinationNode){
+      const sourceID: number = this.lookUpNodeMachineID(link.sourceNode)
+      const destinationID: number = this.lookUpNodeMachineID(link.destinationNode)
+      
+      if (sourceID > 0 && destinationID > 0) {
+        this.matrix.set(sourceID, destinationID, 0)
+      } else {
+        throw Error('Could not recover source and destination NodeID for the selected link.')
+      }
+    } else {
+      throw Error('Undefined sourceNode and destinationNode in selected link.')
+    }
   }
 
   private notifySubscribers(machineID: number, eventKinds: DataEventKind[]) {

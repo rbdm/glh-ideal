@@ -29,6 +29,6 @@ export class VisualEditorComponent implements OnInit {
   onSubmit() {
     for (let node of this.globalSelection.selectedNodes) node.update()
     for (let link of this.globalSelection.selectedLinks) link.update()
-    this.globalSelection.deselectAllNodes()
+    this.globalSelection.deselectAll()
   }
 }

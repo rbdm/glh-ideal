@@ -17,9 +17,15 @@ export class VisualObjectRemoverComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  removeAll() {
+  removeAllNodes() {
     for (let node of this.globalSelection.selectedNodes) {
       this.dataModel.removeLegalObject(node)
+    }
+  }
+
+  removeAllLinks() {
+    for (let link of this.globalSelection.selectedLinks) {
+      this.dataModel.removeLegalLink(link)
     }
   }
 }

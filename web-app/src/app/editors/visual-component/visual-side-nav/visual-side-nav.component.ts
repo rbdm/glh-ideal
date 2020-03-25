@@ -6,6 +6,7 @@ import { DataEvent } from 'src/app/service/data/data-event';
 import { GraphListenerEvent, GraphListenerEventKind } from 'src/app/service/graph/graph-event';
 import { GlobalSelectionService } from 'src/app/service/global-selection/global-selection.service';
 import { GlobalSelectionEvent } from 'src/app/service/global-selection/global-selection-event';
+import { GraphNode } from 'src/app/service/graph/graph-types';
 
 @Component({
   selector: 'app-visual-side-nav',
@@ -43,9 +44,9 @@ export class VisualSideNavComponent implements OnInit {
           this.globallySelected.toggleNodeByID(event.eventSelector)
       
       case GraphListenerEventKind.OnLinkClick:
-        const sourceID = event.eventSelector.source
-        const destinationID = event.eventSelector.destination
-        
+        const sourceID: GraphNode = event.eventSelector.source
+        const destinationID: GraphNode = event.eventSelector.destination
+
         if (sourceID && destinationID) {
             const legalLink = this.dataModel.lookUpLinkByNodeID(sourceID.id, destinationID.id)
             this.globallySelected.toggleLink(legalLink)

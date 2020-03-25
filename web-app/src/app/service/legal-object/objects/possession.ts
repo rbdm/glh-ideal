@@ -63,7 +63,6 @@ export class Possession extends LegalObjectLink<PossessionData> {
 
         const description: string = controls[0].value
         this.objectData.description = description
-        console.log(this)
     }
 
     constructor(
