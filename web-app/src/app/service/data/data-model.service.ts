@@ -15,6 +15,10 @@ export class DataModelService {
   matrix: AdjacencyMatrix = new AdjacencyMatrix()
   nodeStorage: LegalObject<LegalData>[] = []
 
+  public get nodePrettyID(): string[] {
+    return this.nodeStorage.map(value => value.prettyID)
+  }
+
   lookUpNode(nodeID: number): LegalObject<LegalData> {
     return this.nodeStorage[nodeID]
   }
@@ -68,20 +72,10 @@ export class DataModelService {
       node = this.lookUpNodeMachineID(node)
     }
 
-    console.log(this.nodeStorage)
-    console.log(this.matrix)
-
     this.matrix.removeVertex(node)
     this.nodeStorage.splice(node, 1)
 
-    console.log(this.nodeStorage)
-    console.log(this.matrix)
-
     this.notifySubscribers(node, [DataEventKind.MatrixUpdate])
-  }
-
-  getPrettyID(): string[] {
-    return this.nodeStorage.map(value => value.prettyID)
   }
 
   private notifySubscribers(machineID: number, eventKinds: DataEventKind[]) {

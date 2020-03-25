@@ -9,6 +9,14 @@ import { LegalObjectService } from 'src/app/service/legal-object/legal-object.se
   styleUrls: ['./visual-editor.component.css']
 })
 export class VisualEditorComponent implements OnInit {
+  typeAheadOptions: any = {
+    minLength: 0,
+    singleWords: true,
+    scrollable: true,
+    optionsInScrollableView: 5,
+    hideResultsOnBlur: true
+  }
+
   constructor(
     public globalSelection: GlobalSelectionService,
     public dataModel: DataModelService,
@@ -19,9 +27,8 @@ export class VisualEditorComponent implements OnInit {
   }
 
   onSubmit() {
-    for (let node of this.globalSelection.selectedNodes) {
-      node.update()
-    }
+    for (let node of this.globalSelection.selectedNodes) node.update()
+    for (let link of this.globalSelection.selectedLinks) link.update()
     this.globalSelection.deselectAllNodes()
   }
 }

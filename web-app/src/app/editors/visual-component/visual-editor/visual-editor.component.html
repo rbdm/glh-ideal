@@ -1,21 +1,72 @@
-<h1>Selected Nodes</h1>
+<div *ngIf='globalSelection.selectedNodes.length > 0'>
+    <h2>Selected Nodes</h2>
 
-<div *ngFor='let node of globalSelection.selectedNodes'>
-    <form class="form-group" style="margin-bottom: 20px;" [formGroup]="node.editorFormGroup">
-        <div formArrayName="inner">
-            <div *ngFor="let field of node.editorFormArray.controls; let i=index">
-                <input 
-                    class="form-control" 
-                    style="margin-top: 5px;"
-                    type="text" 
-                    [formControlName]="i"
-                    [placeholder]="node.editorFormPlaceholders[i]"
-                    >
+    <div *ngFor='let node of globalSelection.selectedNodes'>
+        <form class="form-group" style="margin-bottom: 20px;" [formGroup]="node.editorFormGroup">
+            <div formArrayName="inner">
+                <div *ngFor="let field of node.editorFormArray.controls; let i=index">
+                    <input 
+                        class="form-control" 
+                        style="margin-top: 5px;"
+                        type="text" 
+                        [formControlName]="i"
+                        [placeholder]="node.editorFormPlaceholders[i]"
+                        >
+                </div>
             </div>
-        </div>
-    </form>
-    <hr>
+        </form>
+        <hr>
+    </div>
+</div>
+
+<div *ngIf='globalSelection.selectedLinks.length > 0'>
+    <h2>Selected Links</h2>
+
+    <div *ngFor='let link of globalSelection.selectedLinks'>
+        <form class="form-group" [formGroup]="link.editorFormGroup">
+            <input
+                class="form-control" 
+                style="margin-top: 5px;"
+                type="text" 
+                [formControlName]="'sourceNode'"
+                [placeholder]="'From'"
+                [typeahead]="dataModel.nodePrettyID"
+                [typeaheadMinLength]="typeAheadOptions.minLength"
+                [typeaheadSingleWords]="typeAheadOptions.singleWords"
+                [typeaheadScrollable]="typeAheadOptions.scrollable"
+                [typeaheadOptionsInScrollableView]="typeAheadOptions.optionsInScrollableView"
+                [typeaheadHideResultsOnBlur]="typeAheadOptions.hideResultsOnBlur"
+            >
+            <input
+                class="form-control" 
+                style="margin-top: 5px;"
+                type="text" 
+                [formControlName]="'destinationNode'"
+                [placeholder]="'To'"
+                [typeahead]="dataModel.nodePrettyID"
+                [typeaheadMinLength]="typeAheadOptions.minLength"
+                [typeaheadSingleWords]="typeAheadOptions.singleWords"
+                [typeaheadScrollable]="typeAheadOptions.scrollable"
+                [typeaheadOptionsInScrollableView]="typeAheadOptions.optionsInScrollableView"
+                [typeaheadHideResultsOnBlur]="typeAheadOptions.hideResultsOnBlur"
+            >
+        </form>
+
+        <form class="form-group" style="margin-bottom: 20px;" [formGroup]="link.editorFormGroup">
+            <div formArrayName="inner">
+                <div *ngFor="let field of link.editorFormArray.controls; let i=index">
+                    <input 
+                        class="form-control" 
+                        style="margin-top: 5px;"
+                        type="text" 
+                        [formControlName]="i"
+                        [placeholder]="link.editorFormPlaceholders[i]"
+                        >
+                </div>
+            </div>
+        </form>
+        <hr>
+    </div>
 </div>
 
 <button style="margin-top: 10px;" class="btn btn-primary" (click)="onSubmit()">Confirm Changes</button>
-
