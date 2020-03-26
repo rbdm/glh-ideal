@@ -84,8 +84,7 @@ export class DataModelService {
     if (link.sourceNode && link.destinationNode){
       const sourceID: number = this.lookUpNodeMachineID(link.sourceNode)
       const destinationID: number = this.lookUpNodeMachineID(link.destinationNode)
-      
-      if (sourceID > 0 && destinationID > 0) {
+      if (sourceID >= 0 && destinationID >= 0) {
         this.matrix.set(sourceID, destinationID, 0)
       } else {
         throw Error('Could not recover source and destination NodeID for the selected link.')

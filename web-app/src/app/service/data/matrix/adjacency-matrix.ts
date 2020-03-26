@@ -46,7 +46,7 @@ export class AdjacencyMatrix {
     }
 
     set(i: number, j: number, element: any) {
-      if (this.length < i && this.length < j) {
+      if (this.length > i && this.length >  j) {
         this.innerMatrix.subset(mathjs.index(i, j), element)
       } else {
         throw Error('The index passed to the adjacency matrix exceeded the number of rows or columns')
