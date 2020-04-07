@@ -201,10 +201,14 @@ A \texttt{Role} defines the \textit{legal personality} of a \texttt{Node} by cap
 	[ \ \exists \ N' \subset N_n \ ] \implies [ \ \text{$N_n$ is reducible} \ ] 
 \end{align}
 
-A \texttt{Role} which is reducible is an \textit{extension} or \textit{composition} of another \texttt{Role}, and the \texttt{Role} objects which are extended are called the \textit{components of the extension}. The extended \texttt{Role} will automatically import any components of the extension objects into its own definition. Furthermore, whilst an automorphic \texttt{Link} over an irreducible \texttt{Role} is undefined behaviour, an extension can freely modify any components.
+A \texttt{Role} which is reducible is an \textit{extension} or \textit{composition} of another \texttt{Role}, and the \texttt{Role} objects which are extended are called the \textit{components of the extension}. The extended \texttt{Role} will automatically import any components of the extension objects into its own definition. We denote an extension using subset notation, such that the following indicates $\texttt{Role}_i$ is an extension of $\texttt{Role}_j$: $\texttt{Role}_j \subset \texttt{Role}_i$.
 
-% \paragraph{Role Substitution.} 
+% Furthermore, whilst an automorphic \texttt{Link} over an irreducible \texttt{Role} is undefined behaviour, an extension can freely modify any components.
 
+\paragraph{Role Substitution.} Given that an extension implies any components, a \texttt{Node} with multiple \texttt{Role} objects \textit{may} replace any \texttt{Role} with an extension:
+\begin{align}
+( \ \texttt{Role}_j \subset \texttt{Role}_i \ ) \implies ( \ \texttt{Role}_i \implies \texttt{Role}_j \ )
+\end{align}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LINKS AND CONSEQUENCES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -221,7 +225,7 @@ A \texttt{Link} is a directed, pairwise relationship between a source, $\texttt{
 	Consider a contract, $\mathcal{C}$, between Alice, $\mathcal{A}$, and Bob, $\mathcal{B}$. We define $\mathcal{C}$ as a \texttt{SourceOfLaw}, and both $\mathcal{A}$ and $\mathcal{B}$ as parties to the contract. Consequently, there are two links: $\texttt{Link}_{\mathcal{A} \rightarrow \mathcal{C}}$ and $\texttt{Link}_{\mathcal{B} \rightarrow \mathcal{C}}$. The \texttt{Consequence} of any \texttt{Link} with $\mathcal{C}$ is that both $\mathcal{A}$ and $\mathcal{B}$ are bound by the contract, and whatever \texttt{Role} objects they possess are modified accordingly. Furthermore, the \texttt{Role} assigned to $\mathcal{A}$ and $\mathcal{B}$ as 'parties to the contract' is an extension of the 'legal person' role, and it is therefore implied under (\ref{eq:role-extension}).
 }
 
-
+\pagebreak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DRAFT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \paragraph{Compliance and Deviation.} A lawyer constructs a \texttt{Link(Consequence)} by analysing the \texttt{Role} of an object relative to a set of legal conditions. We define both compliance and deviation as:

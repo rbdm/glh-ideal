@@ -10,9 +10,9 @@
 \contentsline {paragraph}{Role Composition.}{4}{section*.5}%
 \contentsline {paragraph}{Role Substitution.}{5}{section*.6}%
 \contentsline {subsubsection}{\numberline {1.1.2}Links and Consequences}{5}{subsubsection.1.1.2}%
-\contentsline {paragraph}{Compliance and Deviation.}{5}{section*.7}%
-\contentsline {section}{\numberline {2}Appendix A}{6}{section.2}%
-\contentsline {subsection}{\numberline {2.1}\textit {Belgrave Nominees v Barlin-Scott Airconditioning (Aust.)}}{6}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Mathematical Abstraction of a Legal Case}{7}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}A Starting Point}{7}{subsection.2.3}%
-\contentsline {paragraph}{Equivalence.}{7}{section*.8}%
+\contentsline {paragraph}{Compliance and Deviation.}{6}{section*.7}%
+\contentsline {section}{\numberline {2}Appendix A}{7}{section.2}%
+\contentsline {subsection}{\numberline {2.1}\textit {Belgrave Nominees v Barlin-Scott Airconditioning (Aust.)}}{7}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Mathematical Abstraction of a Legal Case}{8}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}A Starting Point}{8}{subsection.2.3}%
+\contentsline {paragraph}{Equivalence.}{8}{section*.8}%
