@@ -7,12 +7,13 @@
 \contentsline {paragraph}{Sources of Law.}{4}{section*.3}%
 \contentsline {subsubsection}{\numberline {1.1.1}The Role Object}{4}{subsubsection.1.1.1}%
 \contentsline {paragraph}{Equivalence of Roles.}{4}{section*.4}%
-\contentsline {paragraph}{Role Composition.}{4}{section*.5}%
-\contentsline {paragraph}{Role Substitution.}{5}{section*.6}%
+\contentsline {paragraph}{Role Extension.}{4}{section*.5}%
 \contentsline {subsubsection}{\numberline {1.1.2}Links and Consequences}{5}{subsubsection.1.1.2}%
-\contentsline {paragraph}{Compliance and Deviation.}{6}{section*.7}%
-\contentsline {section}{\numberline {2}Appendix A}{7}{section.2}%
-\contentsline {subsection}{\numberline {2.1}\textit {Belgrave Nominees v Barlin-Scott Airconditioning (Aust.)}}{7}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Mathematical Abstraction of a Legal Case}{8}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}A Starting Point}{8}{subsection.2.3}%
-\contentsline {paragraph}{Equivalence.}{8}{section*.8}%
+\contentsline {paragraph}{Hooking a Link.}{5}{section*.6}%
+\contentsline {paragraph}{Consequence.}{5}{section*.7}%
+\contentsline {paragraph}{Compliance and Deviation.}{7}{section*.8}%
+\contentsline {section}{\numberline {2}Appendix A}{8}{section.2}%
+\contentsline {subsection}{\numberline {2.1}\textit {Belgrave Nominees v Barlin-Scott Airconditioning (Aust.)}}{8}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Mathematical Abstraction of a Legal Case}{9}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}A Starting Point}{9}{subsection.2.3}%
+\contentsline {paragraph}{Equivalence.}{9}{section*.9}%

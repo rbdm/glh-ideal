@@ -23,6 +23,8 @@
 
 \usepackage{tikz}
 \usetikzlibrary{arrows,decorations.markings}
+\usetikzlibrary{matrix, positioning, fit}
+
 
 
 
@@ -37,14 +39,14 @@
 
 \newmdtheoremenv[
 	linecolor=IdealColour,
-	leftmargin=60,
-	rightmargin=40,
+	leftmargin=0,
+	rightmargin=0,
 	outerlinecolor=IdealColour,
 	outerlinewidth=2,
 	roundcorner=60pt,
 	backgroundcolor=white,
 	innertopmargin=10pt,
-]{example}{Example}[section]
+]{diagram}{Diagram}[section]
 
 \newmdtheoremenv[
 	linecolor=IdealColour,
@@ -171,14 +173,14 @@ Our goal is to define a mathematical structure for $\mathcal{R}$ which encodes l
 
 Generally, a lawyer functions as a mechanism for identifying the \textit{existence} or \textit{non-existence} of a legal relationship between \textit{objects}, as well as the extrapolation of any implications for a client. 
 
-\paragraph{Facts, Nodes and the NodeState.} We describe a legal object as a \texttt{Node}, and define the \textit{factual} actions, attributes or character of the \texttt{Node} as the \texttt{NodeState}. The $\texttt{NodeState}_n$ is a set of $n$ \texttt{Fact} objects, $\texttt{NodeState}_n = \{ \ \texttt{Fact}_0, .., \ \texttt{Fact}_n \ \}$, which are generated and edited by an oracle, $\mathcal{F}$: % In the below, does a set of n always imply a nodestate of n?
+\paragraph{Facts, Nodes and the NodeState.} We describe a legal object as a \texttt{Node}, and define the admissible \textit{factual} actions, attributes or character of the \texttt{Node} as the \texttt{NodeState}. The $\texttt{NodeState}_n$ is an unordered set of $n$  \texttt{Fact} objects which are generated and edited by an oracle, $\mathcal{F}$, in combination with a \texttt{SourceOfLaw}: % In the below, does a set of n always imply a nodestate of n?
 \begin{align}
-	\mathcal{F}: [ \ \{ \ \texttt{Fact}_0, .., \ \texttt{Fact}_n \ \} \rightarrow \texttt{NodeState}_n \ \ ] \\
-	\mathcal{F}: [ \ (\texttt{Fact}, \ \texttt{NodeState}_n) \rightarrow \texttt{NodeState}_{n+1} \ ] \\
-	\mathcal{F}: [ \ \texttt{NodeState}_n \rightarrow \texttt{NodeState}_{n-1} \ ]
+	\mathcal{F}: (\texttt{SourceOfLaw}, \ \{ \ \texttt{Fact}_0, .., \ \texttt{Fact}_n \ \}) \rightarrow \texttt{NodeState}_n \\
+	\mathcal{F}: (\texttt{Fact}, \ \texttt{NodeState}_n) \rightarrow \texttt{NodeState}_{n'} \\
+	\mathcal{F}: \texttt{NodeState}_n \rightarrow \texttt{NodeState}_{n''}
 \end{align}
 
-\paragraph{Sources of Law.} A \texttt{SourceOfLaw} defines the conditions, attributes or characteristics which are required in order to generate the \texttt{Role} (\ref{section:role-object})  associated with a \texttt{NodeState}. Concretely, these are objects such as legislation or common law which have the inherent capacity to generate legal rights or obligations.
+\paragraph{Sources of Law.} A \texttt{SourceOfLaw} defines the conditions, attributes or characteristics which are required for the oracle to generate the \texttt{Role} (\ref{section:role-object})  associated with a \texttt{NodeState}. Concretely, these are objects such as legislation or common law which have the inherent capacity to generate legal rights or obligations.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% ROLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -195,20 +197,27 @@ A \texttt{Role} defines the \textit{legal personality} of a \texttt{Node} by cap
 [ \ \texttt{Role}_i = \texttt{Role}_j \ ] \iff [ \ (\texttt{NodeState}_i \iff \texttt{NodeState}_j) \land (\texttt{SourceOfLaw}_i \iff \texttt{SourceOfLaw}_j) \ ]
 \end{equation}
 
-\paragraph{Role Composition.} The \texttt{NodeState} of a \texttt{Node} can generate multiple \texttt{Role} objects \textit{iff} the (\texttt{NodeState, SourceOfLaw}) pair are distinct under (\ref{eq:role-equivalence}). A \texttt{Role} is \textit{reducible} where a subset of the generative pair (\texttt{NodeState, SourceOfLaw}) can produce another distinct \texttt{Role}:
+\paragraph{Role Extension.} The \texttt{NodeState} of a \texttt{Node} can generate multiple \texttt{Role} objects \textit{iff} the (\texttt{NodeState, SourceOfLaw}) pair are distinct under (\ref{eq:role-equivalence}). A \texttt{Role} is \textit{reducible} where a subset of the generative pair (\texttt{NodeState, SourceOfLaw}) can produce another distinct \texttt{Role}:
 \begin{align}
-	N_n := \{ \ \texttt{Fact}_0, .., \ \texttt{Fact}_n \ \} \\
-	[ \ \exists \ N' \subset N_n \ ] \implies [ \ \text{$N_n$ is reducible} \ ] 
+	[ \ N := \{ \texttt{Fact}_0, .., \texttt{Fact}_n \} \ ] \land [ \ M := \{ \texttt{Fact}_0, .., \texttt{Fact}_m \} \ ] : [ \ M \subset N \ ] \\
+	[ \ \texttt{NodeState}_i = \mathcal{F}(N) \ ] : \ [ \ \texttt{Role}_i = \mathcal{F}(\texttt{NodeState}_i, \ \texttt{SourceOfLaw}_i) \ ] \\
+	[ \ \texttt{NodeState}_j = \mathcal{F}(M) \ ] : \ [ \ \texttt{Role}_j = \mathcal{F}(\texttt{NodeState}_j, \texttt{SourceOfLaw}_j) \ ] \\
+	\qquad \implies [ \ \texttt{$N$ is \textit{reducible}} \ ]
 \end{align}
 
-A \texttt{Role} which is reducible is an \textit{extension} or \textit{composition} of another \texttt{Role}, and the \texttt{Role} objects which are extended are called the \textit{components of the extension}. The extended \texttt{Role} will automatically import any components of the extension objects into its own definition. We denote an extension using subset notation, such that the following indicates $\texttt{Role}_i$ is an extension of $\texttt{Role}_j$: $\texttt{Role}_j \subset \texttt{Role}_i$.
+A \texttt{Role} which is reducible is an \textit{extension} of another \texttt{Role}, and the \texttt{Role} objects which are extended are called the \textit{components of the extension}. The extended \texttt{Role} will automatically import any components of the extension objects into its own definition. We denote an extension using subset notation, such that the following indicates $\texttt{Role}_i$ is an extension of $\texttt{Role}_j$: 
+\begin{equation}
+\texttt{Role}_j \subset \texttt{Role}_i
+\end{equation}
 
-% Furthermore, whilst an automorphic \texttt{Link} over an irreducible \texttt{Role} is undefined behaviour, an extension can freely modify any components.
-
-\paragraph{Role Substitution.} Given that an extension implies any components, a \texttt{Node} with multiple \texttt{Role} objects \textit{may} replace any \texttt{Role} with an extension:
+Given that an extension implies any components, a \texttt{Node} with multiple \texttt{Role} objects \textit{may} replace any \texttt{Role} with an extension:
 \begin{align}
 ( \ \texttt{Role}_j \subset \texttt{Role}_i \ ) \implies ( \ \texttt{Role}_i \implies \texttt{Role}_j \ )
 \end{align}
+
+We distinguish a \texttt{Role} extension from a \texttt{Role} \textit{composition}, by defining a composition as a set of distinct \texttt{Role} objects without an extension. % This needs more thought. 
+
+% Furthermore, whilst an automorphic \texttt{Link} over an irreducible \texttt{Role} is undefined behaviour, an extension can freely modify any components.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LINKS AND CONSEQUENCES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -216,14 +225,115 @@ A \texttt{Role} which is reducible is an \textit{extension} or \textit{compositi
 
 A \texttt{Link} is a directed, pairwise relationship between a source, $\texttt{Role}_i$, and a destination, $\texttt{Role}_j$, which has been generated by a \texttt{SourceOfLaw}. Given a pair $(\texttt{Role}_i, \texttt{Role}_j)$ and an associated $\texttt{Link}_{i \rightarrow j}$ drawn by the oracle, $\texttt{Role}_j$ is mapped into $\texttt{Role}_{j'}$ under some \texttt{Consequence}:
 \begin{align}\label{eq:role-extension}
-	\mathcal{F} : (\texttt{SourceOfLaw}, \ \texttt{Role}_i, \ \texttt{Role}_j) \rightarrow [ \ \texttt{Link}_{i \rightarrow j} \ ] \\
-	\texttt{Link} \implies [ \ \texttt{Consequence} : \texttt{Role}_j \rightarrow \texttt{Role}_{j'} \ ]
+	\mathcal{F} : (\texttt{SourceOfLaw}, \ \texttt{Role}_i, \ \texttt{Role}_j) \rightarrow  \texttt{Link}_{i \rightarrow j}
 \end{align}
+
+\paragraph{Hooking a Link.} The \texttt{Hook} and \texttt{Anchor} objects are a specialisation of the \texttt{Role} object which represent the symbiotic requirements of a \texttt{Link}, and are generated under a (\texttt{SourceOfLaw, Role}) pairing. The oracle defines a \texttt{Link} by consuming a \texttt{Hook}, a \texttt{SourceOfLaw} and an \texttt{Anchor}:
+\begin{multline}
+	[ \ \mathcal{F}(\texttt{SourceOfLaw}, \ \texttt{Role}_i) = \texttt{Hook} \ ] \ \land \ [ \ \mathcal{F}(\texttt{SourceOfLaw}, \ \texttt{Role}_j) = \texttt{Anchor} \ ] \\
+	\implies \mathcal{F}: (\texttt{SourceOfLaw}, \ \texttt{Role}_i, \ \texttt{Role}_j) \rightarrow (\texttt{Hook, Anchor}) \rightarrow \texttt{Link}_{i \rightarrow j}
+\end{multline}
+
+\paragraph{Consequence.} Given a \texttt{Link} to a relationship, the oracle, $\mathcal{F}$, implies a \texttt{Consequence} from a \texttt{SourceOfLaw}:
+\begin{equation}
+	\texttt{Link}_{i \rightarrow j} \implies [ \ \mathcal{F} : \texttt{SourceOfLaw} \rightarrow \texttt{Consequence} \ ]
+\end{equation}
+
+A \texttt{Node} may be modified under the \texttt{Consequence} of a \texttt{Link}, changing either the \texttt{NodeState} or associated \texttt{Role}: 
+\begin{equation}
+	\{ \ \mathcal{F}(\texttt{Consequence, Node}) = \texttt{Node'} \ \} \implies \{ \ [ \ \texttt{NodeState} \rightarrow \texttt{NodeState'} \ ] \lor [ \ \texttt{Role}_i \rightarrow \texttt{Role}_i' \ ] \ \}
+\end{equation}
+
+The oracle subsequently \textit{walks the consequence forward} to generate or decouple any \texttt{Hook} or \texttt{Anchor} objects which have been invalidated by the \texttt{Consequence}.
 
 \vspace{0.25cm}
 \quickexample{
-	Consider a contract, $\mathcal{C}$, between Alice, $\mathcal{A}$, and Bob, $\mathcal{B}$. We define $\mathcal{C}$ as a \texttt{SourceOfLaw}, and both $\mathcal{A}$ and $\mathcal{B}$ as parties to the contract. Consequently, there are two links: $\texttt{Link}_{\mathcal{A} \rightarrow \mathcal{C}}$ and $\texttt{Link}_{\mathcal{B} \rightarrow \mathcal{C}}$. The \texttt{Consequence} of any \texttt{Link} with $\mathcal{C}$ is that both $\mathcal{A}$ and $\mathcal{B}$ are bound by the contract, and whatever \texttt{Role} objects they possess are modified accordingly. Furthermore, the \texttt{Role} assigned to $\mathcal{A}$ and $\mathcal{B}$ as 'parties to the contract' is an extension of the 'legal person' role, and it is therefore implied under (\ref{eq:role-extension}).
+
+Consider a boundary dispute between $\mathcal{A}lice$ and $\mathcal{B}ob$ on two adjacent plots of land: $\mathcal{L}_a$ and $\mathcal{L}_b$. In this case, $\mathcal{A}lice$ is the owner of $\mathcal{L}_a$, and $\mathcal{B}ob$ is the owner of $\mathcal{L}_a$. We are attempting to define whether it is permissible for $\mathcal{A}lice$ to build a structure by defining a boundary line delineating the properties, called \texttt{Bound}. The graphs below snapshot a portion of the legal relationship.
+
+\begin{diagram}{$\mathcal{A}lice$ owns a parcel of land. \\ }
+\begin{minipage}{0.45\textwidth}
+\vspace{0.25cm}
+\begin{tikzpicture}[font=\ttfamily,
+  bigContainer/.style={matrix of nodes, nodes=typetag, row sep=1em},
+  smallContainer/.style={draw=gray, inner sep=1ex},  
+  typetag/.style={draw=gray, inner sep=1ex, anchor=west},
+  title/.style={draw=none, color=gray, inner sep=0pt}
+]
+%%%%%%%%% A_PERSON:	
+
+	%%%%%%%%%%% BOX AROUND A_PERSON %%%%%%%%%%%%%%
+	\coordinate (A1) at (-3, 3);
+	\coordinate (A2) at (0, 3);
+	\coordinate (A3) at (0, -1);
+	\coordinate (A4a) at (-3, -1);
+	\coordinate (A4b) at (-3, 0.5);
+	\coordinate (A4c) at (-3, 1.5);
+	\draw[-, dotted] (A1) -- (A2);
+	\draw[-, dotted] (A2) -- (A3);
+	\draw[-, dotted] (A3) -- (A4a);
+	\draw[-, dotted] (A4a) -- (A4b);	
+	\draw[-, dotted] (A4c) -- (A1);
+	
+	%%%%%%%%%%% NODES WITHIN A_PERSON %%%%%%%%%%%%%
+	\node[shape=rectangle, color=gray] (A) at (-1.5, 2.75) {$\mathcal{A}lice$};
+	\node[shape=rectangle, draw=black] (A_State) at (-1.5, 2) {Purchased $\mathcal{L}_a$};
+	\node[shape=rectangle, draw=blue] (A_Law) at (-4.5, 1) {Property Act: sX.X};
+	\node[shape=rectangle, draw=red] (A_Role) at (-1.5, -0.5) {Owner of $\mathcal{L}_a$};
+	
+	%%%%%%%%%%% LINES BETWEEN NODES WITHIN A_PERSON %%%%%%%%%%%%%%%
+	\node[shape=circle, draw=black] (A5) at (-1.5, 1) {$+$};
+	\draw[-] (A_Law) -- (A5);
+	\draw[-] (A_State) -- (A5);
+	\draw[->] (A5) -- (A_Role);
+
+%%%%%%%% A_LAND:
+
+	%%%%%%%%%%% BOX AROUND A_LAND %%%%%%%%%%%%%%
+	\coordinate (B1) at (1.5, 3);
+	\coordinate (B2a) at (4.5, 3);
+	\coordinate (B2b) at (4.5, 1.5);
+	\coordinate (B2c) at (4.5, 0.5);
+	\coordinate (B3) at (4.5, -1);
+	\coordinate (B4) at (1.5, -1);
+	\draw[-, dotted] (B1) -- (B2a);
+	\draw[-, dotted] (B2a) -- (B2b);
+	\draw[-, dotted] (B2c) -- (B3);
+	\draw[-, dotted] (B3) -- (B4);	
+	\draw[-, dotted] (B4) -- (B1);
+
+	%%%%%%%%%%% NODES WITHIN A_LAND %%%%%%%%%%%%%
+	\node[shape=rectangle, color=gray] (B) at (3, 2.75) {$\mathcal{L}_a$};
+	\node[shape=rectangle, draw=black] (B_State) at (3, 2) {$\mathcal{L}_a$ is land.};
+	\node[shape=rectangle, draw=blue] (B_Law) at (6, 1) {Property Act: sY.Y};
+	\node[shape=rectangle, draw=red] (B_Role) at (3, -0.5) {Real Property};
+
+	%%%%%%%%%% LINES BETWEEN NODES WITHIN A_LAND %%%%%%%%%%%%%%%%
+	\node[shape=circle, draw=black] (B5) at (3, 1) {$+$};
+	\draw[-] (B_Law) -- (B5);
+	\draw[-] (B_State) -- (B5);
+	\draw[->] (B5) -- (B_Role);
+	
+%%%%%%%% LINK A_PERSON -> A_LAND:
+	\coordinate (A_Person_Hook_End) at (3.1, -2);
+
+	\node[draw=blue, shape=rectangle] (A_B_Law) at (-4.5, -2) {Property Act: sZ.Z};
+	\node[draw=black, shape=circle] (A_B_Law_Link) at (-1.5, -2) {$+$};
+	\node[draw=gray, shape=circle, scale=0.06] (A_Person_Anchor) at (3, -1.5)  {\includegraphics{image/anchor.png}};
+	\node[draw=gray] (A_B_Link) at (0.75, -2) {$Owns$};
+	
+	\draw[-] (A_B_Law) -- (A_B_Law_Link);
+	\draw[-] (A_Role) -- (A_B_Law_Link);
+	\draw[-] (A_B_Law_Link) -- (A_B_Link);
+	\draw[left hook-] (A_Person_Hook_End) -- (A_B_Link);
+	\draw[-] (A_Person_Anchor) -- (B_Role);
+
+\end{tikzpicture}
+\end{minipage}
+\end{diagram}
+
 }
+
 
 \pagebreak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DRAFT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -244,7 +354,7 @@ A \texttt{Link} is a directed, pairwise relationship between a source, $\texttt{
 
 
 % TODO: Actions progress Time?
-
+% TODO: NULL value to over-ride when a source of law can't be found???
 
 
 
@@ -300,7 +410,7 @@ These are the objects involved in the \textit{Belgrave Nominees v Barlin-Scott A
 
 \pagebreak
 
-\begin{example}{A Simple Relationship.}\label{david-builds-a-fence-on-patricias-land} ~\\
+\begin{diagram}{A Simple Relationship.}\label{david-builds-a-fence-on-patricias-land} ~\\
 \textnormal{Consider the following: \textit{David builds a fence on Rosie's land without consent.}}
 
 \vspace{0.25cm}
@@ -333,7 +443,7 @@ These are the objects involved in the \textit{Belgrave Nominees v Barlin-Scott A
 We have implicitly assigned \textit{Rosie} the \texttt{Role} of superior possessor of the parcel of land. Consequently, we set $\texttt{Existence} := \texttt{Yes}$, and $\texttt{Consequence} := \texttt{Modifer}$.
 }
 
-\end{example}
+\end{diagram}
 
 
 \subsection{Mathematical Abstraction of a Legal Case}
