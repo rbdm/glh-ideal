@@ -116,14 +116,10 @@
 	\thispagestyle{empty}
 	\clearpage
 
-\part{Business}
-
-% TODO
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TECHNICAL PART %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------- TECHNICAL PART -------------------------------------%
 
 \pagebreak
-\part{Technical}
+\part{Theory}
 
 A legal matter processed in \ideal traverses four states:
 \begin{itemize}
@@ -133,7 +129,7 @@ A legal matter processed in \ideal traverses four states:
 	\item \textit{Presentation} ($\mathcal{P}$).
 \end{itemize}
 	
-We can understand \ideal as a system of \textit{plug-ins} which either generate, or commonly access and transform a unified representation of a legal matter into derivative states. Consequently, the system is a series of machines mapping $[ \ \alpha_i \in \mathcal{G} \ ] \rightarrow \mathcal{R}$, or $\mathcal{R} \rightarrow [ \ \mathbf{\alpha}_i \in \mathcal{T \cup P} \ ]$. We denote $\braket{\alpha_i}$ as a \textit{generator} state which can generate $\mathcal{R}$, and $\mathbf{\alpha}_i$ as a \textit{producible} state which be produced by some action on $\mathcal{R}$.
+We can understand \ideal as a system of \textit{plug-ins} which either generate, or commonly access and transform a unified representation of a legal matter into derivative states. Consequently, the system is a series of machines mapping $[ \ \alpha_i \in \mathcal{G \cup T \cup P} \ ] \rightarrow \mathcal{R}$, or $\mathcal{R} \rightarrow [ \ \beta_i \in \mathcal{G \cup T \cup P} \ ]$. We denote $\braket{\alpha_i}$ as a \textit{generator} state which can generate $\mathcal{R}$, and $\beta_i$ as a \textit{producible} state, which can be produced by some action on $\mathcal{R}$.
 \begin{figure}[h]
 \begin{center}
 \begin{tikzpicture}
@@ -161,17 +157,13 @@ We can understand \ideal as a system of \textit{plug-ins} which either generate,
 In this section, we define $\mathcal{R}$, and provide an example of $(\mathcal{G} \rightarrow \mathcal{R})$ and $(\mathcal{R} \rightarrow \mathcal{P})$.
 
 
-%%%%%%%%%%%% DEFINING THE REPRESENTATION %%%%%%%%%%%%%%%%%%%%%
+%---------------------- DEFINING THE REPRESENTATION -------------------------------%
 
 \section{Defining the Representation}
 
-Our goal is to define a mathematical structure for $\mathcal{R}$ which encodes legal information and maximises the number of producible states. Given that the representation is driven by the encoded legal information, we begin by discussing our generalisation of information relevant to a legal case.
+Our goal is to define a mathematical structure for $\mathcal{R}$ which encodes legal information and maximises the number of producible states. Given that the representation is driven by the encoded legal information, we begin with the idea that a lawyer is a mechanism for analysing the \textit{existence} or \textit{non-existence} of a legal relationship between \textit{objects}. 
 
-%%%%%%%%%%%%%%%%%%%%% GENERALISING THE INFORMATION IN A LEGAL CASE %%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Generalising the Information in a Legal Case}
-
-Generally, a lawyer functions as a mechanism for identifying the \textit{existence} or \textit{non-existence} of a legal relationship between \textit{objects}, as well as the extrapolation of any implications for a client. 
+%------------------------- Nodes and NodeState ----------------------------%
 
 \paragraph{Facts, Nodes and the NodeState.} We describe a legal object as a \texttt{Node}, and define the admissible \textit{factual} actions, attributes or character of the \texttt{Node} as the \texttt{NodeState}. The $\texttt{NodeState}_n$ is an unordered set of $n$  \texttt{Fact} objects which are generated and edited by an oracle, $\mathcal{F}$, in combination with a \texttt{SourceOfLaw}: % In the below, does a set of n always imply a nodestate of n?
 \begin{align}
@@ -180,11 +172,11 @@ Generally, a lawyer functions as a mechanism for identifying the \textit{existen
 	\mathcal{F}: \texttt{NodeState}_n \rightarrow \texttt{NodeState}_{n''}
 \end{align}
 
-\paragraph{Sources of Law.} A \texttt{SourceOfLaw} defines the conditions, attributes or characteristics which are required for the oracle to generate the \texttt{Role} (\ref{section:role-object})  associated with a \texttt{NodeState}. Concretely, these are objects such as legislation or common law which have the inherent capacity to generate legal rights or obligations.
+\paragraph{Sources of Law.} A \texttt{SourceOfLaw} defines the conditions, attributes or characteristics which are required for the oracle to generate both a \texttt{NodeState}, as well as the \texttt{Role} (\ref{section:role-object}) associated with a \texttt{NodeState}. Concretely, these are objects such as legislation or common law which have the inherent capacity to generate legal rights or obligations relevant to an object.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ROLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%--------------------------------- ROLE -----------------------------------------%
 
-\subsubsection{The Role Object} \label{section:role-object}
+\subsection{The Role Object} \label{section:role-object}
 
 A \texttt{Role} defines the \textit{legal personality} of a \texttt{Node} by capturing the attributes, actions, or characterstics attributable under law. A \texttt{Node} can be subject to multiple \texttt{Role} objects of arbitrary complexity, provided they are distinct under (\ref{eq:role-equivalence}). The \texttt{Role} associated with a \texttt{Node} is generated by a pair \texttt{(NodeState, SourceOfLaw)} under the oracle function, $\mathcal{F}$, and is transformable under the \texttt{Consequence} of a \texttt{Link} (\ref{section:links-and-consequences}): 
 \begin{align}	
@@ -192,64 +184,88 @@ A \texttt{Role} defines the \textit{legal personality} of a \texttt{Node} by cap
 	\texttt{Consequence} : [ \ \texttt{Role} \rightarrow \texttt{Role'} \ ]
 \end{align}
 
-\paragraph{Equivalence of Roles.} We define an equivalence relation on a pair $(\texttt{Role}_i, \ \texttt{Role}_j)$ by comparing their generating states, such that they are only pairwise distinct where the generative facts or law diverge:  
+\paragraph{Equivalence of Roles.} We define an equivalence relation on a pair $(\texttt{Role}_i, \ \texttt{Role}_j)$ by comparing their generating states, such that they are only pairwise distinct where the generative facts and law diverge:  
 \begin{equation}\label{eq:role-equivalence}
 [ \ \texttt{Role}_i = \texttt{Role}_j \ ] \iff [ \ (\texttt{NodeState}_i \iff \texttt{NodeState}_j) \land (\texttt{SourceOfLaw}_i \iff \texttt{SourceOfLaw}_j) \ ]
 \end{equation}
 
-\paragraph{Role Extension.} The \texttt{NodeState} of a \texttt{Node} can generate multiple \texttt{Role} objects \textit{iff} the (\texttt{NodeState, SourceOfLaw}) pair are distinct under (\ref{eq:role-equivalence}). A \texttt{Role} is \textit{reducible} where a subset of the generative pair (\texttt{NodeState, SourceOfLaw}) can produce another distinct \texttt{Role}:
+\paragraph{Role Extension.} The \texttt{NodeState} of a \texttt{Node} can generate multiple \texttt{Role} objects \textit{iff} the (\texttt{NodeState, SourceOfLaw}) pair are distinct under (\ref{eq:role-equivalence}). A \texttt{Role} is \textit{reducible} when a subset of the generative \texttt{NodeState} can produce another distinct \texttt{Role}:
 \begin{align}
 	[ \ N := \{ \texttt{Fact}_0, .., \texttt{Fact}_n \} \ ] \land [ \ M := \{ \texttt{Fact}_0, .., \texttt{Fact}_m \} \ ] : [ \ M \subset N \ ] \\
-	[ \ \texttt{NodeState}_i = \mathcal{F}(N) \ ] : \ [ \ \texttt{Role}_i = \mathcal{F}(\texttt{NodeState}_i, \ \texttt{SourceOfLaw}_i) \ ] \\
-	[ \ \texttt{NodeState}_j = \mathcal{F}(M) \ ] : \ [ \ \texttt{Role}_j = \mathcal{F}(\texttt{NodeState}_j, \texttt{SourceOfLaw}_j) \ ] \\
+	[ \ \texttt{NodeState}_i = \mathcal{F}(N, \texttt{SourceOfLaw}_i) \ ] : \ [ \ \texttt{Role}_i = \mathcal{F}(\texttt{NodeState}_i, \ , \texttt{SourceOfLaw}_{i'}) \ ] \\
+	[ \ \texttt{NodeState}_j = \mathcal{F}(M, , \texttt{SourceOfLaw}_j) \ ] : \ [ \ \texttt{Role}_j = \mathcal{F}(\texttt{NodeState}_j, , \texttt{SourceOfLaw}_{j'}) \ ] \\
 	\qquad \implies [ \ \texttt{$N$ is \textit{reducible}} \ ]
 \end{align}
 
 A \texttt{Role} which is reducible is an \textit{extension} of another \texttt{Role}, and the \texttt{Role} objects which are extended are called the \textit{components of the extension}. The extended \texttt{Role} will automatically import any components of the extension objects into its own definition. We denote an extension using subset notation, such that the following indicates $\texttt{Role}_i$ is an extension of $\texttt{Role}_j$: 
-\begin{equation}
-\texttt{Role}_j \subset \texttt{Role}_i
-\end{equation}
-
-Given that an extension implies any components, a \texttt{Node} with multiple \texttt{Role} objects \textit{may} replace any \texttt{Role} with an extension:
 \begin{align}
-( \ \texttt{Role}_j \subset \texttt{Role}_i \ ) \implies ( \ \texttt{Role}_i \implies \texttt{Role}_j \ )
+	\texttt{Role}_j \subset \texttt{Role}_i \\
+	[ \ \texttt{Role}_j \subset \texttt{Role}_i \ ] : [ \ \texttt{Role}_i \implies \texttt{Role}_j \ ]
 \end{align}
 
-We distinguish a \texttt{Role} extension from a \texttt{Role} \textit{composition}, by defining a composition as a set of distinct \texttt{Role} objects without an extension. % This needs more thought. 
+Given that an extension implies any components of the extension, a \texttt{Node} with multiple \texttt{Role} objects \textit{may} replace any \texttt{Role} with an extension. We distinguish a \texttt{Role} extension from a \texttt{Role} \textit{composition}, which is a set of distinct \texttt{Role} objects where there there does not exist a \texttt{Role} in the composition which is an extension of any other \texttt{Role}:
+\begin{align}
+	[ \ N := \ \{ \ \texttt{Role}_0, .., \texttt{Role}_n \ \} \ ] : [ \ \nexists (\texttt{Role}_i, \texttt{Role}_j) \in N : \texttt{Role}_i \subset \texttt{Role}_j \ ]
+\end{align}
 
-% Furthermore, whilst an automorphic \texttt{Link} over an irreducible \texttt{Role} is undefined behaviour, an extension can freely modify any components.
+% TODO: Incorporate? : Furthermore, whilst an automorphic \texttt{Link} over an irreducible \texttt{Role} is undefined behaviour, an extension can freely modify any components.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LINKS AND CONSEQUENCES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%---------------------------- LINKS AND CONSEQUENCES ---------------------------------%
 
-\subsubsection{Links and Consequences}\label{section:links-and-consequences}
+\subsection{Links and Consequences}\label{section:links-and-consequences}
 
-A \texttt{Link} is a directed, pairwise relationship between a source, $\texttt{Role}_i$, and a destination, $\texttt{Role}_j$, which has been generated by a \texttt{SourceOfLaw}. Given a pair $(\texttt{Role}_i, \texttt{Role}_j)$ and an associated $\texttt{Link}_{i \rightarrow j}$ drawn by the oracle, $\texttt{Role}_j$ is mapped into $\texttt{Role}_{j'}$ under some \texttt{Consequence}:
-\begin{align}\label{eq:role-extension}
+A \texttt{Link} is a directed, pairwise relationship between a source ($\texttt{Role}_i$) and a destination ($\texttt{Role}_j$), which has been generated with the assistance of a \texttt{SourceOfLaw}. Given a pair $(\texttt{Role}_i, \texttt{Role}_j)$ and an associated \texttt{SourceOfLaw}, the oracle may draw a $\texttt{Link}_{i \rightarrow j}$:
+\begin{align}
 	\mathcal{F} : (\texttt{SourceOfLaw}, \ \texttt{Role}_i, \ \texttt{Role}_j) \rightarrow  \texttt{Link}_{i \rightarrow j}
 \end{align}
 
-\paragraph{Hooking a Link.} The \texttt{Hook} and \texttt{Anchor} objects are a specialisation of the \texttt{Role} object which represent the symbiotic requirements of a \texttt{Link}, and are generated under a (\texttt{SourceOfLaw, Role}) pairing. The oracle defines a \texttt{Link} by consuming a \texttt{Hook}, a \texttt{SourceOfLaw} and an \texttt{Anchor}:
-\begin{multline}
+\paragraph{Hooking a Link.} The \texttt{Hook} and \texttt{Anchor} objects are a specialisation of the \texttt{Role} object which represent the directed, relational requirements of a \texttt{Link}, and are generated under a (\texttt{SourceOfLaw, Role}) pairing. The oracle defines a \texttt{Link} by consuming a (\texttt{SourceOfLaw}, \texttt{Hook}, \texttt{Anchor}) triple:
+\begin{align}
 	[ \ \mathcal{F}(\texttt{SourceOfLaw}, \ \texttt{Role}_i) = \texttt{Hook} \ ] \ \land \ [ \ \mathcal{F}(\texttt{SourceOfLaw}, \ \texttt{Role}_j) = \texttt{Anchor} \ ] \\
-	\implies \mathcal{F}: (\texttt{SourceOfLaw}, \ \texttt{Role}_i, \ \texttt{Role}_j) \rightarrow (\texttt{Hook, Anchor}) \rightarrow \texttt{Link}_{i \rightarrow j}
-\end{multline}
+	\implies \mathcal{F}: (\texttt{SourceOfLaw}, \ \texttt{Role}_i, \ \texttt{Role}_j) \rightarrow (\texttt{Hook, Anchor}) \\ 
+	\mathcal{F} : (\texttt{SourceOfLaw, Hook, Anchor}) \rightarrow \texttt{Link}_{i \rightarrow j}
+\end{align}
 
 \paragraph{Consequence.} Given a \texttt{Link} to a relationship, the oracle, $\mathcal{F}$, implies a \texttt{Consequence} from a \texttt{SourceOfLaw}:
 \begin{equation}
 	\texttt{Link}_{i \rightarrow j} \implies [ \ \mathcal{F} : \texttt{SourceOfLaw} \rightarrow \texttt{Consequence} \ ]
 \end{equation}
 
-A \texttt{Node} may be modified under the \texttt{Consequence} of a \texttt{Link}, changing either the \texttt{NodeState} or associated \texttt{Role}: 
+A \texttt{Node} may be modified under the \texttt{Consequence} of a \texttt{Link}, changing the \texttt{NodeState} or associated \texttt{Role}: 
 \begin{equation}
 	\{ \ \mathcal{F}(\texttt{Consequence, Node}) = \texttt{Node'} \ \} \implies \{ \ [ \ \texttt{NodeState} \rightarrow \texttt{NodeState'} \ ] \lor [ \ \texttt{Role}_i \rightarrow \texttt{Role}_i' \ ] \ \}
 \end{equation}
 
-The oracle subsequently \textit{walks the consequence forward} to generate or decouple any \texttt{Hook} or \texttt{Anchor} objects which have been invalidated by the \texttt{Consequence}.
+The oracle subsequently \textit{walks the consequence forward} to generate or decouple any \texttt{Hook} or \texttt{Anchor} objects which have been invalidated under the afflictions of the \texttt{Consequence}.
+
+%------------------------ Stage ---------------------------------%
+
+% there's some tension around a consequence: should it progress the stage controller?
+
+\subsection{The Stage Controller}
+
+\textit{Time} is encoded in $\mathcal{R}$ as an ordered set of $n$ distinct \texttt{Interval} objects related by a \texttt{Transition}:
+\begin{align}
+	\texttt{IntervalSet} := \ \{ \ \texttt{Interval}_0, .., \texttt{Interval}_n \ \} \\
+	\texttt{ForwardTransition} : \texttt{Interval}_i \rightarrow \texttt{Interval}_{i + 1}\\
+	\texttt{BackwardTransition} : \texttt{Interval}_i \rightarrow \texttt{Interval}_{i - 1}
+\end{align}
+
+The \texttt{BackwardTransition} and \texttt{ForwardTransition} are a specialisation of a \texttt{Transition} that form an identity map under function composition:
+\begin{align}
+	\texttt{BackwardTransition} \circ \texttt{ForwardTransition} : a \rightarrow a
+\end{align}
+
+The \texttt{TransitionSet} of an \texttt{Interval} is the minimum set of \texttt{ForwardTransition} and \texttt{BackwardTransition} objects required to reconstruct the \texttt{IntervalSet} under the oracle function, $F$:
+\begin{align}
+	\mathcal{F}: (\texttt{TransitionSet}, \texttt{Interval}) \rightarrow  \texttt{IntervalSet}
+\end{align}
+
 
 \vspace{0.25cm}
 \quickexample{
 
-Consider a boundary dispute between $\mathcal{A}lice$ and $\mathcal{B}ob$ on two adjacent plots of land: $\mathcal{L}_a$ and $\mathcal{L}_b$. In this case, $\mathcal{A}lice$ is the owner of $\mathcal{L}_a$, and $\mathcal{B}ob$ is the owner of $\mathcal{L}_a$. We are attempting to define whether it is permissible for $\mathcal{A}lice$ to build a structure by defining a boundary line delineating the properties, called \texttt{Bound}. The graphs below snapshot a portion of the legal relationship.
+Consider a boundary dispute between $\mathcal{A}lice$ and $\mathcal{B}ob$ on two adjacent plots of land: $\mathcal{L}_a$ and $\mathcal{L}_b$. In this case, $\mathcal{A}lice$ is the owner of $\mathcal{L}_a$, and $\mathcal{B}ob$ is the owner of $\mathcal{L}_b$. We are attempting to define whether it is permissible for $\mathcal{A}lice$ to build a structure by defining a boundary line delineating the properties, called \texttt{Bound}. The graphs below snapshot a portion of the legal relationship.
 
 \begin{diagram}{$\mathcal{A}lice$ owns a parcel of land. \\ }
 \begin{minipage}{0.45\textwidth}
@@ -304,7 +320,7 @@ Consider a boundary dispute between $\mathcal{A}lice$ and $\mathcal{B}ob$ on two
 
 	%%%%%%%%%%% NODES WITHIN A_LAND %%%%%%%%%%%%%
 	\node[shape=rectangle, color=gray] (B) at (3, 2.75) {$\mathcal{L}_a$};
-	\node[shape=rectangle, draw=black] (B_State) at (3, 2) {$\mathcal{L}_a$ is land.};
+	\node[shape=rectangle, draw=black] (B_State) at (3, 2) {$\mathcal{L}_a$ is land};
 	\node[shape=rectangle, draw=blue] (B_Law) at (6, 1) {Property Act: sY.Y};
 	\node[shape=rectangle, draw=red] (B_Role) at (3, -0.5) {Real Property};
 
@@ -331,6 +347,22 @@ Consider a boundary dispute between $\mathcal{A}lice$ and $\mathcal{B}ob$ on two
 \end{tikzpicture}
 \end{minipage}
 \end{diagram}
+
+% TODO: The diagram allows a NodeState without a relevant SourceOfLaw...
+% TODO: The diagram allows an anchor without a relevant SourceOfLaw...
+The above diagram (\textbf{1.1}) reflects the following:
+\begin{enumerate}
+	\item $\mathcal{A}lice$ and $\mathcal{L}_a$ are both a \texttt{Node}.
+	\item $[ \ Purchased \ \mathcal{L}_a \ ]$ and $[ \ \mathcal{L}_a \ is \ land \ ]$ are both instances of a \texttt{Fact}.
+	\item $( \ Property \ Act: \ sX.X, \ Purchased \ \mathcal{L}_a \ )$ generates the \texttt{Role} $[ \ Owner \ of \ \mathcal{L}_a \ ]$.
+	\item $( \ Property \ Act: \ sY.Y, \ \mathcal{L}_a \ is \ land \ )$ generates the \texttt{Role} $[ \ Real \ Property \ ]$.
+	\item The (\texttt{Hook}, \texttt{Anchor}) pairing below generates a \texttt{Link} $[ \ Owns \ ]$:
+	\begin{enumerate}
+		\item $( \ Property \ Act: \ sZ.Z, \ Owner \ of \ \mathcal{L}_a \ )$ generates a \texttt{Hook}.
+		\item $[ \ Real \ Property \ ]$ generates an \texttt{Anchor}.
+	\end{enumerate}
+\end{enumerate}
+
 
 }
 
