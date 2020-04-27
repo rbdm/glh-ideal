@@ -6,8 +6,10 @@
 \contentsline {subsection}{\numberline {1.1}The Role Object}{3}{subsection.1.1}%
 \contentsline {paragraph}{Equivalence of Roles.}{3}{section*.4}%
 \contentsline {paragraph}{Role Extension.}{3}{section*.5}%
-\contentsline {subsection}{\numberline {1.2}Links and Consequences}{4}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.2}Links}{4}{subsection.1.2}%
 \contentsline {paragraph}{Hooking a Link.}{4}{section*.6}%
-\contentsline {paragraph}{Consequence.}{4}{section*.7}%
-\contentsline {subsection}{\numberline {1.3}The Stage Controller}{5}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.3}Consequence}{4}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Sources of Law}{5}{subsection.1.4}%
+\contentsline {paragraph}{Application to Links.}{5}{section*.7}%
+\contentsline {subsection}{\numberline {1.5}The Stage Controller}{5}{subsection.1.5}%
 \contentsline {paragraph}{Compliance and Deviation.}{7}{section*.8}%
