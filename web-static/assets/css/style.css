@@ -264,9 +264,9 @@ span {
   border-radius: 50px;
   transition: 0.5s;
   margin-bottom: 30px;
-  border: 2px solid #6fd6ff;
-  background: #fff;
-  color: #6fd6ff;
+  border: 2px solid #fff;
+  background: #Cb6ce6;
+  color: #fff;
   text-decoration: none;
 }
 
