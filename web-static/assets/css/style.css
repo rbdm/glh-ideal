@@ -151,6 +151,10 @@ span {
   padding: 6px 0 0 0;
 }
 
+#header #logo img {
+  height: 34px;
+}
+
 #header #logo h1 {
   color: #505050;
   font-family: "Philosopher", sans-serif;
