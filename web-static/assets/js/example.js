@@ -1,4 +1,4 @@
-/********** Initialisation *********/
+/********** Canvas *********/
 var svg = d3.select("#canvas");
 var width = svg.attr("width");
 var height = svg.attr("height");
@@ -152,8 +152,8 @@ function drag_actions(d)
 function drag_end(d)
 {
     if (!d3.event.active) simulation.alphaTarget(0);
-    d.fx = d.x;
-    d.fy = d.y;
+    d.fx = null;
+    d.fy = null;
 }
 
 var drag_handler = d3.drag()
