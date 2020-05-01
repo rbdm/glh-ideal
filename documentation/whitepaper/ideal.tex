@@ -18,7 +18,7 @@
 \usepackage{parskip}
 \usepackage{mathtools}
 \usepackage{centernot}
-\usepackage{tcolorbox}
+\usepackage[most]{tcolorbox}
 
 
 \usepackage{tikz}
@@ -84,7 +84,14 @@
 \newcommand{\objectas}[2]{$\braket{#1 \ \text{as} \ #2}$}
 
 \newcommand{\quickexample}[1]{
-\begin{tcolorbox}
+\begin{tcolorbox}[%
+    enhanced, 
+    breakable,
+    frame hidden,
+    overlay broken = {
+	\draw[line width=0.01mm, black, rounded corners] (frame.north west) rectangle (frame.south east);
+},
+    ]{}
 	\textbf{Example.} #1
 \end{tcolorbox}
 }
@@ -153,9 +160,6 @@ We can understand \ideal as a system of \textit{plug-ins} which either generate,
 \end{center}
 \caption{Visualising the interactions between the states.}
 \end{figure}
-
-In this section, we define $\mathcal{R}$, and provide an example of $(\mathcal{G} \rightarrow \mathcal{R})$ and $(\mathcal{R} \rightarrow \mathcal{P})$.
-
 
 %---------------------- DEFINING THE REPRESENTATION -------------------------------%
 
@@ -250,7 +254,6 @@ Given a \texttt{SourceOfLaw}, there exists a related set of \texttt{Conditions} 
 \paragraph{Application to Links.} The \texttt{Hook} or \texttt{Anchor} required to draw a \texttt{Link} will have \texttt{Conditions} containing evaluations related to the \texttt{NodeState} of an object. The oracle, $\mathcal{F}$, will only generate a \texttt{Link} where the \texttt{Conditions} imposed by the \texttt{SourceOfLaw} are satisfied. Consequently, a \texttt{Link} will 'decouple' where a \texttt{Consequence} modifies the \texttt{NodeState} such that the evaluation of the \texttt{Conditions} of the relevant \texttt{SourceOfLaw} fail.
 
 
-
 %------------------------ Stage ---------------------------------%
 
 % there's some tension around a consequence: should it progress the stage controller?
@@ -289,9 +292,9 @@ Consider a boundary dispute between $\mathcal{A}lice$ and $\mathcal{B}ob$ on two
   typetag/.style={draw=gray, inner sep=1ex, anchor=west},
   title/.style={draw=none, color=gray, inner sep=0pt}
 ]
-%%%%%%%%% A_PERSON:	
+%----------- A_PERSON:	
 
-	%%%%%%%%%%% BOX AROUND A_PERSON %%%%%%%%%%%%%%
+	%---------- BOX AROUND A_PERSON 
 	\coordinate (A1) at (-3, 3);
 	\coordinate (A2) at (0, 3);
 	\coordinate (A3) at (0, -1);
@@ -304,21 +307,21 @@ Consider a boundary dispute between $\mathcal{A}lice$ and $\mathcal{B}ob$ on two
 	\draw[-, dotted] (A4a) -- (A4b);	
 	\draw[-, dotted] (A4c) -- (A1);
 	
-	%%%%%%%%%%% NODES WITHIN A_PERSON %%%%%%%%%%%%%
+	%---------- NODES WITHIN A_PERSON 
 	\node[shape=rectangle, color=gray] (A) at (-1.5, 2.75) {$\mathcal{A}lice$};
 	\node[shape=rectangle, draw=black] (A_State) at (-1.5, 2) {Purchased $\mathcal{L}_a$};
 	\node[shape=rectangle, draw=blue] (A_Law) at (-4.5, 1) {Property Act: sX.X};
 	\node[shape=rectangle, draw=red] (A_Role) at (-1.5, -0.5) {Owner of $\mathcal{L}_a$};
 	
-	%%%%%%%%%%% LINES BETWEEN NODES WITHIN A_PERSON %%%%%%%%%%%%%%%
+	%---------- LINES BETWEEN NODES WITHIN A_PERSON 
 	\node[shape=circle, draw=black] (A5) at (-1.5, 1) {$+$};
 	\draw[-] (A_Law) -- (A5);
 	\draw[-] (A_State) -- (A5);
 	\draw[->] (A5) -- (A_Role);
 
-%%%%%%%% A_LAND:
+%---------- A_LAND:
 
-	%%%%%%%%%%% BOX AROUND A_LAND %%%%%%%%%%%%%%
+	%---------- BOX AROUND A_LAND
 	\coordinate (B1) at (1.5, 3);
 	\coordinate (B2a) at (4.5, 3);
 	\coordinate (B2b) at (4.5, 1.5);
@@ -331,19 +334,19 @@ Consider a boundary dispute between $\mathcal{A}lice$ and $\mathcal{B}ob$ on two
 	\draw[-, dotted] (B3) -- (B4);	
 	\draw[-, dotted] (B4) -- (B1);
 
-	%%%%%%%%%%% NODES WITHIN A_LAND %%%%%%%%%%%%%
+	%---------- NODES WITHIN A_LAND 
 	\node[shape=rectangle, color=gray] (B) at (3, 2.75) {$\mathcal{L}_a$};
 	\node[shape=rectangle, draw=black] (B_State) at (3, 2) {$\mathcal{L}_a$ is land};
 	\node[shape=rectangle, draw=blue] (B_Law) at (6, 1) {Property Act: sY.Y};
-	\node[shape=rectangle, draw=red] (B_Role) at (3, -0.5) {Real Property};
+	\node[shape=rectangle, draw=red] (B_Role) at (3, -0.5) {Land };
 
-	%%%%%%%%%% LINES BETWEEN NODES WITHIN A_LAND %%%%%%%%%%%%%%%%
+	%---------- LINES BETWEEN NODES WITHIN A_LAND 
 	\node[shape=circle, draw=black] (B5) at (3, 1) {$+$};
 	\draw[-] (B_Law) -- (B5);
 	\draw[-] (B_State) -- (B5);
 	\draw[->] (B5) -- (B_Role);
 	
-%%%%%%%% LINK A_PERSON -> A_LAND:
+%--------- LINK A_PERSON -> A_LAND:
 	\coordinate (A_Person_Hook_End) at (3.1, -2);
 
 	\node[draw=blue, shape=rectangle] (A_B_Law) at (-4.5, -2) {Property Act: sZ.Z};
@@ -376,8 +379,115 @@ The above diagram (\textbf{1.1}) reflects the following:
 	\end{enumerate}
 \end{enumerate}
 
-}
+\vspace{0.25cm}
 
+The \texttt{Consequence} of the \texttt{Link} $[ \ Owns \ ]$ requires that any other \texttt{Anchor} on $\mathcal{L}_a$ satisfies the additional \texttt{Condition} of having either a superior 'property' claim in relation to $\mathcal{L}_a$, or $\mathcal{A}lice$'s consent. 
+
+\begin{diagram}{Can $\mathcal{E}ve$ walk on $\mathcal{L}_a$? \\ }
+\begin{minipage}{0.45\textwidth}
+\vspace{0.25cm}
+\begin{tikzpicture}[font=\ttfamily,
+  bigContainer/.style={matrix of nodes, nodes=typetag, row sep=1em},
+  smallContainer/.style={draw=gray, inner sep=1ex},  
+  typetag/.style={draw=gray, inner sep=1ex, anchor=west},
+  title/.style={draw=none, color=gray, inner sep=0pt}
+]
+%------------- Land
+	\coordinate (L1) at (1.5, 3);
+	\coordinate (L2) at (4.5, 3);
+	\coordinate (L3) at (4.5, 0);
+	\coordinate (L4) at (1.5, 0);
+	\draw[-, dotted] (L1) -- (L2);
+	\draw[-, dotted] (L2) -- (L3);
+	\draw[-, dotted] (L3) -- (L4);	
+	\draw[-, dotted] (L4) -- (L1);
+
+
+	\node[shape=rectangle, color=gray] (L) at (3, 2.75) {$\mathcal{L}_a$};
+	\node[shape=rectangle, draw=red] (L_Owned) at (3, 2) {Owned};
+	\node[shape=rectangle, draw=red] (L_Land) at (3.05, 1.25) {Land};
+	\node[shape=rectangle, draw=red] (L_Heritage) at (2.7, 0.5) {Heritage};
+
+	\node[draw=black, shape=circle, fill=black] (L_Owned_Consequence) at (2, 2) {};
+
+	\node[draw=black, shape=circle, fill=green] (L_Owned_Condition) at (4, 2) {};
+	\node[draw=black, shape=circle, fill=green] (L_Land_Condition) at (4, 1.25) {};
+	\node[draw=black, shape=circle, fill=red] (L_Heritage_Condition) at (4, 0.5)  {};
+	\node[draw=black, shape=circle, fill=red] (L_Builds_On_Condition) at (4.8, 0.85) {};
+
+	\draw[draw=green] (L_Owned_Condition) -- (L_Owned);
+	\draw[draw=green] (L_Land_Condition) -- (L_Land);
+	\draw[draw=red] (L_Heritage_Condition) -- (L_Heritage); 
+	\draw[draw=green] (L_Land_Condition) -| (L_Builds_On_Condition);
+	\draw[draw=red] (L_Heritage_Condition) -| (L_Builds_On_Condition);	
+
+	\draw[draw=black] (L_Owned_Consequence) -- (L_Owned);
+
+%------------- Alice
+	\coordinate (A1) at (-3, 3);
+	\coordinate (A2) at (0, 3);
+	\coordinate (A3) at (0, 0);
+	\coordinate (A4) at (-3, 0);
+
+	\draw[-, dotted] (A1) -- (A2);	
+	\draw[-, dotted] (A2) -- (A3);
+	\draw[-, dotted] (A3) -- (A4);
+	\draw[-, dotted] (A4) -- (A1);
+	
+	\node[shape=rectangle, color=gray] (A) at (-1.5, 2.75) {$\mathcal{A}lice$};
+	\node[shape=rectangle, draw=red] (A_Role) at (-1.5, 2) {Owner of $\mathcal{L}_a$};
+	\node[shape=rectangle, draw=red] (A_Person) at (-1.5, 0.85) {Person};
+
+	\path[left hook-, draw=black] (A_Role) -- node [above] {Owns} (L_Owned_Consequence);
+
+%-------------- Eve
+	\coordinate (E1) at (7, 3);
+	\coordinate (E2) at (9.5, 3);
+	\coordinate (E3) at (9.5, 0);
+	\coordinate (E4) at (7, 0);
+
+	\draw[-, dotted] (E1) -- (E2);	
+	\draw[-, dotted] (E2) -- (E3);
+	\draw[-, dotted] (E3) -- (E4);
+	\draw[-, dotted] (E4) -- (E1);
+
+	\node[shape=rectangle, color=gray] (E) at (8, 2.75) {$\mathcal{E}ve$};
+	\node[shape=rectangle, draw=red] (E_Licence) at (8.25, 2) {Licence};	
+	\node[shape=rectangle, draw=red] (E_Person) at (8.25, 0.85) {Person};
+
+	\path[right hook-, draw=green] (E_Licence) -- node [above] {Walks On} (L_Owned_Condition);
+	\path[right hook-, draw=red] (E_Person) -- node [left=0.25, above] {Builds On} (L_Builds_On_Condition);
+
+	\coordinate[below=1.5 of E_Person] (E_Person_Below); 
+	\path[draw=blue] (A_Person) |- (E_Person_Below) node [left=5, above] {Trespass} (E_Person_Below) -- (E_Person);
+
+\end{tikzpicture}
+\end{minipage}
+\end{diagram}
+
+Diagram (\textbf{1.2}) reflects that:
+\begin{enumerate}
+	\item $\mathcal{L}_a$ has the \texttt{NodeState} $[ \ Owned \ ]$.
+	\item The \texttt{NodeState} $[ \ Owned \ ]$ is a \texttt{Consequence} under the \texttt{Link} $[ \ Owns \ ]$.
+	\item The \texttt{Condition} of $[ \ Owns \ ]$ requires that any other \texttt{Anchor} on $\mathcal{L}_a$ has the \texttt{Role} $[ \ Licence \ ]$:
+\begin{enumerate}
+	\item $\mathcal{E}ve$ may walk on $\mathcal{L}_a$ because:
+	\begin{enumerate}
+		\item The $[ \ Licence \ ]$ is a \texttt{Hook} which satisfies the \texttt{Conditions} for $[ \ Walks \ On \ ]$.
+		\item $[ \ Owned \ ]$ is an \texttt{Anchor} which satisfies the \texttt{Conditions} for \texttt{Link} $[ \ Walks \ On \ ]$.
+	\end{enumerate}
+
+	\item $\mathcal{E}ve$ may \textbf{not} build on $\mathcal{L}_a$ because: 
+	\begin{enumerate}
+	\item $[ \ Person \ ]$ is a \texttt{Hook} which \textbf{does not} satisfy the \texttt{Conditions} for $[ \ Builds \ On \ ]$.
+	\item $[ \ Land \ ]$  is an \texttt{Anchor} which satisfies the \texttt{Conditions} for $[ \ Builds \ On \ ]$.
+	\item $[ \ Heritage \ ]$  is an \texttt{Anchor} which \textbf{does not} satisfy the \texttt{Conditions} for $[ \ Builds \ On \ ]$.
+	\end{enumerate}
+\end{enumerate}
+
+\end{enumerate}
+
+}
 
 \pagebreak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DRAFT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -396,11 +506,10 @@ The above diagram (\textbf{1.1}) reflects the following:
 	Continuing the previous example, we define compliance as Bob enforcing the terms of C against Alice, because Alice fulfils the relevant \texttt{Role}. Bob could not, however, enforce C against a third party, unless they also fulfilled a role which generated a \texttt{Link} to C.
 }
 
-% Midway stations...? refraction
 
 % TODO: Actions progress Time?
 % TODO: NULL value to over-ride when a source of law can't be found???
-
+% TODO: Indeterminate..? 'we don't know whether this can be satisfied...'
 
 
 
