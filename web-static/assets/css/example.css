@@ -1,10 +1,9 @@
-.node {
-    pointer-events: all;
-    cursor: pointer;
-    z-index: 1000;
+.links line {
+    stroke: #74727d;
+    stroke-opacity: 0.6;
 }
 
-
-.node text {
-    font: 8px sans-serif;
+.nodes circle {
+    stroke: black;
+    stroke-width: 1.5px;
 }
