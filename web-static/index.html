@@ -91,8 +91,8 @@
       <div class="container">
         <div class="section-title text-center">
 
-          <h2>~ Tagline ~</h2>
-          <p class="separator">Integer cursus bibendum augue ac cursus .</p>
+          <h2>Productive Legal Analysis</h2>
+          <p class="separator">A powerful abstraction uplifting legal development tools to a world class standard.</p>
 
         </div>
       </div>
@@ -104,8 +104,8 @@
             <div class="feature-block">
 
               <img src="assets/img/svg/cloud.svg" alt="img" class="img-fluid">
-              <h4>introducing whatsapp</h4>
-              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+              <h4>A Legal Swiss Army Knife</h4>
+              <p>Build legal arguments, advice and material using a range of tools bespoke to the task.</p>
               <a href="#">read more</a>
 
             </div>
@@ -115,8 +115,8 @@
             <div class="feature-block">
 
               <img src="assets/img/svg/planet.svg" alt="img" class="img-fluid">
-              <h4>user friendly interface</h4>
-              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+              <h4>Intuitive and Intelligent</h4>
+              <p>Work in a sophisticated environment with a deep and prescient knowledge of your needs.</p>
               <a href="#">read more</a>
 
             </div>
@@ -126,8 +126,8 @@
             <div class="feature-block">
 
               <img src="assets/img/svg/asteroid.svg" alt="img" class="img-fluid">
-              <h4>build the app everyone love</h4>
-              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+              <h4>Don't Repeat Yourself</h4>
+              <p>Your legal analysis is a Single Source of Truth instead of a mosaic of letters & documents.</p>
               <a href="#">read more</a>
 
             </div>
@@ -139,15 +139,34 @@
     </section><!-- End Get Started Section -->
 
     <!-- ======= d3js Section ======= -->
-    <script src="https://d3js.org/d3.v5.min.js"></script>
     <section id="about-us" class="about-us padd-section wow fadeInUp">
-      <div class="container">
-        <div class="row justify-content-center">
-          <svg id="canvas" width="1200" height="960"></svg>
-          <script text="js" src="assets/js/example.js"></script>          
+      <div class="section-title text-center">
+
+        <h2>Knowledge Representation</h2>
+        <!-- <p class="separator">A mathematical representation of legal cases.</p> -->
+        <p class="separator">
+          Build a computational representation of a legal case to generate, analyse and
+          present legal advice and material more intelligently.
+        </p>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-5 col-md-6" style="height: 35vh; width: 35vw; left: 10vw;">
+          <div id="pipeline"></div>
+        </div>
+        <div class="col-lg-7 col-md-6" style="padding-left: 10vw; padding-top: 2.5vh;">
+          <p style="overflow: hidden;">
+            Instead of trying to read your documents and guess what you're doing,
+            Ideal allows the lawyer to build a computational representation of their legal analysis,
+            so that the machine <i>understands</i> your needs and can provide meaningful assistance.
+  
+            This isn't about automation, it's about empowering lawyers with intuitive tools which
+            communicate over a common language: the knowledge representation.
+          </p>        
         </div>
       </div>
-    </section><!-- End About Us Section -->
+    </section>
+    <!-- End d3js Section
 
     <!-- ======= Features Section ======= -->
     <section id="features" class="padd-section text-center wow fadeInUp">
@@ -774,6 +793,9 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/noise.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/pipeline.js"></script>
 
 </body>
 
