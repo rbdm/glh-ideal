@@ -197,7 +197,7 @@ A \texttt{Role} defines the \textit{legal personality} of a \texttt{Node} by cap
 \begin{align}
 	[ \ N := \{ \texttt{Fact}_0, .., \texttt{Fact}_n \} \ ] \land [ \ M := \{ \texttt{Fact}_0, .., \texttt{Fact}_m \} \ ] : [ \ M \subset N \ ] \\
 	[ \ \texttt{NodeState}_i = \mathcal{F}(N, \texttt{SourceOfLaw}_i) \ ] : \ [ \ \texttt{Role}_i = \mathcal{F}(\texttt{NodeState}_i, \ , \texttt{SourceOfLaw}_{i'}) \ ] \\
-	[ \ \texttt{NodeState}_j = \mathcal{F}(M, , \texttt{SourceOfLaw}_j) \ ] : \ [ \ \texttt{Role}_j = \mathcal{F}(\texttt{NodeState}_j, , \texttt{SourceOfLaw}_{j'}) \ ] \\
+	[ \ \texttt{NodeState}_j = \mathcal{F}(M, \texttt{SourceOfLaw}_j) \ ] : \ [ \ \texttt{Role}_j = \mathcal{F}(\texttt{NodeState}_j, \texttt{SourceOfLaw}_{j'}) \ ] \\
 	\qquad \implies [ \ \texttt{$N$ is \textit{reducible}} \ ]
 \end{align}
 
@@ -207,7 +207,7 @@ A \texttt{Role} which is reducible is an \textit{extension} of another \texttt{R
 	[ \ \texttt{Role}_j \subset \texttt{Role}_i \ ] : [ \ \texttt{Role}_i \implies \texttt{Role}_j \ ]
 \end{align}
 
-Given that an extension implies any components of the extension, a \texttt{Node} with multiple \texttt{Role} objects \textit{may} replace any \texttt{Role} with an extension. We distinguish a \texttt{Role} extension from a \texttt{Role} \textit{composition}, which is a set of distinct \texttt{Role} objects where there there does not exist a \texttt{Role} in the composition which is an extension of any other \texttt{Role}:
+Given that an extension implies any components of the extension, a \texttt{Node} with multiple \texttt{Role} objects \textit{may} replace any \texttt{Role} with an extension. We distinguish a \texttt{Role} extension from a \texttt{Role} \textit{composition}, which is a set of distinct \texttt{Role} objects where there does not exist a \texttt{Role} in the composition which is an extension of any other \texttt{Role}:
 \begin{align}
 	[ \ N := \ \{ \ \texttt{Role}_0, .., \texttt{Role}_n \ \} \ ] : [ \ \nexists (\texttt{Role}_i, \texttt{Role}_j) \in N : \texttt{Role}_i \subset \texttt{Role}_j \ ]
 \end{align}
