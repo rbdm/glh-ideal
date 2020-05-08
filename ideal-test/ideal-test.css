@@ -1,0 +1,38 @@
+.node {
+  stroke: #fff;
+  stroke-width: 1px;
+  fill: rgb(183, 136, 214);
+}
+
+.node-special {
+  stroke: #fff;
+  stroke-width: 1px;
+  fill: rgb(202, 146, 26);
+}
+
+.node-text {
+  font: 11px sans-serif;
+  fill: rgb(0, 0, 0);
+}
+
+.link {
+  fill: none;
+  stroke: rgb(94, 47, 126);
+  stroke-opacity: 0.6;
+  stroke-width: 1px;
+}
+
+.link-text {
+  font: 9px sans-serif;
+  fill: grey;
+}
+
+.link-text-violation {
+  font: 9px sans-serif;
+  fill: rgb(129, 11, 11);
+}
+
+marker {
+  stroke: rgb(94, 47, 126, 0.6);
+  fill: rgb(94, 47, 126, 0.6);
+}
